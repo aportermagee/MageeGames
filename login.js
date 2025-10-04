@@ -31,4 +31,4 @@ const password = document.getElementById('password');
 const submitBtn = document.getElementById('submitBtn');
 const errorMessage = document.getElementById('errorMessage');
 
-submitBtn.addEventListener('click', submit(username, password));
+submitBtn.addEventListener('click', submit(username.value, password.value));
