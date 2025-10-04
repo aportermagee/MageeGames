@@ -1,3 +1,11 @@
+function submit(username, password) {
+  if (users[username] === password) {
+    alert('loggedIn');
+  } else {
+    alert('Incorrect username or password');
+  }
+}
+
 // Bypasses the Log-In page if the user is logged-in
 if (localStorage.getItem('loggedIn' === true)) {
   window.location.href = 'home.html';
@@ -12,6 +20,12 @@ document.addEventListener('keydown', function(event) {
 });
 
 // Usernames and passwords
-users = {
+const users = {
   "amagee": "apm2010!",
 };
+
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+const submitBtn = document.getElementById('submitBtn');
+
+submitBtn.addEventListener('click', submit());
