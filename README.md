@@ -1,3 +1,9 @@
-# Stock Market Game
+# Stock Market Game To Do List
 
-This is a website that is based on the real stock market which gives users a starting balance of $100,000 fake dollars and lets them buy and sell fake stock, based on the real stock market
+- Create the outline of the website
+- Set up Supabase
+- Use Supabase to store usernames and passwords
+- Use Supabase to create accounts linked to users
+- Set up basic stock trading
+- Set up stock shorting
+- To be determined
