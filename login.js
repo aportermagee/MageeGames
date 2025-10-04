@@ -30,4 +30,4 @@ const username = document.getElementById('username');
 const password = document.getElementById('password');
 const submitBtn = document.getElementById('submitBtn');
 
-submitBtn.addEventListener('click', submit());
+submitBtn.addEventListener('click', submit(username, password));
