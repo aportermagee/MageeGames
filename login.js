@@ -33,4 +33,4 @@ const errorMessage = document.getElementById('errorMessage');
 
 submitBtn.addEventListener('click', function() {
   submit(username.value, password.value));
-}
+});
