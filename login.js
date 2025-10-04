@@ -2,7 +2,7 @@ function submit(username, password) {
   if (users[username] === password) {
     alert('loggedIn');
   } else {
-    alert('Incorrect username or password');
+    errorMessage.textContent = 'Incorrect username or password';
   }
 }
 
@@ -29,5 +29,6 @@ const users = {
 const username = document.getElementById('username');
 const password = document.getElementById('password');
 const submitBtn = document.getElementById('submitBtn');
+const errorMessage = document.getElementById('errorMessage');
 
 submitBtn.addEventListener('click', submit(username, password));
