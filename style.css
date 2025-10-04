@@ -29,4 +29,8 @@ body {
   border-radius: 0.5rem;
   font-size: 1rem;
   padding: 0.6rem;
+  outline: none;
+}
+.input:focus {
+  border-color: rgb(0, 90, 175);
 }
