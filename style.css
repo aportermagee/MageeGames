@@ -53,3 +53,12 @@ body {
   background-color: rgb(0, 100, 170);
   border-color: rgb(0, 100, 170);
 }
+.center-div {
+  text-align: center;
+}
+.right-div {
+  text-align: right;
+}
+.left-div {
+  text-align: left;
+}
