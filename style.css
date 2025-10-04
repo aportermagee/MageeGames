@@ -37,4 +37,12 @@ body {
 }
 .button {
   background-color: rgb(255, 255, 255);
-  border-radius:
+  border-radius: 0.25rem;
+  border: 0.1rem solid rgb(170, 200, 255);
+  color: rgb(0, 0, 0);
+  padding: 0.6rem;
+  display: inline-block;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
