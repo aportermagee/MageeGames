@@ -21,8 +21,9 @@ body {
   color: rgb(255, 255, 255);
   width: 50%;
   display: inline-block;
-  border-radius: 1rem;
+  border-radius: 0.25rem;
   background-color: rgb(0, 100, 170);
+  padding: 0.25rem;
 }
 .input {
   border: 0.75rem solid rgb(170, 200, 255);
@@ -34,3 +35,6 @@ body {
 .input:focus {
   border-color: rgb(0, 90, 175);
 }
+.button {
+  background-color: rgb(255, 255, 255);
+  border-radius:
