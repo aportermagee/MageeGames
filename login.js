@@ -29,7 +29,7 @@ const users = {
 const username = document.getElementById('username');
 const password = document.getElementById('password');
 const submitBtn = document.getElementById('submitBtn');
-const errorMessage = document.getElementById('errorMessage');
+let errorMessage = document.getElementById('errorMessage');
 
 submitBtn.addEventListener('click', function() {
   submit(username.value, password.value);
