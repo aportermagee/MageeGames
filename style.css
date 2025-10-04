@@ -33,7 +33,7 @@ body {
   outline: none;
 }
 .input:focus {
-  border-color: rgb(0, 90, 175);
+  border-color: rgb(0, 100, 170);
 }
 .button {
   background-color: rgb(255, 255, 255);
@@ -45,4 +45,10 @@ body {
   font-size: 1rem;
   cursor: pointer;
   text-decoration: none;
+}
+.button:hover {
+  background-color: rgb(170, 200, 255);
+}
+.button:active {
+  background-color: rgb(0, 100, 170);
 }
