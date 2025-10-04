@@ -12,12 +12,14 @@ if (localStorage.getItem('loggedIn' === true)) {
 }
 
 // Prevents the user from accessing the file
+/*
 document.addEventListener('contextmenu', event => event.preventDefault());
 document.addEventListener('keydown', function(event) {
   if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'J'))) {
     event.preventDefault();
   }
 });
+*/
 
 // Usernames and passwords
 const users = {
