@@ -1,8 +1,8 @@
 body {
   background-color: rgb(245, 245, 245);
+  font-family: "Roboto", sans-serif;
 }
 .main-div {
-  font-family: "Roboto", sans-serif;
   background-color: rgb(255, 255, 255);
   border-radius: 1.5rem;
   border: none;
