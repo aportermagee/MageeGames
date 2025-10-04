@@ -1,10 +1,3 @@
-function submit(username, password) {
-  if (users[username] === password) {
-    alert('loggedIn');
-  } else {
-    errorMessage.textContent = 'Incorrect username or password';
-  }
-}
 
 // Bypasses the Log-In page if the user is logged-in
 if (localStorage.getItem('loggedIn' === true)) {
@@ -34,3 +27,11 @@ const errorMessage = document.getElementById('errorMessage');
 submitBtn.addEventListener('click', function() {
   submit(username.value, password.value);
 });
+
+function submit(username, password) {
+  if (users[username] === password) {
+    alert('loggedIn');
+  } else {
+    errorMessage.textContent = 'Incorrect username or password';
+  }
+}
