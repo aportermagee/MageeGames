@@ -62,3 +62,7 @@ body {
 .left-div {
   text-align: left;
 }
+.errorMessage {
+  text-align: center;
+  color: rgb(255, 255, 255);
+}
