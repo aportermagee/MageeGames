@@ -67,3 +67,22 @@ div {
   text-align: center;
   color: rgb(255, 0, 0);
 }
+.error-button {
+  background-color: rgb(255, 255, 255);
+  border-radius: 0.25rem;
+  border: 0.1rem solid rgb(255, 0, 0);
+  color: rgb(255, 0, 0);
+  padding: 0.6rem;
+  display: inline-block;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.error-button:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(255, 0, 0);
+}
+.error-button:active {
+  background-color: rgb(170, 0, 0);
+  border-color: rgb(170, 0, 0);
+}
