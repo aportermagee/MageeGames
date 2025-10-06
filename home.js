@@ -1,5 +1,5 @@
 function isLoggedIn() {
-  return localStorage.getItem('loggedIn') === true;
+  return (localStorage.getItem('loggedIn') === true);
 }
 
 if (!isLoggedIn()) {
