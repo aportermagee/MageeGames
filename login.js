@@ -12,7 +12,7 @@ function isLoggedIn() {
 }
 
 // Bypasses the Log-In page if the user is logged-in
-if (isloggedIn()) {
+if (isLoggedIn()) {
   window.location.href = 'home.html';
 }
 
