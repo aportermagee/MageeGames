@@ -8,7 +8,6 @@ function submit(username, password) {
 }
 
 function isLoggedIn() {
-  alert(localStorage.getItem('loggedIn');
   return (localStorage.getItem('loggedIn') === true);
 }
 
