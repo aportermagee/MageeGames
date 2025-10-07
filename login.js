@@ -8,7 +8,7 @@ function submit(username, password) {
 }
 
 function isLoggedIn() {
-  return (localStorage.getItem('loggedIn') === true);
+  return (localStorage.getItem('loggedIn') === 'true');
 }
 
 // Bypasses the Log-In page if the user is logged-in
