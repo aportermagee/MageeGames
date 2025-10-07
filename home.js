@@ -1,6 +1,6 @@
 function isLoggedIn() {
   console.log(localStorage.getItem('loggedIn'));
-  return (localStorage.getItem('loggedIn') === true);
+  return (localStorage.getItem('loggedIn') == true);
 }
 
 if (!(isLoggedIn())) {
