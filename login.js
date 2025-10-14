@@ -1,6 +1,7 @@
 function submit(username, password) {
   if (users[username] === password) {
     localStorage.setItem('loggedIn', true);
+    localStorage.setItem('username', username);
     window.location.href = 'home.html';
   } else {
     errorMessage.textContent = 'Incorrect username or password';
