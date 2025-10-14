@@ -17,4 +17,4 @@ const header = document.getElementById('header');
 
 logoutBtn.addEventListener('click', function() {
   logout();
-}
+});
