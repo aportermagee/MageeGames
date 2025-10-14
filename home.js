@@ -4,6 +4,7 @@ function isLoggedIn() {
 
 function logout() {
   localStorage.removeItem('loggedIn');
+  window.location.href = 'index.html';
 }
 
 if (!(isLoggedIn())) {
