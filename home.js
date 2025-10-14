@@ -11,3 +11,7 @@ if (!(isLoggedIn())) {
 }
 
 const logoutBtn = document.getElementById('logoutBtn');
+
+logoutBtn.addEventListener('click', function() {
+  logout();
+}
