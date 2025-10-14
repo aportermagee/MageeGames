@@ -9,9 +9,11 @@ function logout() {
 
 if (!(isLoggedIn())) {
   window.location.href = 'index.html';
+  header.content = 'Welcome ' + localStorage.getItem('username');
 }
 
 const logoutBtn = document.getElementById('logoutBtn');
+const header = document.getElementById('header');
 
 logoutBtn.addEventListener('click', function() {
   logout();
