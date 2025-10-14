@@ -2,6 +2,6 @@ function isLoggedIn() {
   return (localStorage.getItem('loggedIn') === 'true');
 }
 
-if (!(isLoggedIn()) {
+if (!(isLoggedIn())) {
   window.location.href = 'index.html';
 }
