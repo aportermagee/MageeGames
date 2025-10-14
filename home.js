@@ -9,7 +9,7 @@ function logout() {
 
 if (!(isLoggedIn())) {
   window.location.href = 'index.html';
-  header.content = 'Welcome ' + localStorage.getItem('username');
+  header.textContent = 'Welcome ' + localStorage.getItem('username');
 }
 
 const logoutBtn = document.getElementById('logoutBtn');
