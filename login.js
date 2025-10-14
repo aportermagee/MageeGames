@@ -1,3 +1,4 @@
+// Attempts to log in the user
 function submit(username, password) {
   if (users[username] === password) {
     localStorage.setItem('loggedIn', true);
@@ -8,6 +9,7 @@ function submit(username, password) {
   }
 }
 
+// Returns whether the user is logged in
 function isLoggedIn() {
   return (localStorage.getItem('loggedIn') === 'true');
 }
@@ -22,11 +24,13 @@ const users = {
   "amagee": "apm2010!",
 };
 
+// Elements from the html file
 const username = document.getElementById('username');
 const password = document.getElementById('password');
 const submitBtn = document.getElementById('submitBtn');
 const errorMessage = document.getElementById('errorMessage');
 
+// Checks whether user has pressed the submit button
 submitBtn.addEventListener('click', function() {
   submit(username.value, password.value);
 });
