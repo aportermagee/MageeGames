@@ -7,9 +7,12 @@ function logout() {
   window.location.href = 'index.html';
 }
 
+function start() {
+  header.textContent = 'Welcome ' + localStorage.getItem('username');
+}
+
 if (!(isLoggedIn())) {
   window.location.href = 'index.html';
-  header.textContent = 'Welcome ' + localStorage.getItem('username');
 }
 
 const logoutBtn = document.getElementById('logoutBtn');
@@ -18,3 +21,5 @@ const header = document.getElementById('header');
 logoutBtn.addEventListener('click', function() {
   logout();
 });
+
+start()
