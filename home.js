@@ -5,3 +5,5 @@ function isLoggedIn() {
 if (!(isLoggedIn())) {
   window.location.href = 'index.html';
 }
+
+const logoutBtn = document.getElementById("logoutBtn");
