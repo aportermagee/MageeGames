@@ -21,11 +21,16 @@ if (!(isLoggedIn())) {
 
 // Elements from the html file
 const logoutBtn = document.getElementById('logoutBtn');
+const snakeGameBtn = document.getElementById('snakeGameBtn');
 
 // Checks whether the user has pressed the logout button
 logoutBtn.addEventListener('click', function() {
   logout();
 });
 
+snakeGameBtn.addEventListener('click', function() {
+  window.location.href = 'snakeGame.html';
+});
+  
 // Runs start
 start()
