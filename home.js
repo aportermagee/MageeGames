@@ -9,17 +9,9 @@ function logout() {
   window.location.href = 'index.html';
 }
 
-// Capitalizes the first letter of each word in a string
-function capitalize(str) {
-  newStr = '';
-  let splitStr = str.split(' ');
-  splitStr.forEach(word => newStr += word.replace(word[0], word[0].toUpperCase()));
-  return newStr;
-}
-
 // Code that needs to be run to set up the page
 function start() {
-  header.textContent = 'Welcome ' + capitalize(localStorage.getItem('username'));
+  return void;
 }
 
 // Uses isLoggedIn to return user to the login page
@@ -29,7 +21,6 @@ if (!(isLoggedIn())) {
 
 // Elements from the html file
 const logoutBtn = document.getElementById('logoutBtn');
-const header = document.getElementById('header');
 
 // Checks whether the user has pressed the logout button
 logoutBtn.addEventListener('click', function() {
