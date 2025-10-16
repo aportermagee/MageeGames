@@ -9,9 +9,15 @@ function logout() {
   window.location.href = 'index.html';
 }
 
+// Capitalizes the first letter of each word in a string
+function capitalize(string) {
+  let sList = string.split(' ');
+  s.forEach(word => word.replace(word[0], word[0].toUpperCase()));
+}
+
 // Code that needs to be run to set up the page
 function start() {
-  header.textContent = 'Welcome ' + localStorage.getItem('username');
+  header.textContent = 'Welcome ' + capitalize(localStorage.getItem('username'));
 }
 
 // Uses isLoggedIn to return user to the login page
