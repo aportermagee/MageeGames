@@ -12,7 +12,8 @@ function logout() {
 // Capitalizes the first letter of each word in a string
 function capitalize(string) {
   let sList = string.split(' ');
-  s.forEach(word => word.replace(word[0], word[0].toUpperCase()));
+  sList.forEach(word => word.replace(word[0], word[0].toUpperCase()));
+  return sList;
 }
 
 // Code that needs to be run to set up the page
