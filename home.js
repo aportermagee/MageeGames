@@ -9,11 +9,6 @@ function logout() {
   window.location.href = 'index.html';
 }
 
-// Code that needs to be run to set up the page
-function start() {
-  return void;
-}
-
 // Uses isLoggedIn to return user to the login page
 if (!(isLoggedIn())) {
   window.location.href = 'index.html';
@@ -31,6 +26,3 @@ logoutBtn.addEventListener('click', function() {
 snakeGameBtn.addEventListener('click', function() {
   window.location.href = 'snakeGame.html';
 });
-  
-// Runs start
-start()
