@@ -33,10 +33,24 @@ for (let i = 0; i < 20; i++) {
 }
 
 // Checks keys
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft') left = true;
+  if (event.key === 'ArrowRight') right = true;
+  if (event.key === 'ArrowUp') up = true;
+  if (event.key === 'ArrowDown') down = true;
+});
+
+document.addEventListener('keyup', event => {
+  if (event.key === 'ArrowLeft') left = false;
+  if (event.key === 'ArrowRight') right = false;
+  if (event.key === 'ArrowUp') up = false;
+  if (event.key === 'ArrowDown') down = false;
+});
 
 
 // Draws a frame
 function drawFrame() {
+  
   // Clears frame
   ctx.fillStyle = 'rgb(255, 255, 255)';
   ctx.fillRect(0, 0, canvas.width, canvas.height;
@@ -56,7 +70,7 @@ function drawFrame() {
     block[i][1] -= box;
   }
 
-  
+  // Move block horizontally
 }
 
 
