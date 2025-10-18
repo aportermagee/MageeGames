@@ -73,8 +73,8 @@ function drawGame() {
 
 start();
 
-const start = document.getElementById('start');
+const startBtn = document.getElementById('startBtn');
 
-start.addEventListener('click', function() {
+startBtn.addEventListener('click', function() {
   start();
 });
