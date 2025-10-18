@@ -89,8 +89,13 @@ function drawGame() {
 }
 
 const startBtn = document.getElementById('startBtn');
+const homeBtn = document.getElementById('homeBtn');
 
 startBtn.addEventListener('click', function() {
   setTimeout(start(), 1000);
   startBtn.textContent = 'Restart';
+});
+
+homeBtn.addEventListener('click', function() {
+  window.location.href = 'home.html';
 });
