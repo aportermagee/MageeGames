@@ -1,15 +1,18 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-const box = 24;
-const speed = 100;
-let snake = [{x: 5 * box, y: 5 * box}];
-let direction = 'RIGHT';
-let food = {
-  x: Math.floor(Math.random() * 10) * box,
-  y: Math.floor(Math.random() * 10) * box
-};
-let score = 0;
+function start() {
+  const box = 24;
+  const speed = 100;
+  let snake = [{x: 5 * box, y: 5 * box}];
+  let direction = 'RIGHT';
+  let food = {
+    x: Math.floor(Math.random() * 10) * box,
+    y: Math.floor(Math.random() * 10) * box
+  };
+  let score = 0;
+  const game = setInterval(drawGame, 100);
+}
 
 document.addEventListener('keydown', event => {
   if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
@@ -68,4 +71,10 @@ function drawGame() {
   snake.unshift(newHead);
 }
 
-const game = setInterval(drawGame, 100);
+start();
+
+const start = document.getElementById('start');
+
+start.addEventListener('click', function() {
+  start();
+});
