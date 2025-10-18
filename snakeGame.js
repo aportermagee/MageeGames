@@ -92,4 +92,5 @@ const startBtn = document.getElementById('startBtn');
 
 startBtn.addEventListener('click', function() {
   setTimeout(start(), 1000);
+  startBtn.textContent = 'Restart';
 });
