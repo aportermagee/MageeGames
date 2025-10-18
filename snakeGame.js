@@ -2,16 +2,15 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 const box = 24;
-const speed = 100;
+const speed = 250;
 const scoreP = document.getElementById('score');
-let snake = [{x: 5 * box, y: 5 * box}];
-let direction = 'RIGHT';
-let food = {
-  x: Math.floor(Math.random() * 10) * box,
-  y: Math.floor(Math.random() * 10) * box
-};
-let score = 0
+
+let snake;
+let direction;
+let food;
+let score;
 let game;
+let Newhead;
 
 function start() {
   direction = 'RIGHT';
@@ -58,7 +57,7 @@ function drawGame() {
   // Check if snake eats food
   if (headX === food.x && headY === food.y) {
     score++;
-    let food = {
+    food = {
       x: Math.floor(Math.random() * 10) * box,
       y: Math.floor(Math.random() * 10) * box
     };
@@ -67,7 +66,7 @@ function drawGame() {
   }
 
   // Check collision
-  newHead = {x: headX, y: headY};
+  let newHead = {x: headX, y: headY};
   
   if (
     headX < 0 || headY < 0 ||
