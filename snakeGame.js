@@ -91,5 +91,5 @@ function drawGame() {
 const startBtn = document.getElementById('startBtn');
 
 startBtn.addEventListener('click', function() {
-  start();
+  setTimeout(start(), 500);
 });
