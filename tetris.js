@@ -19,7 +19,8 @@ const blocks = {
 
 // Draws a frame
 function drawFrame() {
-
+  ctx.fillStyle = 'rgb(255, 255, 255)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height;
 }
 
 
