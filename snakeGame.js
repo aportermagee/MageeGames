@@ -10,7 +10,7 @@ let direction;
 let food;
 let score;
 let game;
-let Newhead;
+let newhead;
 
 function start() {
   direction = 'RIGHT';
