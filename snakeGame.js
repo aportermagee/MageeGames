@@ -88,8 +88,6 @@ function drawGame() {
   scoreP.textContent = 'Score: ' + score;
 }
 
-start();
-
 const startBtn = document.getElementById('startBtn');
 
 startBtn.addEventListener('click', function() {
