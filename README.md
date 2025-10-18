@@ -1,6 +1,6 @@
 # JavaScript Games
 
-## Ideas
+### Ideas
 
 - Snake
 - Tetris
