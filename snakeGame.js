@@ -1,3 +1,6 @@
+// Controls
+alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nUp Arrow: Up\nDown Arrow: Down');
+
 // Set-up
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
