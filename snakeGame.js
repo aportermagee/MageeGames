@@ -32,12 +32,12 @@ document.addEventListener('keydown', event => {
 
 function drawGame() {
   // Resart frame
-  ctx.fillStyle = 'rgb(200, 115, 60)';
+  ctx.fillStyle = 'rgb(255, 255, 255)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw snake
   for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = (i === 0) ? 'rgb(0, 125, 0)' : 'rgb(0, 175, 0)';
+    ctx.fillStyle = (i === 0) ? 'rgb(0, 125, 210)' : 'rgb(0, 120, 200)';
     ctx.fillRect(snake[i].x, snake[i].y, box, box);
   }
 
