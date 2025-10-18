@@ -9,12 +9,11 @@ function submit(username, password) {
   }
 }
 
-// Returns whether the user is logged in
+// Checks whether the user is logged in
 function isLoggedIn() {
   return (localStorage.getItem('loggedIn') === 'true');
 }
 
-// Bypasses the Log-In page if the user is logged-in
 if (isLoggedIn()) {
   window.location.href = 'home.html';
 }
@@ -24,13 +23,14 @@ const users = {
   "amagee": "apm2010!",
 };
 
-// Elements from the html file
+// Html constants
 const username = document.getElementById('username');
 const password = document.getElementById('password');
-const submitBtn = document.getElementById('submitBtn');
 const errorMessage = document.getElementById('errorMessage');
 
-// Checks whether user has pressed the submit button
+// Buttons
+const submitBtn = document.getElementById('submitBtn');
+
 submitBtn.addEventListener('click', function() {
   submit(username.value, password.value);
 });
