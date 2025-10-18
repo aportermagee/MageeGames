@@ -59,7 +59,10 @@ function drawGame() {
   // Check if snake eats food
   if (headX === food.x && headY === food.y) {
     score++;
-    while (snake.some(segment => segment.x === food.x && segment.y === food.y) || newHead.x === food.x && newhead.y === food.y) {
+    while (
+      snake.some(segment => segment.x === food.x && segment.y === food.y) ||
+      newHead.x === food.x && newhead.y === food.y
+    ) {
       food = {
         x: Math.floor(Math.random() * 10) * box,
         y: Math.floor(Math.random() * 10) * box
