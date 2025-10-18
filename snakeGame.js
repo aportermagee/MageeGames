@@ -4,16 +4,24 @@ const ctx = canvas.getContext('2d');
 const box = 24;
 const speed = 100;
 const scoreP = document.getElementById('score');
+let snake = [{x: 5 * box, y: 5 * box}];
+let direction = 'RIGHT';
+let food = {
+  x: Math.floor(Math.random() * 10) * box,
+  y: Math.floor(Math.random() * 10) * box
+};
+let score = 0
+let game;
 
 function start() {
-  let snake = [{x: 5 * box, y: 5 * box}];
-  let direction = 'RIGHT';
-  let food = {
+  direction = 'RIGHT';
+  snake = [{x: 5 * box, y: 5 * box}];
+  food = {
     x: Math.floor(Math.random() * 10) * box,
     y: Math.floor(Math.random() * 10) * box
-  };
-  let score = 0;
-  const game = setInterval(drawGame, 100);
+  };  
+  score = 0;
+  game = setInterval(drawGame, 100);
 }
 
 document.addEventListener('keydown', event => {
