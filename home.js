@@ -17,6 +17,7 @@ if (!(isLoggedIn())) {
 // Elements from the html file
 const logoutBtn = document.getElementById('logoutBtn');
 const snakeGameBtn = document.getElementById('snakeGameBtn');
+const tetrisBtn = document.getElementById('tetrisBtn');
 
 // Checks whether the user has pressed the logout button
 logoutBtn.addEventListener('click', function() {
@@ -25,4 +26,8 @@ logoutBtn.addEventListener('click', function() {
 
 snakeGameBtn.addEventListener('click', function() {
   window.location.href = 'snakeGame.html';
+});
+
+tetrisBtn.addEventListener('click', function() {
+  window.location.href = 'tetris.html';
 });
