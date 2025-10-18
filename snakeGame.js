@@ -1,9 +1,11 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
+const box = 24;
+const speed = 100;
+const scoreP = document.getElementById('score');
+
 function start() {
-  const box = 24;
-  const speed = 100;
   let snake = [{x: 5 * box, y: 5 * box}];
   let direction = 'RIGHT';
   let food = {
@@ -69,6 +71,9 @@ function drawGame() {
 
   // Creates new head
   snake.unshift(newHead);
+
+  // Sets score
+  scoreP.textContent = 'Score: ' + score;
 }
 
 start();
