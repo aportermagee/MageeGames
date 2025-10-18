@@ -33,12 +33,12 @@ function start() {
     y: Math.floor(Math.random() * 10) * box
   };  
   score = 0;
-  game = setInterval(drawGame, speed);
+  game = setInterval(drawFrame, speed);
 }
 
 
 // Draws a frame
-function drawGame() {
+function drawFrame() {
   // Resart frame
   ctx.fillStyle = 'rgb(255, 255, 255)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -87,6 +87,7 @@ function drawGame() {
     snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)
   ) {
     clearInterval(game);
+    game = null;
   }
 
   // Creates new head
@@ -102,8 +103,10 @@ const startBtn = document.getElementById('startBtn');
 const homeBtn = document.getElementById('homeBtn');
 
 startBtn.addEventListener('click', function() {
-  setTimeout(start(), 1000);
-  startBtn.textContent = 'Restart';
+  if (!game) {
+    setTimeout(start(), 1000);
+    startBtn.textContent = 'Restart';
+  }
 });
 
 homeBtn.addEventListener('click', function() {
