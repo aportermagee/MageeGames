@@ -1,4 +1,4 @@
-// Set up
+// Set-up
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
@@ -16,6 +16,12 @@ const blocks = {
   6: [[-1, 0], [0, 0], [0, 1], [1, 1]],
   7: [[-1, 1], [0, 1], [1, 1], [1, 0]] 
 };
+
+// Draws a frame
+function drawFrame() {
+
+}
+
 
 // Buttons
 const homeBtn = document.getElementById('homeBtn');
