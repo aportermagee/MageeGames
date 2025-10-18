@@ -87,6 +87,6 @@ div {
   border-color: rgb(170, 0, 0);
 }
 canvas {
-  background-color: rgb(200, 115, 60);
-  border: 0.25rem solid rgb(220, 130, 70);
+  background-color: rgb(255, 255, 255);
+  border: 0.15rem solid rgb(170, 200, 255);
 }
