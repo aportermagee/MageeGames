@@ -90,3 +90,7 @@ canvas {
   background-color: rgb(255, 255, 255);
   border: 0.15rem solid rgb(0, 125, 210);
 }
+.subheader {
+  color: rgb(225, 225, 225);
+  font-size: 0.5rem;
+}
