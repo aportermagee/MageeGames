@@ -1,3 +1,4 @@
+// Set-up
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
@@ -5,6 +6,8 @@ const box = 24;
 const speed = 150;
 const scoreP = document.getElementById('score');
 
+
+// In game variables
 let snake;
 let direction;
 let food;
@@ -12,6 +15,16 @@ let score;
 let game;
 let newHead;
 
+// Changes direction
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+  if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+  if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+  if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+});
+
+
+// Starts a new game
 function start() {
   direction = 'RIGHT';
   snake = [{x: 5 * box, y: 5 * box}];
@@ -23,13 +36,8 @@ function start() {
   game = setInterval(drawGame, speed);
 }
 
-document.addEventListener('keydown', event => {
-  if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
-  if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
-  if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
-  if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
-});
 
+// Draws a frame
 function drawGame() {
   // Resart frame
   ctx.fillStyle = 'rgb(255, 255, 255)';
@@ -88,6 +96,8 @@ function drawGame() {
   scoreP.textContent = 'Score: ' + score;
 }
 
+
+// Buttons
 const startBtn = document.getElementById('startBtn');
 const homeBtn = document.getElementById('homeBtn');
 
