@@ -2,7 +2,7 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 const box = 24;
-const speed = 250;
+const speed = 150;
 const scoreP = document.getElementById('score');
 
 let snake;
