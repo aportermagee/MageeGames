@@ -16,20 +16,53 @@ let block;
 
 // Block types
 const blocks = {
-  0: [[-1, 0], [0, 0], [1, 0], [2, 0]],
-  1: [[-1, 0], [0, 0], [1, 0], [1, 1]],
-  2: [[-1, 0], [0, 0], [0, 1], [1, 0]],
-  3: [[0, 0], [0, 1], [1, 0], [1, 1]],
-  4: [[-1, 1], [0, 0], [0, 1], [1, 0]],
-  5: [[-1, 0], [0, 0], [0, 1], [1, 1]],
-  6: [[-1, 1], [0, 1], [1, 1], [1, 0]] 
+  0: [
+    [0, 0, 0, 0],
+    [1, 1, 1, 1],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
+  ],
+  1: [
+    [1, 1],
+    [1, 1]
+  ],
+  2: [
+    [0, 1, 0],
+    [1, 1, 1],
+    [0, 0, 0]
+  ],
+  3: [
+    [0, 1, 1],
+    [1, 1, 0],
+    [0, 0, 0]
+  ],
+  4: [
+    [1, 1, 0],
+    [0, 1, 1],
+    [0, 0, 0]
+  ],
+  5: [
+    [1, 0, 0],
+    [1, 1, 1],
+    [0, 0, 0]
+  ],
+  6: [
+    [0, 0, 1],
+    [1, 1, 1],
+    [0, 0, 0]
 };
 
 // Rows
 let rows = [];
 
 for (let i = 0; i < 20; i++) {
-  rows.push([]);
+  let row = {};
+
+  for (let i = 0; i < 10; i++) {
+    row[i] = 0;
+  }
+  
+  rows.push(row);
 }
 
 // Checks keys
@@ -48,6 +81,32 @@ document.addEventListener('keyup', event => {
 });
 
 
+// Transposes rows and columns in a 2d matrix
+function transpose(L) {
+  let final = [];
+  
+  for (let i = 0; i < L.length; i++) {
+    final.push([]);
+  }
+
+  for (let i = 0; i < L.length; i++) {
+    for (let x = 0; x < L.length(); x++) {
+      final[x].push(L[x][i]);
+    }
+  }
+  return final;
+}
+
+
+// Reverse the values of the rows of a 2d matrix
+function reverse(L) {
+  for (let i = 0; i < L.length; i++) {
+    L[i].reverse();
+  }
+  return L;
+}
+
+
 // Draws a frame
 function drawFrame() {
   
@@ -57,20 +116,14 @@ function drawFrame() {
 
   // Creates a falling block if none already exist
   if (!block) {
-    block = blocks[Math.floor(Math.random() * 7)];
-
-    for (let i = 0; i < 4; i++) {
-      block[i][0] = (5 + block[i][0]) * box;
-      block[i][1] = (-1 + block[i][1]) * box;
-    }
+    block = [blocks[Math.floor(Math.random() * 7)], 5, 0];
+    return;
   }
 
-  // Block falls by one row
-  for (let i = 0; i < 4; i++) {
-    block[i][1] -= box;
+  // Rotate
+  if (up) {
+    
   }
-
-  // Move block horizontally
 }
 
 
