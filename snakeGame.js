@@ -2,7 +2,7 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 const box = 24;
-const speed = 400;
+const speed = 250;
 const scoreP = document.getElementById('score');
 
 let snake;
@@ -20,7 +20,7 @@ function start() {
     y: Math.floor(Math.random() * 10) * box
   };  
   score = 0;
-  game = setInterval(drawGame, 100);
+  game = setInterval(drawGame, speed);
 }
 
 document.addEventListener('keydown', event => {
