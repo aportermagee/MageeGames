@@ -1,3 +1,6 @@
+// Directions
+alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nUp Arrow: Rotate Clockwise\nDown Arrow: Rotate Counter-Clockwise\nSpace Bar: Speed Up Fall');
+
 // Set-up
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
