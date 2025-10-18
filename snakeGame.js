@@ -10,7 +10,7 @@ let direction;
 let food;
 let score;
 let game;
-let newhead;
+let newHead;
 
 function start() {
   direction = 'RIGHT';
@@ -61,7 +61,7 @@ function drawGame() {
     score++;
     while (
       snake.some(segment => segment.x === food.x && segment.y === food.y) ||
-      newHead.x === food.x && newhead.y === food.y
+      newHead.x === food.x && newHead.y === food.y
     ) {
       food = {
         x: Math.floor(Math.random() * 10) * box,
