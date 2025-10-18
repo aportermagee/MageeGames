@@ -3,6 +3,17 @@ const ctx = canvas.getContext('2d');
 
 const box = 24;
 const speed = 200;
+const scoreP = document.getElementById('score');
+
+const blocks = {
+  1: [[-1, 0], [0, 0], [1, 0], [2, 0]],
+  2: [[-1, 0], [0, 0], [1, 0], [1, 1]],
+  3: [[-1, 0], [0, 0], [0, 1], [1, 0]],
+  4: [[0, 0], [0, 1], [1, 0], [1, 1]],
+  5: [[-1, 1], [0, 0], [0, 1], [1, 0]],
+  6: [[-1, 0], [0, 0], [0, 1], [1, 1]],
+  7: [[-1, 1], [0, 1], [1, 1], [1, 0]] 
+};
 
 const homeBtn = document.getElementById('homeBtn');
 
