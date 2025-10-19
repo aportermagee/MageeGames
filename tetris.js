@@ -259,7 +259,7 @@ function drawFrame() {
     game = null;
   }
 
-  num -= 1;
+  count -= 1;
 }
 
 
