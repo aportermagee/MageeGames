@@ -134,7 +134,7 @@ document.addEventListener('keyup', event => if (event.key === 'Space') space = f
 function transpose(L) {
   let final = [];
   
-  for (let i = 0; i < L.length; i++) {
+  for (let i = 0; i < L[0].length; i++) {
     final.push([]);
   }
 
