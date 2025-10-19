@@ -210,7 +210,7 @@ function drawFrame() {
           
           // Sets rows
           if (block[0][y][x] === 1) {
-            rows[y][x] = 1;
+            rows[block[2] + y][block[1] + x] = 1;
           }
         }
       }
