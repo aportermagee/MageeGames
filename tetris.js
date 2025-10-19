@@ -86,6 +86,8 @@ function start() {
   
     rows.push(row);
   }
+
+  score = 0;
   
   scoreP.textContent = 'Score: ' + score + ', High Score: ' + highScore; 
 
