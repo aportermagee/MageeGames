@@ -1,6 +1,3 @@
-// Controls
-alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nUp Arrow: Up\nDown Arrow: Down');
-
 // Set-up
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -105,6 +102,7 @@ function drawFrame() {
 // Buttons
 const startBtn = document.getElementById('startBtn');
 const homeBtn = document.getElementById('homeBtn');
+const controlsBtn = document.getElementById('controlsBtn');
 
 startBtn.addEventListener('click', function() {
   if (!game) {
@@ -116,3 +114,7 @@ startBtn.addEventListener('click', function() {
 homeBtn.addEventListener('click', function() {
   window.location.href = 'home.html';
 });
+
+controlsBtn.addEventListener('click', function() {
+  alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nUp Arrow: Up\nDown Arrow: Down');
+}
