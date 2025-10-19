@@ -11,6 +11,37 @@ const box = 24;
 const speed = 150;
 const scoreP = document.getElementById('score');
 
+// High score
+let highScore;
+
+async function getHighScore() {
+  const { data, error } = await supabaseClient
+    .from('highScores')
+    .select('highScoreTetris')
+    .eq('id', JSON.parse(localStorage.getItem('user')).id)
+    .single();
+
+  if (error) {
+    console.error(error);
+  } else {
+    highScore = data.highScoreTetris;
+  }
+}
+
+getHighScore();
+
+scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
+
+async function updateHighScore() {
+  const { data, error } = await supabaseClient
+    .from('highScores')
+    .update({ highScoreTetris: highScore })
+    .eq('id', JSON.parse(localStorage.getItem('user')).id);
+
+  if (error) {
+    console.error(error);
+  }
+}
 
 // In game variables
 let snake;
@@ -94,13 +125,21 @@ function drawFrame() {
   ) {
     clearInterval(game);
     game = null;
-  }
+
+    if (score > highScore) {
+      alert('New high score!');
+      highScore = score;
+
+      updateHighScore();
+
+      scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
+    }
 
   // Creates new head
   snake.unshift(newHead);
 
   // Sets score
-  scoreP.textContent = 'Score: ' + score;
+  scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
 }
 
 
