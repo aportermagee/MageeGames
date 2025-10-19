@@ -285,5 +285,4 @@ startBtn.addEventListener('click', function() {
     start();
     startBtn.textContent = 'Restart';
   }
-}
-    
+});  
