@@ -1,5 +1,3 @@
-// Directions
-alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nSpace Bar: Rotate\nDown Arrow: Speed Up Fall');
 
 // Set-up
 const canvas = document.getElementById('game');
@@ -264,6 +262,7 @@ function drawFrame() {
 // Buttons
 const homeBtn = document.getElementById('homeBtn');
 const startBtn = document.getElementById('startBtn');
+const controlsBtn = document.getElementById('controlsBtn');
 
 homeBtn.addEventListener('click', function() {
   window.location.href = 'home.html';
@@ -275,3 +274,7 @@ startBtn.addEventListener('click', function() {
     startBtn.textContent = 'Restart';
   }
 });  
+
+controlsBtn.addEventListener('click', function() {
+  alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nSpace Bar: Rotate\nDown Arrow: Speed Up Fall');
+});
