@@ -234,7 +234,7 @@ function drawFrame() {
           rows.unshift(row);
           
           score += 10;
-          scoreP.textContent = score;
+          scoreP.textContent = 'Score: ' + score;
         }
       }
     }
