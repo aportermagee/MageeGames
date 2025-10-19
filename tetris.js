@@ -183,16 +183,16 @@ function drawFrame() {
   if (right) {
     block[1] += 1;
 
-    if (isColliding()) {
-      block -= 1;
+    if (isColliding(block)) {
+      block[1] -= 1;
     }
   }
 
   if (left) {
     block[1] -= 1;
 
-    if (isColliding()) {
-      block += 1;
+    if (isColliding(block)) {
+      block[1] += 1;
     }
   }
   
