@@ -218,7 +218,7 @@ function drawFrame() {
       block = null;
   
       for (let i = 0; i < 20; i++) {
-        if (!row[i].some(b => b === 0)) {
+        if (!rows[i].some(b => b === 0)) {
           rows.splice(i, 1);
   
           let row = []
