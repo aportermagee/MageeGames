@@ -26,6 +26,8 @@ if (error) {
   let highScore = data.highScoreTetris;
 }
 
+scoreP.textContent = 'Score: ' + score + ', High Score: ' + highScore;
+
 // In-game variables
 let block;
 let rows;
@@ -237,7 +239,7 @@ function drawFrame() {
           rows.unshift(row);
           
           score += 10;
-          scoreP.textContent = 'Score: ' + score;
+          scoreP.textContent = 'Score: ' + score + ', High Score: ' + highScore;
         }
       }
     }
