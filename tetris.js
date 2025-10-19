@@ -121,7 +121,7 @@ function reverse(L) {
 // Checks Collisions
 function isColliding(B) {
   for (let y = 0; y < B[0].length; y++) {
-    for (let x = 0 x < B[0][y].length; x++) {
+    for (let x = 0; x < B[0][y].length; x++) {
       if (B[0][y][x] === 1) {
         if (
           (B[1] + x) < 0 ||
