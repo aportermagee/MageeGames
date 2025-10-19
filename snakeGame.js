@@ -30,7 +30,7 @@ async function getHighScore() {
 
 getHighScore();
 
-scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
+scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 
 async function updateHighScore() {
   const { data, error } = await supabaseClient
@@ -69,6 +69,9 @@ function start() {
     y: Math.floor(Math.random() * 10) * box
   };  
   score = 0;
+
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+  
   game = setInterval(drawFrame, speed);
 }
 
@@ -139,7 +142,7 @@ function drawFrame() {
   snake.unshift(newHead);
 
   // Sets score
-  scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
 
 
