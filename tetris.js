@@ -246,8 +246,10 @@ function drawFrame() {
 
   for (let y = 0; y < RaB.length; y++) {
     for (let x = 0; x < RaB[y].length; x++) {
-      ctx.fillStyle = 'rgb(0, 120, 200)';
-      ctx.fillRect(x, y, box, box);
+      if (RaB[y][x] === 1) {
+        ctx.fillStyle = 'rgb(0, 120, 200)';
+        ctx.fillRect(x, y, box, box);
+      }
     }
   }
 
