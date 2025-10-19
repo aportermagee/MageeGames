@@ -86,6 +86,8 @@ function start() {
   
     rows.push(row);
   }
+  
+  scoreP.textContent = 'Score: ' + score + ', High Score: ' + highScore; 
 
   // Resets count
   count = 10;
