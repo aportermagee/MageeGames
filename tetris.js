@@ -146,7 +146,7 @@ function drawFrame() {
   
   // Clears frame
   ctx.fillStyle = 'rgb(255, 255, 255)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Creates a falling block if none already exist
   if (!block) {
