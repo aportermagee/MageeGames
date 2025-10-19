@@ -268,11 +268,18 @@ function drawFrame() {
 }
 
 
-start();
-
 // Buttons
 const homeBtn = document.getElementById('homeBtn');
+const startBtn = document.getElementById('startBtn');
 
 homeBtn.addEventListener('click', function() {
   window.location.href = 'home.html';
 });
+
+startBtn.addEventListener('click', function() {
+  if (!game) {
+    start();
+    startBtn.textContent = 'Restart';
+  }
+}
+    
