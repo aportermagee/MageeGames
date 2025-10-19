@@ -10,6 +10,7 @@ const speed = 50;
 const scoreP = document.getElementById('score');
 
 let space = false;
+let score = 0;
 
 // In-game variables
 let block;
@@ -231,6 +232,9 @@ function drawFrame() {
           }
           
           rows.unshift(row);
+          
+          score += 10;
+          scoreP.textContent = score;
         }
       }
     }
