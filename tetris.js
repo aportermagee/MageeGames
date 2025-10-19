@@ -1,5 +1,5 @@
 // Directions
-alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nUp Arrow: Rotate Clockwise\nDown Arrow: Rotate Counter-Clockwise\nSpace Bar: Speed Up Fall');
+alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nSpace Bar: Rotate\nDown Arrow: Speed Up Fall');
 
 // Set-up
 const canvas = document.getElementById('game');
@@ -9,7 +9,7 @@ const box = 24;
 const speed = 50;
 const scoreP = document.getElementById('score');
 
-let space = false;
+let fastFall = false;
 let score = 0;
 
 // In-game variables
@@ -80,23 +80,13 @@ function start() {
 
 
 // Rotate
-function rotateClockwise() {
+function rotate() {
   block[0] = transpose(block[0]);
   block[0] = reverse(block[0]);
 
   if (isColliding(block)) {
     block[0] = reverse(block[0]);
     block[0] = transpose(block[0]);
-  }
-}
-
-function rotateCounterClockwise() {
-  block[0] = reverse(block[0]);
-  block[0] = transpose(block[0]);
-
-  if (isColliding(block)) {
-    block[0] = transpose(block[0]);
-    block[0] = reverse(block[0]);
   }
 }
 
@@ -129,12 +119,11 @@ document.addEventListener('keydown', event => {
   }
   if (event.key === 'ArrowLeft') moveLeft();
   if (event.key === 'ArrowRight') moveRight();
-  if (event.key === 'ArrowUp') rotateClockwise();
-  if (event.key === 'ArrowDown') rotateCounterClockwise();
-  if (event.code === 'Space') space = true;
+  if (event.code === 'Space') rotate();
+  if (event.key === 'ArrowDown') fastFall = true;
 });
 
-document.addEventListener('keyup', event => {if (event.code === 'Space') space = false;});
+document.addEventListener('keyup', event => {if (event.key === 'ArrowDown') fastFall = false;});
 
 
 // Transposes rows and columns in a 2d matrix
@@ -201,7 +190,7 @@ function drawFrame() {
   
   
   // Gravity
-  if (count === 0 || (space && (count % 2 === 0))) {
+  if (count === 0 || (fastFall && (count % 2 === 0))) {
     count = 10;
     block[2] += 1;
   
