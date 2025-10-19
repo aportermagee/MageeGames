@@ -248,7 +248,7 @@ function drawFrame() {
     for (let x = 0; x < RaB[y].length; x++) {
       if (RaB[y][x] === 1) {
         ctx.fillStyle = 'rgb(0, 120, 200)';
-        ctx.fillRect(x, y, box, box);
+        ctx.fillRect(x * box, y * box, box, box);
       }
     }
   }
