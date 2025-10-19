@@ -14,6 +14,18 @@ const scoreP = document.getElementById('score');
 let fastFall = false;
 let score = 0;
 
+const { data, error } = await supabaseClient
+  .from('highScores')
+  .select('highScoreTetris')
+  .eq('id', JSON.parse(localStorage.getItem('user')).id)
+  .single();
+
+if (error) {
+  console.error(error);
+} else {
+  let highScore = data.highScoreTetris;
+}
+
 // In-game variables
 let block;
 let rows;
@@ -257,6 +269,18 @@ function drawFrame() {
   if (rows[0].some(b => b === 1)) {
     clearInterval(game);
     game = null;
+    if (score > highScore) {
+      alert('New high score!');
+      highScore = score;
+
+      const { data, error } = await supabaseClient
+        .from('highScores')
+        .update({ highScoreTetris: highScore })
+        .eq('id', JSON.parse(localStorage.getItem('user')).id);
+
+      if (error) {
+        console.error(error);
+      }
   }
 
   count -= 1;
