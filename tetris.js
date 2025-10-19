@@ -9,11 +9,6 @@ const box = 24;
 const speed = 50;
 const scoreP = document.getElementById('score');
 
-let down = false;
-let up = false;
-let right = false;
-let left = false;
-
 // In-game variables
 let block;
 let rows;
@@ -80,19 +75,53 @@ function start() {
   game = setInterval(drawFrame, speed);
 }
 
+
+// Rotate
+function rotateClockwise() {
+  block[0] = transpose(block[0]);
+  block[0] = reverse(block[0]);
+
+  if (isColliding(block)) {
+    block[0] = reverse(block[0]);
+    block[0] = transpose(block[0]);
+  }
+}
+
+function rotateCounterClockwise() {
+  block[0] = reverse(block[0]);
+  block[0] = transpose(block[0]);
+
+  if (isColliding(block)) {
+    block[0] = transpose(block[0]);
+    block[0] = reverse(block[0]);
+  }
+}
+
+
+// Move
+function moveRight() {
+  block[1] += 1;
+
+  if (isColliding(block)) {
+    block[1] -= 1;
+  }
+}
+
+function moveLeft() {
+  block[1] -= 1;
+
+  if (isColliding(block)) {
+    block[1] += 1;
+  }
+}
+
+
 // Checks keys
 document.addEventListener('keydown', event => {
-  if (event.key === 'ArrowLeft') left = true;
-  if (event.key === 'ArrowRight') right = true;
-  if (event.key === 'ArrowUp') up = true;
-  if (event.key === 'ArrowDown') down = true;
-});
-
-document.addEventListener('keyup', event => {
-  if (event.key === 'ArrowLeft') left = false;
-  if (event.key === 'ArrowRight') right = false;
-  if (event.key === 'ArrowUp') up = false;
-  if (event.key === 'ArrowDown') down = false;
+  if (event.key === 'ArrowLeft') moveLeft();
+  if (event.key === 'ArrowRight') moveRight();
+  if (event.key === 'ArrowUp') rotateClockwise();
+  if (event.key === 'ArrowDown') rotateCounterClockwise();
 });
 
 
@@ -145,6 +174,7 @@ function isColliding(B) {
 }
 
 
+
 // Draws a frame
 function drawFrame() {
   // Creates a falling block if none already exist
@@ -157,43 +187,6 @@ function drawFrame() {
   ctx.fillStyle = 'rgb(255, 255, 255)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
-  // Rotate
-  if (up) {
-    block[0] = transpose(block[0]);
-    block[0] = reverse(block[0]);
-
-    if (isColliding(block)) {
-      block[0] = reverse(block[0]);
-      block[0] = transpose(block[0]);
-    }
-  }
-
-  if (down) {
-    block[0] = reverse(block[0]);
-    block[0] = transpose(block[0]);
-
-    if (isColliding(block)) {
-      block[0] = transpose(block[0]);
-      block[0] = reverse(block[0]);
-    }
-  }
-
-  // Move
-  if (right) {
-    block[1] += 1;
-
-    if (isColliding(block)) {
-      block[1] -= 1;
-    }
-  }
-
-  if (left) {
-    block[1] -= 1;
-
-    if (isColliding(block)) {
-      block[1] += 1;
-    }
-  }
   
   // Gravity
   if (count === 0) {
