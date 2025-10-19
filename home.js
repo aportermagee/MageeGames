@@ -1,6 +1,7 @@
 // Logs out the user
 function logout() {
   localStorage.removeItem('loggedIn');
+  localStorage.removeItem('user');
   window.location.href = 'index.html';
 }
 
