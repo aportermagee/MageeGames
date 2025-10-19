@@ -194,7 +194,7 @@ function drawFrame() {
   
   
   // Gravity
-  if (count === 0 || (space && (count % 2) === 0)) {
+  if (count === 0 || (space && (count % 4 === 0)) {
     count = 10;
     block[2] += 1;
   
