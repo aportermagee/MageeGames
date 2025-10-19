@@ -105,7 +105,7 @@ function transpose(L) {
   }
 
   for (let i = 0; i < L.length; i++) {
-    for (let x = 0; x < L.length(); x++) {
+    for (let x = 0; x < L[i].length; x++) {
       final[x].push(L[x][i]);
     }
   }
