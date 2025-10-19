@@ -18,6 +18,7 @@ let left = false;
 let block;
 let rows;
 let game;
+let count;
 
 // Block types
 const blocks = {
@@ -72,6 +73,9 @@ function start() {
     rows.push(row);
   }
 
+  // Resets count
+  count = 5;
+  
   // Draws the frames of the game
   game = setInterval(drawFrame, speed);
 }
@@ -176,35 +180,37 @@ function drawFrame() {
   }
 
   // Gravity
-  block[2] += 1;
-
-  // If the the block is colliding it gets set permentently in rows
-  if (isColliding(block)) {
-    block[2] -= 1;
-    
-    for (let y = 0; y < block[0].length; y++) {
-      for (let x = 0; x < block[0][y].length; x++) {
-        
-        // Sets rows
-        if (block[0][y][x] === 1) {
-          rows[y][x] = 1;
+  if (num === 0) {
+    block[2] += 1;
+  
+    // If the the block is colliding it gets set permentently in rows
+    if (isColliding(block)) {
+      block[2] -= 1;
+      
+      for (let y = 0; y < block[0].length; y++) {
+        for (let x = 0; x < block[0][y].length; x++) {
+          
+          // Sets rows
+          if (block[0][y][x] === 1) {
+            rows[y][x] = 1;
+          }
         }
       }
-    }
-      
-    block = null;
-
-    for (let i = 0; i < 20; i++) {
-      if (!row[i].some(b => b === 0)) {
-        rows.splice(i, 1);
-
-        let row = []
-
-        for (let x = 0; x < 10; x++) {
-          row.push(0);
-        }
         
-        rows.unshift(row);
+      block = null;
+  
+      for (let i = 0; i < 20; i++) {
+        if (!row[i].some(b => b === 0)) {
+          rows.splice(i, 1);
+  
+          let row = []
+  
+          for (let x = 0; x < 10; x++) {
+            row.push(0);
+          }
+          
+          rows.unshift(row);
+        }
       }
     }
   }
@@ -227,10 +233,13 @@ function drawFrame() {
     }
   }
 
+  // End game
   if (rows[0].some(b => b === 1)) {
     clearInterval(game);
     game = null;
   }
+
+  num -= 1;
 }
 
 
