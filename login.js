@@ -1,5 +1,5 @@
 // --- Initialize Supabase ---
-import createClient from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = 'https://crvmgootjfbqkokrwsuu.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNydm1nb290amZicWtva3J3c3V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MzkyNTQsImV4cCI6MjA3NjQxNTI1NH0.Em26tIW4z2ulfRePTOVhkCmcMGOa0OOjBqC3kPJ-LpU';
@@ -26,14 +26,14 @@ document.getElementById('login').addEventListener('click', async () => {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return alert('Error: ' + error.message);
 
-  user = data.user;
+  const user = data.user;
   
-  localStorage.setItem('user', user);
-  localStorage.setItem('loggedIn', true);
+  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem('loggedIn', 'true');
 
-  const { data, error } = await supabase
+  const { error: insertError } = await supabase
     .from('HighScores')
-    .upsert([{id: user.id, 0, 0}]);
+    .upsert([{id: user.id, highScoreSnake: 0, highScoreTetris: 0}]);
   
   window.location.href = 'home.html';
 });
