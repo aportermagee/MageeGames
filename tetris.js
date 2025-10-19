@@ -16,6 +16,8 @@ let left = false;
 
 // In-game variables
 let block;
+let rows;
+let game;
 
 // Block types
 const blocks = {
@@ -56,17 +58,22 @@ const blocks = {
   ]
 };
 
-// Rows
-let rows = [];
+function start() {
+  // Rows
+  let rows = [];
 
-for (let i = 0; i < 20; i++) {
-  let row = {};
+  for (let i = 0; i < 20; i++) {
+    let row = [];
 
-  for (let i = 0; i < 10; i++) {
-    row[i] = 0;
-  }
+    for (let x = 0; x < 10; x++) {
+      row.push(0);
+    }
   
-  rows.push(row);
+    rows.push(row);
+  }
+
+  // Draws the frames of the game
+  game = setInterval(drawFrame, speed);
 }
 
 // Checks keys
@@ -111,6 +118,29 @@ function reverse(L) {
 }
 
 
+// Checks Collisions
+function isColliding(B) {
+  for (let y = 0; y < B[0].length; y++) {
+    for (let x = 0 x < B[0][y].length; x++) {
+      if (B[0][y][x] === 1) {
+        if (
+          (B[1] + x) < 0 ||
+          (B[1] + x) >= 10 ||
+          (B[2] + y) >= 20
+        ) {
+          return true;
+        }
+
+        if (rows[B[2] + y][B[1] + x] === 1) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+
 // Draws a frame
 function drawFrame() {
   
@@ -120,16 +150,91 @@ function drawFrame() {
 
   // Creates a falling block if none already exist
   if (!block) {
-    block = [blocks[Math.floor(Math.random() * 7)], 5, 0];
+    block = [blocks[Math.floor(Math.random() * 7)], 4, 0];
     return;
   }
 
   // Rotate
   if (up) {
+    block[0] = transpose(block[0]);
+    block[0] = reverse(block[0]);
+
+    if (isColliding(block)) {
+      block[0] = reverse(block[0]);
+      block[0] = transpose(block[0]);
+    }
+  }
+
+  if (down) {
+    block[0] = reverse(block[0]);
+    block[0] = transpose(block[0]);
+
+    if (isColliding(block)) {
+      block[0] = transpose(block[0]);
+      block[0] = reverse(block[0]);
+    }
+  }
+
+  // Gravity
+  block[2] += 1;
+
+  // If the the block is colliding it gets set permentently in rows
+  if (isColliding(block)) {
+    block[2] -= 1;
     
+    for (let y = 0; y < block[0].length; y++) {
+      for (let x = 0; x < block[0][y].length; x++) {
+        
+        // Sets rows
+        if (block[0][y][x] === 1) {
+          rows[y][x] = 1;
+        }
+      }
+    }
+      
+    block = null;
+
+    for (let i = 0; i < 20; i++) {
+      if (!row[i].some(b => b === 0)) {
+        rows.splice(i, 1);
+
+        let row = []
+
+        for (let x = 0; x < 10; x++) {
+          row.push(0);
+        }
+        
+        rows.unshift(row);
+      }
+    }
+  }
+
+  // Add blocks
+  let RaB = rows;
+
+  for (let y = 0; y < block[0].length; y++) {
+    for (let x = 0; x < block[0][y].length; x++) {
+      if (block[0][y][x] === 1) {
+        RaB[block[2] + y][block[1] + x] = 1
+      }
+    }
+  }
+
+  for (let y = 0; y < RaB.length; y++) {
+    for (let x = 0; x < RaB[y].length; x++) {
+      ctx.fillStyle = 'rgb(0, 120, 200)';
+      ctx.fillRect(x, y, box, box);
+    }
+  }
+
+  if (rows[0].some(b => b === 1)) {
+    clearInterval(game);
+    game = null;
   }
 }
 
+
+start();
 
 // Buttons
 const homeBtn = document.getElementById('homeBtn');
