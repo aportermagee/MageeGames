@@ -16,7 +16,7 @@ let highScore;
 
 async function getHighScore() {
   const { data, error } = await supabaseClient
-    .from('public.highScores')
+    .from('public.HighScores')
     .select('highScoreTetris')
     .eq('id', JSON.parse(localStorage.getItem('user')).id)
     .single();
@@ -34,7 +34,7 @@ scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 
 async function updateHighScore() {
   const { data, error } = await supabaseClient
-    .from('public.highScores')
+    .from('public.HighScores')
     .update({ highScoreTetris: highScore })
     .eq('id', JSON.parse(localStorage.getItem('user')).id);
 
