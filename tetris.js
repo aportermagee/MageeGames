@@ -239,7 +239,7 @@ function drawFrame() {
   for (let y = 0; y < block[0].length; y++) {
     for (let x = 0; x < block[0][y].length; x++) {
       if (block[0][y][x] === 1) {
-        RaB[block[2] + y][block[1] + x] = 1
+        RaB[block[2] + y][block[1] + x] = 1;
       }
     }
   }
