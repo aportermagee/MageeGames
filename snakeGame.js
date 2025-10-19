@@ -117,4 +117,4 @@ homeBtn.addEventListener('click', function() {
 
 controlsBtn.addEventListener('click', function() {
   alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nUp Arrow: Up\nDown Arrow: Down');
-}
+});
