@@ -10,7 +10,7 @@ document.getElementById('signup').addEventListener('click', async () => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabaseClient.auth.signUp({ email, password });
   if (error) return alert('Error: ' + error.message);
 
   alert('Sign up successful. Please check your email to confirm');
@@ -21,7 +21,7 @@ document.getElementById('login').addEventListener('click', async () => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
   if (error) return alert('Error: ' + error.message);
 
   const user = data.user;
@@ -29,7 +29,7 @@ document.getElementById('login').addEventListener('click', async () => {
   localStorage.setItem('user', JSON.stringify(user));
   localStorage.setItem('loggedIn', 'true');
 
-  const { error: insertError } = await supabase
+  const { error: insertError } = await supabaseClient
     .from('HighScores')
     .upsert([{id: user.id, highScoreSnake: 0, highScoreTetris: 0}]);
   
