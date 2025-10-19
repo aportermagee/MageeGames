@@ -6,7 +6,7 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 const box = 24;
-const speed = 200;
+const speed = 50;
 const scoreP = document.getElementById('score');
 
 let down = false;
@@ -74,7 +74,7 @@ function start() {
   }
 
   // Resets count
-  count = 5;
+  count = 10;
   
   // Draws the frames of the game
   game = setInterval(drawFrame, speed);
@@ -147,17 +147,16 @@ function isColliding(B) {
 
 // Draws a frame
 function drawFrame() {
-  
-  // Clears frame
-  ctx.fillStyle = 'rgb(255, 255, 255)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   // Creates a falling block if none already exist
   if (!block) {
     block = [blocks[Math.floor(Math.random() * 7)], 4, 0];
     return;
   }
-
+  
+  // Clears frame
+  ctx.fillStyle = 'rgb(255, 255, 255)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
   // Rotate
   if (up) {
     block[0] = transpose(block[0]);
@@ -198,7 +197,7 @@ function drawFrame() {
   
   // Gravity
   if (count === 0) {
-    count = 5;
+    count = 10;
     block[2] += 1;
   
     // If the the block is colliding it gets set permentently in rows
