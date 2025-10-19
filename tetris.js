@@ -127,7 +127,7 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Space') space = true;
 });
 
-document.addEventListener('keyup', event => if (event.key === 'Space') space = false;);
+document.addEventListener('keyup', event => {if (event.key === 'Space') space = false;});
 
 
 // Transposes rows and columns in a 2d matrix
