@@ -14,19 +14,38 @@ const scoreP = document.getElementById('score');
 let fastFall = false;
 let score = 0;
 
-const { data, error } = await supabaseClient
-  .from('highScores')
-  .select('highScoreTetris')
-  .eq('id', JSON.parse(localStorage.getItem('user')).id)
-  .single();
 
-if (error) {
-  console.error(error);
-} else {
-  let highScore = data.highScoreTetris;
+// High score
+let highScore;
+
+async function getHighScore() {
+  const { data, error } = await supabaseClient
+    .from('highScores')
+    .select('highScoreTetris')
+    .eq('id', JSON.parse(localStorage.getItem('user')).id)
+    .single();
+
+  if (error) {
+    console.error(error);
+  } else {
+    highScore = data.highScoreTetris;
+  }
 }
 
+getHighScore();
+
 scoreP.textContent = 'Score: ' + score + ', High Score: ' + highScore;
+
+async function updateHighScore() {
+  const { data, error } = await supabaseClient
+    .from('highScores')
+    .update({ highScoreTetris: highScore })
+    .eq('id', JSON.parse(localStorage.getItem('user')).id);
+
+  if (error) {
+    console.error(error);
+  }
+}
 
 // In-game variables
 let block;
@@ -279,14 +298,8 @@ function drawFrame() {
       alert('New high score!');
       highScore = score;
 
-      const { data, error } = await supabaseClient
-        .from('highScores')
-        .update({ highScoreTetris: highScore })
-        .eq('id', JSON.parse(localStorage.getItem('user')).id);
-
-      if (error) {
-        console.error(error);
-      }
+      updateHighScore();
+    }
   }
 
   count -= 1;
