@@ -9,6 +9,8 @@ const box = 24;
 const speed = 50;
 const scoreP = document.getElementById('score');
 
+let space = true;
+
 // In-game variables
 let block;
 let rows;
@@ -122,7 +124,10 @@ document.addEventListener('keydown', event => {
   if (event.key === 'ArrowRight') moveRight();
   if (event.key === 'ArrowUp') rotateClockwise();
   if (event.key === 'ArrowDown') rotateCounterClockwise();
+  if (event.key === 'Space') space = true;
 });
+
+document.addEventListener('keyup', event => if (event.key === 'Space') space = false;);
 
 
 // Transposes rows and columns in a 2d matrix
@@ -135,7 +140,7 @@ function transpose(L) {
 
   for (let i = 0; i < L.length; i++) {
     for (let x = 0; x < L[i].length; x++) {
-      final[x].push(L[x][i]);
+      final[x].push(L[i][x]);
     }
   }
   return final;
