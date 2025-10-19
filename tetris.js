@@ -120,7 +120,12 @@ function moveLeft() {
 
 // Checks keys
 document.addEventListener('keydown', event => {
-  if (event.key === 'ArrowLeft') moveLeft();
+  if (
+    ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(event.key) ||
+    event.code === 'Space'
+  ) {
+    event.preventDefault();
+  }
   if (event.key === 'ArrowRight') moveRight();
   if (event.key === 'ArrowUp') rotateClockwise();
   if (event.key === 'ArrowDown') rotateCounterClockwise();
