@@ -61,7 +61,7 @@ const blocks = {
 
 function start() {
   // Rows
-  let rows = [];
+  rows = [];
 
   for (let i = 0; i < 20; i++) {
     let row = [];
