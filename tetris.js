@@ -179,6 +179,23 @@ function drawFrame() {
     }
   }
 
+  // Move
+  if (right) {
+    block[1] += 1;
+
+    if (isColliding()) {
+      block -= 1;
+    }
+  }
+
+  if (left) {
+    block[1] -= 1;
+
+    if (isColliding()) {
+      block += 1;
+    }
+  }
+  
   // Gravity
   if (num === 0) {
     block[2] += 1;
