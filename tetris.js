@@ -234,7 +234,7 @@ function drawFrame() {
   }
 
   // Add blocks
-  let RaB = rows;
+  let RaB = rows.map(row => [...row]);
 
   for (let y = 0; y < block[0].length; y++) {
     for (let x = 0; x < block[0][y].length; x++) {
