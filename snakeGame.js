@@ -137,6 +137,7 @@ function drawFrame() {
 
       scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
     }
+  }
 
   // Creates new head
   snake.unshift(newHead);
