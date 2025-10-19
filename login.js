@@ -30,5 +30,10 @@ document.getElementById('login').addEventListener('click', async () => {
   
   localStorage.setItem('user', user);
   localStorage.setItem('loggedIn', true);
+
+  const { data, error } = await supabase
+    .from('HighScores')
+    .upsert([{id: user.id, 0, 0}]);
+  
   window.location.href = 'home.html';
 });
