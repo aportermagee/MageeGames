@@ -126,6 +126,7 @@ document.addEventListener('keydown', event => {
   ) {
     event.preventDefault();
   }
+  if (event.key === 'ArrowLeft') moveLeft();
   if (event.key === 'ArrowRight') moveRight();
   if (event.key === 'ArrowUp') rotateClockwise();
   if (event.key === 'ArrowDown') rotateCounterClockwise();
