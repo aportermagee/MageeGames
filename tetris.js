@@ -197,7 +197,8 @@ function drawFrame() {
   }
   
   // Gravity
-  if (num === 0) {
+  if (count === 0) {
+    count = 5;
     block[2] += 1;
   
     // If the the block is colliding it gets set permentently in rows
