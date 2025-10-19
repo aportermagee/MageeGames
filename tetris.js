@@ -34,7 +34,7 @@ async function getHighScore() {
 
 getHighScore();
 
-scoreP.textContent = 'Score: ' + score + ', High Score: ' + highScore;
+scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
 
 async function updateHighScore() {
   const { data, error } = await supabaseClient
@@ -108,7 +108,7 @@ function start() {
 
   score = 0;
   
-  scoreP.textContent = 'Score: ' + score + ', High Score: ' + highScore; 
+  scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore; 
 
   // Resets count
   count = 10;
@@ -262,7 +262,7 @@ function drawFrame() {
           rows.unshift(row);
           
           score += 10;
-          scoreP.textContent = 'Score: ' + score + ', High Score: ' + highScore;
+          scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
         }
       }
     }
