@@ -127,7 +127,9 @@ function drawFrame() {
       updateHighScore().then(function() {
         scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
       });
-    } 
+    } else {
+      alert('Game Over');
+    }
   }
 
   // Creates new head
