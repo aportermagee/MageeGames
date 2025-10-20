@@ -17,27 +17,25 @@ let highScore;
 async function getHighScore() {
   const { data, error } = await supabaseClient
     .from('HighScores')
-    .select('highScoreTetris')
+    .select('highScoreSnake')
     .eq('id', JSON.parse(localStorage.getItem('user')).id)
     .single();
 
   if (error) {
     console.error(error);
   } else {
-    highScore = data.highScoreTetris;
+    highScore = data.highScoreSnake;
   }
 }
 
 getHighScore().then(function() {
-  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+  scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
 });
-
-scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
 
 async function updateHighScore() {
   const { data, error } = await supabaseClient
     .from('HighScores')
-    .update({ highScoreTetris: highScore })
+    .update({ highScoreSnake: highScore })
     .eq('id', JSON.parse(localStorage.getItem('user')).id);
 
   if (error) {
