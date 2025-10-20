@@ -30,7 +30,7 @@ document.getElementById('login').addEventListener('click', async () => {
 
   const { error: insertError } = await supabaseClient
     .from('HighScores')
-    .upsert([{id: user.id, highScoreSnake: 0, highScoreTetris: 0}]);
+    .upsert([{id: user.id}]);
   
   window.location.href = 'home.html';
 });
