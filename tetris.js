@@ -32,7 +32,7 @@ async function getHighScore() {
   }
 }
 
-getHighScore();
+await getHighScore();
 
 scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 
@@ -298,7 +298,7 @@ function drawFrame() {
       alert('New high score!');
       highScore = score;
 
-      updateHighScore();
+      await updateHighScore();
     }
   }
 
