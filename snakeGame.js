@@ -133,18 +133,20 @@ function drawFrame() {
   // Creates new head
   snake.unshift(newHead);
 
-  // Draw food
-  ctx.fillStyle = 'rgb(255, 0, 0)';
-  ctx.fillRect(food.x, food.y, box, box);
+  if (game) {
+    // Draw food
+    ctx.fillStyle = 'rgb(255, 0, 0)';
+    ctx.fillRect(food.x, food.y, box, box);
   
-  // Draw snake
-  for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = (i === 0) ? 'rgb(0, 125, 210)' : 'rgb(0, 120, 200)';
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    // Draw snake
+    for (let i = 0; i < snake.length; i++) {
+      ctx.fillStyle = (i === 0) ? 'rgb(0, 125, 210)' : 'rgb(0, 120, 200)';
+      ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    }
+  
+    // Sets score
+    scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
   }
-  
-  // Sets score
-  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
 
 
