@@ -11,7 +11,7 @@ document.getElementById('signup').addEventListener('click', async () => {
   const { data, error } = await supabaseClient.auth.signUp({ email, password });
   if (error) return alert('Error: ' + error.message);
 
-  alert('Sign up successful. Please check your email to confirm');
+  alert('Sign up successful. Please check your email to confirm\nIt is recommended to save your password, there is currently no way to change it');
 });
 
 // --- Login ---
