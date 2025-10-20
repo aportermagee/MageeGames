@@ -294,14 +294,17 @@ function drawFrame() {
   if (rows[0].some(b => b === 1)) {
     clearInterval(game);
     game = null;
+    
     if (score > highScore) {
-      alert('New high score!');
       highScore = score;
+      alert('New high score!');
 
       updateHighScore().then(function() {
         scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
       });
-    }
+    } else {
+      alert('Game Over\n')
+    }  
   }
 
   count -= 1;
