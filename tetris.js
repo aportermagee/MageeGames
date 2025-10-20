@@ -299,6 +299,8 @@ function drawFrame() {
       highScore = score;
 
       await updateHighScore();
+
+      scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
     }
   }
 
