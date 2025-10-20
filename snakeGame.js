@@ -30,7 +30,7 @@ async function getHighScore() {
 
 getHighScore();
 
-scoreP = 'Score: 0 | High Score: ' + highScore;
+scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
 
 async function updateHighScore() {
   const { data, error } = await supabaseClient
