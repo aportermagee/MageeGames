@@ -83,15 +83,6 @@ function drawFrame() {
   ctx.fillStyle = 'rgb(255, 255, 255)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw food
-  ctx.fillStyle = 'rgb(255, 0, 0)';
-  ctx.fillRect(food.x, food.y, box, box);
-  
-  // Draw snake
-  for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = (i === 0) ? 'rgb(0, 125, 210)' : 'rgb(0, 120, 200)';
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
-  }
 
   // Move snake
   let headX = snake[0].x;
@@ -136,12 +127,22 @@ function drawFrame() {
       updateHighScore().then(function() {
         scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
       });
-    }
+    } 
   }
 
   // Creates new head
   snake.unshift(newHead);
 
+  // Draw food
+  ctx.fillStyle = 'rgb(255, 0, 0)';
+  ctx.fillRect(food.x, food.y, box, box);
+  
+  // Draw snake
+  for (let i = 0; i < snake.length; i++) {
+    ctx.fillStyle = (i === 0) ? 'rgb(0, 125, 210)' : 'rgb(0, 120, 200)';
+    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+  }
+  
   // Sets score
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
