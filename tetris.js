@@ -32,9 +32,9 @@ async function getHighScore() {
   }
 }
 
-await getHighScore();
-
-scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+getHighScore().then(function() {
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+});
 
 async function updateHighScore() {
   const { data, error } = await supabaseClient
@@ -298,9 +298,9 @@ function drawFrame() {
       alert('New high score!');
       highScore = score;
 
-      await updateHighScore();
-
-      scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+      updateHighScore().then(function() {
+        scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+      });
     }
   }
 
