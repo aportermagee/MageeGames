@@ -28,7 +28,9 @@ async function getHighScore() {
   }
 }
 
-await getHighScore();
+getHighScore().then(function() {
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+});
 
 scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
 
@@ -133,9 +135,9 @@ function drawFrame() {
       alert('New high score!');
       highScore = score;
 
-      await updateHighScore();
-
-      scoreP.textContent = 'Score: ' + score + '| High Score: ' + highScore;
+      updateHighScore().then(function() {
+        scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+      });
     }
   }
 
