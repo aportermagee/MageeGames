@@ -28,9 +28,11 @@ document.getElementById('login').addEventListener('click', async () => {
   localStorage.setItem('loggedIn', 'true');
   localStorage.setItem('supabaseClient', JSON.stringify(supabaseClient));
 
+  let emailName = email.split('@')[0];
+  
   const { error: insertError } = await supabaseClient
     .from('HighScores')
-    .upsert([{id: user.id}]);
+    .upsert([{id: user.id, username: emailName}]);
   
   window.location.href = 'home.html';
 });
