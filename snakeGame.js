@@ -63,7 +63,7 @@ document.addEventListener('keydown', event => {
 // Starts a new game
 function start() {
   direction = 'RIGHT';
-  snake = [{x: 5 * box, y: 5 * box}];
+  snake = [{x: 2 * box, y: 2 * box}];
   food = {
     x: Math.floor(Math.random() * 10) * box,
     y: Math.floor(Math.random() * 10) * box
@@ -159,7 +159,7 @@ const controlsBtn = document.getElementById('controlsBtn');
 
 startBtn.addEventListener('click', function() {
   if (!game) {
-    setTimeout(start(), 1000);
+    start();
     startBtn.textContent = 'Restart';
   }
 });
