@@ -11,3 +11,35 @@ const box = 20;
 const smallBox = 10;
 const speed = 200;
 const scoreP = document.getElementById('score');
+
+// High score
+let highScore;
+
+async function getHighScore() {
+  const { data, error } = await supabaseClient
+    .from('HighScores')
+    .select('highScoreSpaceInvaders')
+    .eq('id', JSON.parse(localStorage.getItem('user')).id)
+    .single();
+
+  if (error) {
+    console.error(error);
+  } else {
+    highScore = data.highScoreSpaceInvaders;
+  }
+}
+
+getHighScore().then(function() {
+  scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
+});
+
+async function updateHighScore() {
+  const { data, error } = await supabaseClient
+    .from('HighScores')
+    .update({ highScoreSpaceInvaders: highScore })
+    .eq('id', JSON.parse(localStorage.getItem('user')).id);
+
+  if (error) {
+    console.error(error);
+  }
+}
