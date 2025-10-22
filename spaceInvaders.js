@@ -6,3 +6,6 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // Set up
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
+
+const box = 12;
+const smallBox = 4;
