@@ -87,6 +87,10 @@ function start() {
 // Draws a frame
 function drawFrame() {
   
+  // Resets the canvas
+  ctx.fillStyle = 'rgb(0, 0, 0)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
   // Move enemies
   if ((enemyX + enemies[0].length) < 19) {
     enemyX += 1;
