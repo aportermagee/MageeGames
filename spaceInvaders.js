@@ -12,6 +12,8 @@ const smallBox = 7;
 const speed = 200;
 const scoreP = document.getElementById('score');
 
+const playerY = 18;
+
 // High score
 let highScore;
 
@@ -41,5 +43,46 @@ async function updateHighScore() {
 
   if (error) {
     console.error(error);
+  }
+}
+
+// In game variables
+let health;
+let playerX;
+let enemyY;
+let enemyX;
+let enemys;
+let round;
+
+// Start
+function start() {
+  // Player
+  playerX = 8;
+
+  health = 3;
+  
+  // Enemy
+  enemyY = 2;
+  enemyX = 0;
+
+  enemys = [
+    [1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 1, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ];
+}
+
+// Draws a frame
+function drawFrame() {
+  // Decides which enemies shoot
+  for (let y = 0; y < enemys.length(); y++) {
+    for (let x = 0; x < enemys[y].length(); y++) {
+      if ((enemys === 1) && (Math.floor(Math.random() * 100) < 2.5 + round * 2.5)) {
+        enemys[y + 1][x] = 2;
+      }
+    }
   }
 }
