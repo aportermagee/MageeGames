@@ -51,8 +51,11 @@ let health;
 let playerX;
 let enemyY;
 let enemyX;
-let enemys;
+let enemies;
 let round;
+let enemyBullets;
+let game;
+let score;
 
 // Start
 function start() {
@@ -65,7 +68,7 @@ function start() {
   enemyY = 2;
   enemyX = 0;
 
-  enemys = [
+  enemies = [
     [1, 0, 1, 0, 1, 0, 1, 0, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 1, 0, 1, 0, 1, 0, 1],
@@ -73,16 +76,78 @@ function start() {
     [0, 0, 1, 0, 1, 0, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
+
+  enemyBullets = [];
+
+  score = 0;
+  
+  game = setInterval(drawFrame(), speed);
 }
 
 // Draws a frame
 function drawFrame() {
+  
+  // Move enemies
+  if ((enemyX + enemies[0].length) < 19) {
+    enemyX += 1;
+  } else {
+    enemyY += 1;
+  }
+  
   // Decides which enemies shoot
-  for (let y = 0; y < enemys.length(); y++) {
-    for (let x = 0; x < enemys[y].length(); y++) {
+  for (let y = 0; y < enemys.length; y++) {
+    for (let x = 0; x < enemys[y].length; y++) {
       if ((enemys === 1) && (Math.floor(Math.random() * 100) < 2.5 + round * 2.5)) {
-        enemys[y + 1][x] = 2;
+        if (!enemyBullets.some(bullet => (bullet[0] === enemyX + x) && (bullet[1] === enemyY + y + 1))) {
+          enemyBullets.push([enemyX + x, enemyY + y + 1]);
+        }
       }
     }
+  }
+
+  // Check collisions
+  for (let i = 0; i < enemyBullets.length; i++) {
+    if (enemyBullets[i][0] === playerX && enemyBullets[i][1] === playerY) {
+      health -= 1;
+      enemyBullets.splice(i, 1);
+    }
+  }
+
+  // Delete bullets
+  for (let i = 0; i < enemyBullets.length; i++) {
+    if (enemyBullets[i][1] > 19) {
+      enemyBullets.splice(i, 1);
+    }
+  }
+
+  // Decide whether to end game
+  if (
+    health < 1 ||
+    enemyY + enemies.length > 16
+  ) {
+    removeInterval(game);
+    game = null;
+
+    if (score > highScore) {
+      highScore = score;
+      
+      updateHighScore().then(function() {
+        scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore
+      });
+    }
+  }
+
+  // Draw
+  for (let y = 0; y < enemies.length; y++) {
+    for (let x = 0; x < enemies[y].length; x++) {
+      if (enemies[y][x] === 1) {
+        ctx.fillStyle = 'rgb(255, 0, 0)';
+        ctx.fillRect(enemyX + x, enemyY + y, box, box);
+      }
+    }
+  }
+
+  for (let i = 0; i < enemyBullets.length; i++) {
+    ctx.fillStyle = 'rgb(255, 100, 0)';
   }
 }
