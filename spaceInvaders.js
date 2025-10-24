@@ -16,7 +16,7 @@ const scoreP = document.getElementById('score');
 const playerY = 18;
 
 
-// --- High Score ---
+// ----- High Score -----
 let highScore;
 
 // Get High Score
@@ -52,7 +52,7 @@ async function updateHighScore() {
 }
 
 
-// --- In-Game Variables
+// --- In-Game Variables ---
 let health;
 let playerX;
 let enemyY;
@@ -64,7 +64,7 @@ let game;
 let score;
 
 
-// --- Start Of Game ---
+// ----- Start Of Game -----
 function start() {
   
   // --- Player ---
@@ -88,15 +88,32 @@ function start() {
   enemyBullets = [];
 
   
-  // --- Score ---
+  // Score
   score = 0;
 
-
-  // --- Game Loop ---
+  // Game Loop
   game = setInterval(drawFrame(), speed);
 }
 
-// --- Single Game Frame ---
+
+// ----- Inputs -----
+
+// --- Prevent Default ---
+document.addEventListener('keydown', event => {
+  if (['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'].includes(event.key)) {
+    event.preventDefault();
+  }
+});
+
+// --- Player Input ---
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft') moveLeft();
+  if (event.key === 'ArrowRight') moveRight();
+  if (event.code === 'Space') shoot();
+});
+
+
+// ----- Single Game Frame -----
 function drawFrame() {
   
   // --- Canvas Reset ---
