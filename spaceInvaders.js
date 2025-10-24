@@ -180,6 +180,6 @@ function drawFrame() {
   }
 
   // Player
-  ctx.fillStyle = 'rgb()';
+  ctx.fillStyle = 'rgb(50, 120, 250)';
   ctx.fillRect(playerX, playerY, box, box);
 }
