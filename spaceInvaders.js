@@ -1,4 +1,4 @@
-// Checks if the user is logged in
+// --- Return User To Login Page ---
 function isLoggedIn() {
   return (localStorage.getItem('loggedIn') === 'true');
 }
