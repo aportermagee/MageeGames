@@ -20,7 +20,8 @@ const ctx = canvas.getContext('2d');
 
 const box = 21;
 const smallBox = 7;
-const speed = 200;
+const speed = 25;
+const gameSpeed = 200 / speed;
 const scoreP = document.getElementById('score');
 
 const playerY = 18;
@@ -72,6 +73,9 @@ let round;
 let enemyBullets;
 let game;
 let score;
+let playerShotTimer;
+let gameTimer;
+let playerBullets;
 
 
 // ----- Start Of Game -----
@@ -80,11 +84,14 @@ function start() {
   // --- Player ---
   playerX = 8;
   health = 3;
+  playerBullets = [];
+  playerShotTimer = 3 * gameSpeed;
 
   
   // --- Enemy ---
   enemyY = 2;
   enemyX = 0;
+  enemyBullets = [];
 
   enemies = [
     [1, 0, 1, 0, 1, 0, 1, 0, 1],
@@ -95,16 +102,38 @@ function start() {
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
-  enemyBullets = [];
-
   
   // Score
   score = 0;
 
   // Game Loop
+  gameTimer = gameSpeed;
   game = setInterval(drawFrame(), speed);
 }
 
+// ----- Player Functions -----
+
+// --- Move Right ---
+function moveRight() {
+  if (playerX < 19) {
+    playerX += 1;
+  }
+}
+
+// --- Move Left ---
+function moveLeft() {
+  if (playerX > 0) {
+    playerX -= 1;
+  }
+}
+
+// --- Shoot ---
+function shoot() {
+  if (playerShotTimer < 1) {
+    playerShotTimer = 3 * gameSpeed;
+    playerBullets.push([playerX, playerY - 1;]);
+  }
+}
 
 // ----- Inputs -----
 
@@ -130,22 +159,23 @@ function drawFrame() {
   ctx.fillStyle = 'rgb(0, 0, 0)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  
-  // --- Enemy ---
-  
-  // Move enemies
-  if ((enemyX + enemies[0].length) < 19) {
-    enemyX += 1;
-  } else {
-    enemyY += 1;
-  }
-  
-  // Decides which enemies shoot
-  for (let y = 0; y < enemys.length; y++) {
-    for (let x = 0; x < enemys[y].length; y++) {
-      if ((enemys === 1) && (Math.floor(Math.random() * 100) < 2.5 + round * 2.5)) {
-        if (!enemyBullets.some(bullet => (bullet[0] === enemyX + x) && (bullet[1] === enemyY + y + 1))) {
-          enemyBullets.push([enemyX + x, enemyY + y + 1]);
+  if (gameTimer < 1) {
+    // --- Enemy ---
+      
+    // Move enemies
+    if ((enemyX + enemies[0].length) < 19) {
+      enemyX += 1;
+    } else {
+      enemyY += 1;
+    }
+    
+    // Decides which enemies shoot
+    for (let y = 0; y < enemys.length; y++) {
+      for (let x = 0; x < enemys[y].length; y++) {
+        if ((enemys === 1) && (Math.floor(Math.random() * 100) < 2.5 + round * 2.5)) {
+          if (!enemyBullets.some(bullet => (bullet[0] === enemyX + x) && (bullet[1] === enemyY + y + 1))) {
+            enemyBullets.push([enemyX + x, enemyY + y + 1]);
+          }
         }
       }
     }
@@ -209,4 +239,9 @@ function drawFrame() {
   // Player
   ctx.fillStyle = 'rgb(50, 120, 250)';
   ctx.fillRect(playerX, playerY, box, box);
+
+  
+  // --- Timers ---
+  playerShotTimer -= 1;
+  gameTimer -= 1;
 }
