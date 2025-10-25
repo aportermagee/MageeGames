@@ -103,7 +103,7 @@ function start() {
   ];
 
   
-  // Miscellenous
+  // Miscellaneous
   score = 0;
   round = 0;
   gameTimer = gameSpeed;
