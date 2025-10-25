@@ -270,6 +270,9 @@ function drawFrame() {
   // --- Timers ---
   playerShotTimer -= 1;
   gameTimer -= 1;
+
+  // --- Update Score ---
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
 
 
