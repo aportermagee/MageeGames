@@ -131,7 +131,7 @@ function moveLeft() {
 function shoot() {
   if (playerShotTimer < 1 && !(playerBullets.some(bullet => bullet[0] === playerX && bullet[1] === playerY - 1))) {
     playerShotTimer = 3 * gameSpeed;
-    playerBullets.push([playerX, playerY - 1;]);
+    playerBullets.push([playerX, playerY - 1]);
   }
 }
 
