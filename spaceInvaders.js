@@ -108,7 +108,7 @@ function start() {
 
   // Game Loop
   gameTimer = gameSpeed;
-  game = setInterval(drawFrame(), speed);
+  game = setInterval(drawFrame, speed);
 }
 
 // ----- Player Functions -----
