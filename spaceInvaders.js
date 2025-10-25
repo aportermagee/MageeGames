@@ -165,6 +165,8 @@ function drawFrame() {
   
   // --- Things to run every 200 millaseconds ---
   if (gameTimer < 1) {
+    gameTimer = gameSpeed;
+    
     // --- Enemy ---
       
     // Move enemies
