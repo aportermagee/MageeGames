@@ -190,14 +190,14 @@ function drawFrame() {
   // ----- Collisions -----
 
   // --- Bullets ---
-  for (let i = 0; i < enemyBullets.length; i++) {
+  for (let i = enemyBullets.length - 1; i > -1; i--) {
     if (enemyBullets[i][0] === playerX && enemyBullets[i][1] === playerY) {
       health -= 1;
       enemyBullets.splice(i, 1);
     }
   }
 
-  for (let i = 0; i < playerBullets.length; i++) {
+  for (let i = enemyBullets.length - 1; i > -1; i--)  {
     for (let y = 0; y < enemies.length; y++) {
       for (let x = 0; x < enemies[y].length; x++) {
         if (enemies[y][x] === 1 &&
@@ -213,13 +213,13 @@ function drawFrame() {
   }
   
   // --- Delete bullets ---
-  for (let i = 0; i < enemyBullets.length; i++) {
+  for (let i = enemyBullets.length - 1; i > -1; i--) {
     if (enemyBullets[i][1] > 19) {
       enemyBullets.splice(i, 1);
     }
   }
 
-  for (let i = 0; i < playerBullets.length; i++) {
+  for (let i = enemyBullets.length - 1; i > -1; i--) {
     if (playerBullets[i][1] < 0) {
       playerBullets.splice(i, 1);
     }
