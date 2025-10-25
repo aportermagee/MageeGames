@@ -129,11 +129,12 @@ function moveLeft() {
 
 // --- Shoot ---
 function shoot() {
-  if (playerShotTimer < 1) {
+  if (playerShotTimer < 1 && !(playerBullets.some(bullet => bullet[0] === playerX && bullet[1] === playerY - 1))) {
     playerShotTimer = 3 * gameSpeed;
     playerBullets.push([playerX, playerY - 1;]);
   }
 }
+
 
 // ----- Inputs -----
 
@@ -159,6 +160,8 @@ function drawFrame() {
   ctx.fillStyle = 'rgb(0, 0, 0)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  
+  // --- Things to run every 200 millaseconds ---
   if (gameTimer < 1) {
     // --- Enemy ---
       
@@ -180,11 +183,10 @@ function drawFrame() {
       }
     }
   }
-
   
-  // --- Collisions ---
+  // ----- Collisions -----
 
-  // Enemy bullets
+  // --- Bullets ---
   for (let i = 0; i < enemyBullets.length; i++) {
     if (enemyBullets[i][0] === playerX && enemyBullets[i][1] === playerY) {
       health -= 1;
@@ -192,10 +194,23 @@ function drawFrame() {
     }
   }
 
-  // Delete bullets
+  for (let i = 0; i < playerBullets.length; i++) {
+    if (enemies.some(enemy => enemy[0] === playerBullets[i][1] && enemy[1] === playerBullets[i][0])) {
+      playerBullets.splice(i, 1);
+      enemies[playerBullets[i][1]][playerBullets[i][0]] = 0;
+    }
+  }
+  
+  // --- Delete bullets ---
   for (let i = 0; i < enemyBullets.length; i++) {
     if (enemyBullets[i][1] > 19) {
       enemyBullets.splice(i, 1);
+    }
+  }
+
+  for (let i = 0; i < playerBullets.length; i++) {
+    if (playerBullets[i][1] < 0) {
+      playerBullets.splice(i, 1);
     }
   }
 
@@ -244,4 +259,15 @@ function drawFrame() {
   // --- Timers ---
   playerShotTimer -= 1;
   gameTimer -= 1;
+}
+
+
+// --- Buttons ---
+const startBtn = document.getElementById('startBtn');
+
+startBtn.addEventListener('click', function() {
+  if (!game) {
+    start();
+    startBtn.textContent = 'Restart';
+  }
 }
