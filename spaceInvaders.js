@@ -76,6 +76,7 @@ let score;
 let playerShotTimer;
 let gameTimer;
 let playerBullets;
+let round;
 
 
 // ----- Start Of Game -----
@@ -103,11 +104,12 @@ function start() {
   ];
 
   
-  // Score
+  // Miscellenous
   score = 0;
+  round = 0;
+  gameTimer = gameSpeed;
 
   // Game Loop
-  gameTimer = gameSpeed;
   game = setInterval(drawFrame, speed);
 }
 
