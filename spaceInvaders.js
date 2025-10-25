@@ -220,7 +220,7 @@ function drawFrame() {
     health < 1 ||
     enemyY + enemies.length > 16
   ) {
-    removeInterval(game);
+    clearInterval(game);
     game = null;
 
     if (score > highScore) {
