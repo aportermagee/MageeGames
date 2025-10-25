@@ -76,7 +76,6 @@ let score;
 let playerShotTimer;
 let gameTimer;
 let playerBullets;
-let round;
 
 
 // ----- Start Of Game -----
