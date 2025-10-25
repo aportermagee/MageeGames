@@ -197,15 +197,17 @@ function drawFrame() {
     }
   }
 
-  for (let y = 0; y < enemies.length; y++) {
-    for (let x = 0; x < enemies[y].length; x++) {
-      if (enemies[y][x] === 1 &&
-          playerBullets[i][0] === enemyX + x &&
-          playerBullets[i][1] === enemyY + y) {
-        enemies[y][x] = 0;
-        playerBullets.splice(i, 1);
-        score += 10;
-        break;
+  for (let i = 0; i < playerBullets.length; i++) {
+    for (let y = 0; y < enemies.length; y++) {
+      for (let x = 0; x < enemies[y].length; x++) {
+        if (enemies[y][x] === 1 &&
+            playerBullets[i][0] === enemyX + x &&
+            playerBullets[i][1] === enemyY + y) {
+          enemies[y][x] = 0;
+          playerBullets.splice(i, 1);
+          score += 10;
+          break;
+        }
       }
     }
   }
