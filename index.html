@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Log-In || Stock Market Game</title>
+    <title>Log-In || MageeGames</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
     <div class="center-div">
-      <h1 class="h1">Stock Market Game</h1>
+      <h1 class="h1">Magee Games</h1>
     </div>
     <div class="main-div">
       <h1 class="h1">Log-In</h1>
       <p class="p">
-        Username <input id="username" type="text" class="input" required><br><br>
-        Password <input id="password" type="password" class="input" required><br><br>
-        <button id="submitBtn" class="button">Submit</button>
+        <input id="email" type="text" class="input" placeholder="Email"><br><br>
+        <input id="password" type="password" class="input" placeholder="Password"><br><br>
+        <button id="signup" class="button">Sign-Up</button>
+        <button id="login" class="button">Log-In</button>
       </p>
-      <p id="errorMessage" class="errorMessage"></p>
+    </div>
+    <div class="center-div">
+      <p class="subheader">
+        Designed by Andrew Magee, 2025<br>
+        Copyright &copy 2025 by MageeGames LLC
+      </p>
     </div>
     <script src="login.js"></script>
   </body>

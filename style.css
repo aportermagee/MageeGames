@@ -12,7 +12,7 @@ div {
   margin-left: auto;
   margin-right: auto;
   width: 35rem;
-  height: 20rem;
+  height: fit-content;
   padding: 2rem 1rem;
 }
 .p {
@@ -85,4 +85,12 @@ div {
 .red-button:active {
   background-color: rgb(170, 0, 0);
   border-color: rgb(170, 0, 0);
+}
+canvas {
+  background-color: rgb(255, 255, 255);
+  border: 0.15rem solid rgb(0, 125, 210);
+}
+.subheader {
+  color: rgb(210, 210, 210);
+  font-size: 1rem;
 }

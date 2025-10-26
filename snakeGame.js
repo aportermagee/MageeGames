@@ -1,0 +1,183 @@
+// Checks if the user is logged in
+function isLoggedIn() {
+  return (localStorage.getItem('loggedIn') === 'true');
+}
+
+if (!(isLoggedIn())) {
+  window.location.href = 'index.html';
+}
+
+
+// --- Initialize Supabase ---
+const SUPABASE_URL = 'https://crvmgootjfbqkokrwsuu.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNydm1nb290amZicWtva3J3c3V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MzkyNTQsImV4cCI6MjA3NjQxNTI1NH0.Em26tIW4z2ulfRePTOVhkCmcMGOa0OOjBqC3kPJ-LpU';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Set-up
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+const box = 24;
+const speed = 150;
+const scoreP = document.getElementById('score');
+
+// High score
+let highScore;
+
+async function getHighScore() {
+  const { data, error } = await supabaseClient
+    .from('HighScores')
+    .select('highScoreSnake')
+    .eq('id', JSON.parse(localStorage.getItem('user')).id)
+    .single();
+
+  if (error) {
+    console.error(error);
+  } else {
+    highScore = data.highScoreSnake;
+  }
+}
+
+getHighScore().then(function() {
+  scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
+});
+
+async function updateHighScore() {
+  const { data, error } = await supabaseClient
+    .from('HighScores')
+    .update({ highScoreSnake: highScore })
+    .eq('id', JSON.parse(localStorage.getItem('user')).id);
+
+  if (error) {
+    console.error(error);
+  }
+}
+
+// In game variables
+let snake;
+let direction;
+let food;
+let score;
+let game;
+let newHead;
+
+// Changes direction
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+  if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+  if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+  if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+});
+
+
+// Starts a new game
+function start() {
+  direction = 'RIGHT';
+  snake = [{x: 2 * box, y: 2 * box}];
+  food = {
+    x: Math.floor(Math.random() * 10) * box,
+    y: Math.floor(Math.random() * 10) * box
+  };  
+  score = 0;
+
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+  
+  game = setInterval(drawFrame, speed);
+}
+
+
+// Draws a frame
+function drawFrame() {
+  
+  // Resart frame
+  ctx.fillStyle = 'rgb(255, 255, 255)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+  // Move snake
+  let headX = snake[0].x;
+  let headY = snake[0].y;
+
+  if (direction === 'LEFT') headX -= box;
+  if (direction === 'RIGHT') headX += box;
+  if (direction === 'UP') headY -= box;
+  if (direction === 'DOWN') headY += box;
+  
+  newHead = {x: headX, y: headY};
+
+  // Check if snake eats food
+  if (headX === food.x && headY === food.y) {
+    score++;
+    while (
+      snake.some(segment => segment.x === food.x && segment.y === food.y) ||
+      newHead.x === food.x && newHead.y === food.y
+    ) {
+      food = {
+        x: Math.floor(Math.random() * 10) * box,
+        y: Math.floor(Math.random() * 10) * box
+      };
+    }
+  } else {
+    snake.pop();
+  }
+
+  // Check collision
+  if (
+    headX < 0 || headY < 0 ||
+    headX >= canvas.width || headY >= canvas.height ||
+    snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)
+  ) {
+    clearInterval(game);
+    game = null;
+
+    if (score > highScore) {
+      alert('New high score!');
+      highScore = score;
+
+      updateHighScore().then(function() {
+        scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+      });
+    } else {
+      alert('Game Over');
+    }
+  }
+
+  // Creates new head
+  snake.unshift(newHead);
+
+  if (game) {
+    // Draw food
+    ctx.fillStyle = 'rgb(255, 0, 0)';
+    ctx.fillRect(food.x, food.y, box, box);
+  
+    // Draw snake
+    for (let i = 0; i < snake.length; i++) {
+      ctx.fillStyle = (i === 0) ? 'rgb(0, 125, 210)' : 'rgb(0, 120, 200)';
+      ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    }
+  
+    // Sets score
+    scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+  }
+}
+
+
+// Buttons
+const startBtn = document.getElementById('startBtn');
+const homeBtn = document.getElementById('homeBtn');
+const controlsBtn = document.getElementById('controlsBtn');
+
+startBtn.addEventListener('click', function() {
+  if (!game) {
+    start();
+    startBtn.textContent = 'Restart';
+  }
+});
+
+homeBtn.addEventListener('click', function() {
+  window.location.href = 'home.html';
+});
+
+controlsBtn.addEventListener('click', function() {
+  alert('Controls:\nRight Arrow: Right\nLeft Arrow: Left\nUp Arrow: Up\nDown Arrow: Down');
+});
