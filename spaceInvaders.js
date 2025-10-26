@@ -77,6 +77,7 @@ let playerShotTimer;
 let gameTimer;
 let playerBullets;
 let enemyDirection;
+let endGame;
 
 
 // ----- Start Of Game -----
@@ -108,6 +109,7 @@ function start() {
   score = 0;
   round = 0;
   gameTimer = gameSpeed;
+  endGame = false;
 
   // Game Loop
   game = setInterval(drawFrame, speed);
@@ -286,10 +288,16 @@ function drawFrame() {
 
   
   // --- End Game ---
-  if (
-    health < 1 ||
-    enemyY + enemies.length > 16
-  ) {
+  for (let y = 0; y < enemies.length; y++) {
+    for (let x = 0; x < enemies[y].length; x++) {
+      if (enemies[y][x] === 1 && enemyY + y > 16) {
+        endGame = true;
+      }
+    }
+  }
+
+  
+  if (health < 1 || endGame) {
     clearInterval(game);
     game = null;
 
