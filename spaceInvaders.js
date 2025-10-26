@@ -369,7 +369,16 @@ function drawFrame() {
       updateHighScore().then(function() {
         scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore
       });
+
+      alert('New High Score!');
+    } else {
+      alert('Game Over');
     }
+  }
+
+  // --- New Round ---
+  if (!enemies.some(row => row.some(enemy => enemy === 1))) {
+    newRound();
   }
 
   
