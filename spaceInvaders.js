@@ -117,6 +117,39 @@ function start() {
   game = setInterval(drawFrame, speed);
 }
 
+
+// ----- New Round -----
+function newRound() {
+  
+  // --- Player ---
+  playerX = 8;
+  playerBullets = [];
+  playerShotTimer = 3 * gameSpeed;
+
+  
+  // --- Enemy ---
+  enemyY = 2;
+  enemyX = 0;
+  enemyBullets = [];
+  enemyDirection = 'right';
+
+  enemies = [
+    [1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 1, 0, 1, 0, 0],
+  ];
+
+  
+  // Miscellaneous
+  round += 1;
+  endGame = false;
+  gameTimer = gameSpeed;
+  wall = false;
+}
+
+
 // ----- Player Functions -----
 
 // --- Move Right ---
