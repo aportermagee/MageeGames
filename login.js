@@ -34,5 +34,5 @@ document.getElementById('login').addEventListener('click', async () => {
     .from('HighScores')
     .upsert([{id: user.id, username: emailName}]);
   
-  window.location.href = 'home.html';
+  window.location.href = 'home';
 });
