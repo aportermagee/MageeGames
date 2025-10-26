@@ -327,7 +327,7 @@ const startBtn = document.getElementById('startBtn');
 const controlsBtn = document.getElementById('controlsBtn');
 
 homeBtn.addEventListener('click', function() {
-  window.location.href = 'home.html';
+  window.location.href = 'home';
 });
 
 startBtn.addEventListener('click', function() {
