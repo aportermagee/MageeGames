@@ -78,6 +78,7 @@ let gameTimer;
 let playerBullets;
 let enemyDirection;
 let endGame;
+let wall;
 
 
 // ----- Start Of Game -----
@@ -110,6 +111,7 @@ function start() {
   round = 0;
   gameTimer = gameSpeed;
   endGame = false;
+  wall = false;
 
   // Game Loop
   game = setInterval(drawFrame, speed);
@@ -180,16 +182,29 @@ function drawFrame() {
     gameTimer = gameSpeed;
     
     // --- Enemy --- 
+    
     // Move enemies
-    if (
-      enemyX + enemies[0].length < 19 && enemyDirection === 'right' ||
-      enemyX > 0 && enemyDirection === 'left'
-    ) {
-      enemyX += (enemyDirection === 'right') ? 1 : -1;
-    } else {
+    for (let y = 0; y < enemies.length; y++) {
+      for (let x = 0; x < enemies[y].length; x++) {  
+        if (
+          enemies[y][x] === 1 &&
+          (enemyX + x > 18 && enemyDirection === 'right' ||
+          enemyX + x < 1 && enemyDirection === 'left')
+        ) {
+          wall = true
+        }
+      }
+    }
+
+    if (wall)
       enemyDirection = (enemyDirection === 'right') ? 'left' : 'right';
       enemyY += 1;
+      wall = false;
+    } else {
+      enemyX += (enemyDirection === 'right') ? 1 : -1;
     }
+      
+    
     
     // Decides which enemies shoot
     for (let y = 0; y < enemies.length; y++) {
