@@ -404,7 +404,7 @@ startBtn.addEventListener('click', function() {
 });
 
 homeBtn.addEventListener('click', function() {
-  window.location.href = 'home.html';
+  window.location.href = 'home';
 });
 
 controlsBtn.addEventListener('click', function() {
