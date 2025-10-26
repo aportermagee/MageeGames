@@ -21,7 +21,7 @@ const ctx = canvas.getContext('2d');
 const box = 21;
 const smallBox = 7;
 const speed = 25;
-const gameSpeed = 200 / speed;
+const gameSpeed = 400 / speed;
 const scoreP = document.getElementById('score');
 
 const playerY = 18;
