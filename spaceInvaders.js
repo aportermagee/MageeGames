@@ -219,7 +219,7 @@ function drawFrame() {
     }
   }
 
-  for (let i = enemyBullets.length - 1; i > -1; i--) {
+  for (let i = playerBullets.length - 1; i > -1; i--) {
     if (playerBullets[i][1] < 0) {
       playerBullets.splice(i, 1);
     }
