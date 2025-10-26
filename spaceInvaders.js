@@ -301,6 +301,20 @@ function drawFrame() {
     ctx.fillRect(playerBullets[i][0] * box + smallBox, playerBullets[i][1] * box + smallBox, smallBox, smallBox * 2);
   }
 
+  // Health
+  for (let i = 0; i < health; i++) {
+    ctx.fillStyle = 'rgb(255, 255, 255)';
+    ctx.fillRect(box / 2 + box * 2 * i, box / 2, box, box);
+  }
+
+  // Player can shoot
+  if (playerShotTimer < 1) {
+    ctx.fillStyle = 'rgb(255, 255, 255)';
+    ctx.beginPath();
+    ctx.arc(19 * box, box, box / 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
   
   // --- End Game ---
   for (let y = 0; y < enemies.length; y++) {
