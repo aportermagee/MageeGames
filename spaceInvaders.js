@@ -219,13 +219,14 @@ function drawFrame() {
 
   // Between bullets
   for (let i = playerBullets.length; i > -1; i--) {
-    for (let i = enemyBullets.length; i > -1; i--) {
+    for (let x = enemyBullets.length; x > -1; x--) {
       if (
-        playerBullets[i][0] === enemyBullets[i][0] &&
-        playerBullets[i][1] === enemyBullets[i][1] 
+        playerBullets[i][0] === enemyBullets[x][0] &&
+        playerBullets[i][1] === enemyBullets[x][1] 
       ) {
         playerBullets.splice(i, 1);
-        enemyBullets.splice(i, 1);
+        enemyBullets.splice(x, 1);
+        break;
       }
     }
   }
