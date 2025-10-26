@@ -222,7 +222,6 @@ function drawFrame() {
           enemies[y][x] = 0;
           playerBullets.splice(i, 1);
           score += 10;
-          break;
         }
       }
     }
