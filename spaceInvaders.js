@@ -76,6 +76,7 @@ let score;
 let playerShotTimer;
 let gameTimer;
 let playerBullets;
+let enemyDirection;
 
 
 // ----- Start Of Game -----
@@ -92,6 +93,7 @@ function start() {
   enemyY = 2;
   enemyX = 0;
   enemyBullets = [];
+  enemyDirection = 'right';
 
   enemies = [
     [1, 0, 1, 0, 1, 0, 1, 0, 1],
@@ -169,7 +171,11 @@ function drawFrame() {
     // --- Enemy ---
       
     // Move enemies
-    if ((enemyX + enemies[0].length) < 19) {
+    if (
+      enemyX + enemies[0].length < 19 && enemyDirection === 'right' ||
+      enemyX > 0 && enemyDirection === 'left'
+    ) {
+      enemyDirection = (enemyDirection === 'right') ? 'left' : 'right';
       enemyX += 1;
     } else {
       enemyY += 1;
