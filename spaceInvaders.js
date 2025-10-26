@@ -196,7 +196,7 @@ function drawFrame() {
       }
     }
 
-    if (wall)
+    if (wall) {
       enemyDirection = (enemyDirection === 'right') ? 'left' : 'right';
       enemyY += 1;
       wall = false;
