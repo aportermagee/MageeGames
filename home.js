@@ -24,15 +24,19 @@ if (!(isLoggedIn())) {
 const logoutBtn = document.getElementById('logoutBtn');
 const snakeGameBtn = document.getElementById('snakeGameBtn');
 const tetrisBtn = document.getElementById('tetrisBtn');
+const spaceInvadersBtn = document.getElementById('spaceInvadersBtn');
 
 logoutBtn.addEventListener('click', function() {
   logout();
 });
 
 snakeGameBtn.addEventListener('click', function() {
-  window.location.href = 'snakeGame.html';
+  window.location.href = 'snakeGame';
 });
 
 tetrisBtn.addEventListener('click', function() {
-  window.location.href = 'tetris.html';
+  window.location.href = 'tetris';
 });
+
+spaceInvadersBtn.addEventListener('click', function() {
+  window.location.href = 'spaceInvaders'
