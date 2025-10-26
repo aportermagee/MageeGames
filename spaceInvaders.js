@@ -393,10 +393,20 @@ function drawFrame() {
 
 // --- Buttons ---
 const startBtn = document.getElementById('startBtn');
+const homeBtn = document.getElementById('homeBtn');
+const controlsBtn = document.getElementById('controlsBtn');
 
 startBtn.addEventListener('click', function() {
   if (!game) {
     start();
     startBtn.textContent = 'Restart';
   }
+});
+
+homeBtn.addEventListener('click', function() {
+  window.location.href = 'home.html';
+});
+
+controlsBtn.addEventListener('click', function() {
+  alert('Controls:\nSpace Bar: Shoot\nRight Arrow: Right\nLeft Arrow: Left');
 });
