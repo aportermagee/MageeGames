@@ -183,7 +183,7 @@ function drawFrame() {
       enemyX + enemies[0].length < 19 && enemyDirection === 'right' ||
       enemyX > 0 && enemyDirection === 'left'
     ) {
-      enemyX += (enemyDirection === 'right') 1 : -1;
+      enemyX += (enemyDirection === 'right') ? 1 : -1;
     } else {
       enemyDirection = (enemyDirection === 'right') ? 'left' : 'right';
       enemyY += 1;
