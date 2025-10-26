@@ -163,6 +163,16 @@ function drawFrame() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   
+  // --- Bullet Movement ---
+  for (let i = 0; i < enemyBullets.length; i++) {
+    enemyBullets[i][1] += 1;
+  }
+
+  for (let i = 0; i < playerBullets.length; i++) {
+    playerBullets[i][1] -= 1;
+  }
+
+       
   // --- Things to run every 500 millaseconds ---
   if (gameTimer < 1) {
     gameTimer = gameSpeed;
@@ -190,6 +200,7 @@ function drawFrame() {
       }
     }
   }
+
 
   // --- Collisions ---
   
