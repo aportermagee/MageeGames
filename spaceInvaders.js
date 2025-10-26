@@ -197,7 +197,7 @@ function drawFrame() {
     }
   }
 
-  for (let i = enemyBullets.length - 1; i > -1; i--)  {
+  for (let i = playerBullets.length - 1; i > -1; i--)  {
     for (let y = 0; y < enemies.length; y++) {
       for (let x = 0; x < enemies[y].length; x++) {
         if (enemies[y][x] === 1 &&
