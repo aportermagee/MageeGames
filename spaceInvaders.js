@@ -101,7 +101,6 @@ function start() {
     [1, 0, 1, 0, 1, 0, 1, 0, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 0, 1, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
   
@@ -281,6 +280,11 @@ function drawFrame() {
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
 
+// Player Bullets
+for (let i = 0; i < playerBullets.length; i++) {
+  ctx.fillStyle = 'rgb(255, 255, 255)';
+  ctx.fillRect(playerBullets[i][0] * box + smallBox, playerBullets[i][1] * box + smallBox, smallBox, smallBox * 2);
+}
 
 // --- Buttons ---
 const startBtn = document.getElementById('startBtn');
