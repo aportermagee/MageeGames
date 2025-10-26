@@ -163,12 +163,11 @@ function drawFrame() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   
-  // --- Things to run every 200 millaseconds ---
+  // --- Things to run every 500 millaseconds ---
   if (gameTimer < 1) {
     gameTimer = gameSpeed;
     
-    // --- Enemy ---
-      
+    // --- Enemy --- 
     // Move enemies
     if (
       enemyX + enemies[0].length < 19 && enemyDirection === 'right' ||
@@ -191,10 +190,10 @@ function drawFrame() {
       }
     }
   }
-  
-  // ----- Collisions -----
 
-  // --- Bullets ---
+  // --- Collisions ---
+  
+  // Enemy bullets
   for (let i = enemyBullets.length - 1; i > -1; i--) {
     if (enemyBullets[i][0] === playerX && enemyBullets[i][1] === playerY) {
       health -= 1;
@@ -202,6 +201,7 @@ function drawFrame() {
     }
   }
 
+  // Player bullets
   for (let i = playerBullets.length - 1; i > -1; i--)  {
     for (let y = 0; y < enemies.length; y++) {
       for (let x = 0; x < enemies[y].length; x++) {
@@ -216,6 +216,20 @@ function drawFrame() {
       }
     }
   }
+
+  // Between bullets
+  for (let i = playerBullets.length; i > -1; i--) {
+    for (let i = enemyBullets.length; i > -1; i--) {
+      if (
+        playerBullets[i][0] === enemyBullets[i][0] &&
+        playerBullets[i][1] === enemyBullets[i][1] 
+      ) {
+        playerBullets.splice(i, 1);
+        enemyBullets.splice(i, 1);
+      }
+    }
+  }
+  
   
   // --- Delete bullets ---
   for (let i = enemyBullets.length - 1; i > -1; i--) {
@@ -228,6 +242,35 @@ function drawFrame() {
     if (playerBullets[i][1] < 0) {
       playerBullets.splice(i, 1);
     }
+  }
+
+  
+  // --- Draw ---
+  
+  // Enemies
+  for (let y = 0; y < enemies.length; y++) {
+    for (let x = 0; x < enemies[y].length; x++) {
+      if (enemies[y][x] === 1) {
+        ctx.fillStyle = 'rgb(255, 0, 0)';
+        ctx.fillRect((enemyX + x) * box, (enemyY + y) * box, box, box);
+      }
+    }
+  }
+
+  // Enemy Bullets
+  for (let i = 0; i < enemyBullets.length; i++) {
+    ctx.fillStyle = 'rgb(255, 100, 0)';
+    ctx.fillRect(enemyBullets[i][0] * box + smallBox, enemyBullets[i][1] * box, smallBox, smallBox * 2);
+  }
+
+  // Player
+  ctx.fillStyle = 'rgb(50, 120, 250)';
+  ctx.fillRect(playerX * box, playerY * box, box, box);
+
+  // Player Bullets
+  for (let i = 0; i < playerBullets.length; i++) {
+    ctx.fillStyle = 'rgb(255, 255, 255)';
+    ctx.fillRect(playerBullets[i][0] * box + smallBox, playerBullets[i][1] * box + smallBox, smallBox, smallBox * 2);
   }
 
   
@@ -249,29 +292,6 @@ function drawFrame() {
   }
 
   
-  // --- Draw ---
-
-  // Enemies
-  for (let y = 0; y < enemies.length; y++) {
-    for (let x = 0; x < enemies[y].length; x++) {
-      if (enemies[y][x] === 1) {
-        ctx.fillStyle = 'rgb(255, 0, 0)';
-        ctx.fillRect((enemyX + x) * box, (enemyY + y) * box, box, box);
-      }
-    }
-  }
-
-  // Enemy Bullets
-  for (let i = 0; i < enemyBullets.length; i++) {
-    ctx.fillStyle = 'rgb(255, 100, 0)';
-    ctx.fillRect(enemyBullets[i][0] * box + smallBox, enemyBullets[i][1] * box, smallBox, smallBox * 2);
-  }
-
-  // Player
-  ctx.fillStyle = 'rgb(50, 120, 250)';
-  ctx.fillRect(playerX * box, playerY * box, box, box);
-
-  
   // --- Timers ---
   playerShotTimer -= 1;
   gameTimer -= 1;
@@ -280,11 +300,6 @@ function drawFrame() {
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
 
-// Player Bullets
-for (let i = 0; i < playerBullets.length; i++) {
-  ctx.fillStyle = 'rgb(255, 255, 255)';
-  ctx.fillRect(playerBullets[i][0] * box + smallBox, playerBullets[i][1] * box + smallBox, smallBox, smallBox * 2);
-}
 
 // --- Buttons ---
 const startBtn = document.getElementById('startBtn');
