@@ -229,8 +229,8 @@ function drawFrame() {
   }
 
   // Between bullets
-  for (let i = playerBullets.length; i > -1; i--) {
-    for (let x = enemyBullets.length; x > -1; x--) {
+  for (let i = playerBullets.length - 1; i > -1; i--) {
+    for (let x = enemyBullets.length - 1; x > -1; x--) {
       if (
         playerBullets[i][0] === enemyBullets[x][0] &&
         playerBullets[i][1] === enemyBullets[x][1] 
