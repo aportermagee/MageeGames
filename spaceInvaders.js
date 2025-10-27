@@ -20,7 +20,7 @@ const ctx = canvas.getContext('2d');
 
 const box = 12;
 const smallBox = 4;
-const speed = 20;
+const speed = 10;
 const gameSpeed = 500 / speed;
 const scoreP = document.getElementById('score');
 
@@ -117,10 +117,10 @@ function start() {
 
   for (let i = 0; i < 4; i++) {
     defenses.push([
-      [1, 1, 1, 1, 1, 1, 1, 1, 1];
-      [1, 1, 1, 1, 1, 1, 1, 1, 1];
-      [1, 1, 1, 1, 1, 1, 1, 1, 1];
-      [1, 1, 0, 0, 0, 0, 0, 1, 1];
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 0, 0, 0, 0, 0, 1, 1],
       [1, 1, 0, 0, 0, 0, 0, 1, 1]
     ]);
   }
@@ -165,6 +165,22 @@ function newRound() {
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
   ];
 
+  // --- Defenses ---
+  defenses = [];
+
+  for (let i = 0; i < 4; i++) {
+    defenses.push([
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 0, 0, 0, 0, 0, 1, 1],
+      [1, 1, 0, 0, 0, 0, 0, 1, 1]
+    ]);
+  }
+
+  let temp = canvas.width / 6
+  defensesX = [temp * 2, temp * 3, temp * 4, temp * 5];
+  
   
   // Miscellaneous
   round = 0;
@@ -225,11 +241,11 @@ function drawFrame() {
   
   // --- Bullet Movement ---
   for (let i = 0; i < enemyBullets.length; i++) {
-    enemyBullets[i][1] += 1;
+    enemyBullets[i][1] += 1 / 3;
   }
 
   for (let i = 0; i < playerBullets.length; i++) {
-    playerBullets[i][1] -= 1;
+    playerBullets[i][1] -= 1 / 3;
   }
 
        
@@ -290,6 +306,8 @@ function drawFrame() {
               enemyBullets[i][0] === defensesX[z] &&
               enemyBullets[i][1] === defensesY + y) {
             defenses[z][y][x] = 0;
+            defenses[z][y][x + 1] = 0;
+            defenses[z][y][x + 2] = 0;
             enemyBullets.splice(i, 1);
           }
         }
@@ -317,6 +335,8 @@ function drawFrame() {
               playerBullets[i][0] === defensesX[z] &&
               playerBullets[i][1] === defensesY + y) {
             defenses[z][y][x] = 0;
+            defenses[z][y][x + 1] = 0;
+            defenses[z][y][x + 2] = 0;
             playerBullets.splice(i, 1);
           }
         }
@@ -399,6 +419,17 @@ function drawFrame() {
   ctx.fillStyle = 'rgb(255, 0, 0)';
   ctx.fillRect(0, canvas.height - 8 * box, canvas.width, 2);
 
+  // Defenses
+  for (let z = 0; z < defenses.length; z++) {
+    for (let y = 0; y < defenses[z].length; y++) {
+      for (let x = 0; x < defenses[z][y].length; x++) {
+        if (defenses[z][y][x] === 1) {
+          ctx.fillStyle = 'rgb(0, 175, 50)';
+          ctx.fillRect((defensesX[z] + x / 3) * box, (defensesY + y / 3) * box, smallBox, smallBox);
+        }
+      }
+    }
+  }
   
   // --- End Game ---
   for (let y = 0; y < enemies.length; y++) {
