@@ -183,7 +183,6 @@ function newRound() {
   
   
   // Miscellaneous
-  round = 0;
   gameTimer = Math.max(50, gameSpeed - round * 25);
   wall = false;  
 }
