@@ -18,9 +18,9 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-const box = 21;
-const smallBox = 7;
-const speed = 100;
+const box = 12;
+const smallBox = 4;
+const speed = 20;
 const gameSpeed = 500 / speed;
 const scoreP = document.getElementById('score');
 
