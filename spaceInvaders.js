@@ -124,7 +124,7 @@ function start() {
 function newRound() {
   
   // --- Player ---
-  playerX = canvas.width / box;
+  playerX = canvas.width / box / 2;
   playerBullets = [];
   playerShotTimer = gameSpeed;
   
