@@ -24,7 +24,7 @@ const speed = 20;
 const gameSpeed = 500 / speed;
 const scoreP = document.getElementById('score');
 
-const playerY = 18;
+const playerY = canvas.height / box + 4;
 
 
 // ----- High Score -----
@@ -85,24 +85,26 @@ let wall;
 function start() {
   
   // --- Player ---
-  playerX = 8;
+  playerX = canvas.width / box;
   health = 3;
   playerBullets = [];
-  playerShotTimer = 3 * gameSpeed;
+  playerShotTimer = 2 * gameSpeed;
 
   
   // --- Enemy ---
-  enemyY = 2;
+  enemyY = 1;
   enemyX = 0;
   enemyBullets = [];
   enemyDirection = 'right';
 
   enemies = [
-    [1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 1, 0, 1, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
   ];
 
   
@@ -242,7 +244,7 @@ function drawFrame() {
     // Decides which enemies shoot
     for (let y = 0; y < enemies.length; y++) {
       for (let x = 0; x < enemies[y].length; x++) {
-        if ((enemies[y][x] === 1) && (Math.floor(Math.random() * 100) < 2.5 + round * 2.5)) {
+        if ((enemies[y][x] === 1) && (Math.floor(Math.random() * 100) < 0.5 + round)) {
           if (!enemyBullets.some(bullet => (bullet[0] === enemyX + x) && (bullet[1] === enemyY + y + 1))) {
             enemyBullets.push([enemyX + x, enemyY + y + 1]);
           }
