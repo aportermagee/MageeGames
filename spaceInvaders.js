@@ -20,7 +20,7 @@ const ctx = canvas.getContext('2d');
 
 const box = 12;
 const smallBox = 4;
-const speed = 10;
+const speed = 5;
 const gameSpeed = 500 / speed;
 const scoreP = document.getElementById('score');
 
@@ -240,8 +240,10 @@ function drawFrame() {
 
   
   // --- Bullet Movement ---
-  for (let i = 0; i < enemyBullets.length; i++) {
-    enemyBullets[i][1] += 1 / 3;
+  if (gameTimer % 2 === 0) {
+    for (let i = 0; i < enemyBullets.length; i++) {
+      enemyBullets[i][1] += 1 / 3;
+    }
   }
 
   for (let i = 0; i < playerBullets.length; i++) {
