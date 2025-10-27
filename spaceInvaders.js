@@ -347,7 +347,7 @@ function drawFrame() {
   if (playerShotTimer < 1) {
     ctx.fillStyle = 'rgb(255, 255, 255)';
     ctx.beginPath();
-    ctx.arc((canvas.width - 1.5 * box, canvas.height - 1.5 * box, Math.round(box / 2), 0, Math.PI * 2);
+    ctx.arc(canvas.width - 1.5 * box, canvas.height - 1.5 * box, Math.round(box / 2), 0, Math.PI * 2);
     ctx.fill();
   }
 
