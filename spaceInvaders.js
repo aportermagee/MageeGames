@@ -132,7 +132,7 @@ function start() {
   // Miscellaneous
   score = 0;
   round = 0;
-  gameTimer = gameSpeed - round * 25;
+  gameTimer = Math.max(50, gameSpeed - round * 25);
   endGame = false;
   wall = false;
 
@@ -184,7 +184,7 @@ function newRound() {
   
   // Miscellaneous
   round = 0;
-  gameTimer = gameSpeed - round * 25;
+  gameTimer = Math.max(50, gameSpeed - round * 25);
   wall = false;  
 }
 
@@ -251,7 +251,7 @@ function drawFrame() {
        
   // --- Things to run every gameSpeed ---
   if (gameTimer < 1) {
-    gameTimer = gameSpeed - round * 25;
+    gameTimer = Math.max(50, gameSpeed - round * 25);
     
     // --- Enemy --- 
     
