@@ -39,4 +39,5 @@ tetrisBtn.addEventListener('click', function() {
 });
 
 spaceInvadersBtn.addEventListener('click', function() {
-  window.location.href = 'spaceInvaders'
+  window.location.href = 'spaceInvaders';
+});
