@@ -26,6 +26,8 @@ const scoreP = document.getElementById('score');
 
 const playerY = canvas.height / box - 4;
 
+const defensesY = canvas.height / box - 7;
+
 
 // ----- High Score -----
 let highScore;
@@ -79,6 +81,8 @@ let playerBullets;
 let enemyDirection;
 let endGame;
 let wall;
+let defenses;
+let defensesX;
 
 
 // ----- Start Of Game -----
@@ -106,6 +110,23 @@ function start() {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
   ];
+
+
+  // --- Defenses ---
+  defenses = [];
+
+  for (let i = 0; i < 4; i++) {
+    defenses.push([
+      [1, 1, 1, 1, 1, 1, 1, 1, 1];
+      [1, 1, 1, 1, 1, 1, 1, 1, 1];
+      [1, 1, 1, 1, 1, 1, 1, 1, 1];
+      [1, 1, 0, 0, 0, 0, 0, 1, 1];
+      [1, 1, 0, 0, 0, 0, 0, 1, 1]
+    ]);
+  }
+
+  let temp = canvas.width / 6
+  defensesX = [temp * 2, temp * 3, temp * 4, temp * 5];
 
   
   // Miscellaneous
@@ -262,6 +283,18 @@ function drawFrame() {
       health -= 1;
       enemyBullets.splice(i, 1);
     }
+    for (let z = 0; z < defenses.length; z++) {
+      for (let y = 0; y < defenses[z].length; y++) {
+        for (let x = 0; x < defenses[z][y].length; x++) {
+          if (defenses[z][y][x] === 1 &&
+              enemyBullets[i][0] === defensesX[z] &&
+              enemyBullets[i][1] === defensesY + y) {
+            defenses[z][y][x] = 0;
+            enemyBullets.splice(i, 1);
+          }
+        }
+      }
+    }
   }
 
   // Player bullets
@@ -274,6 +307,18 @@ function drawFrame() {
           enemies[y][x] = 0;
           playerBullets.splice(i, 1);
           score += 10;
+        }
+      }
+    }
+    for (let z = 0; z < defenses.length; z++) {
+      for (let y = 0; y < defenses[z].length; y++) {
+        for (let x = 0; x < defenses[z][y].length; x++) {
+          if (defenses[z][y][x] === 1 &&
+              playerBullets[i][0] === defensesX[z] &&
+              playerBullets[i][1] === defensesY + y) {
+            defenses[z][y][x] = 0;
+            playerBullets.splice(i, 1);
+          }
         }
       }
     }
@@ -296,7 +341,7 @@ function drawFrame() {
   
   // --- Delete bullets ---
   for (let i = enemyBullets.length - 1; i > -1; i--) {
-    if (enemyBullets[i][1] > canvas.width / box - 1) {
+    if (enemyBullets[i][1] > canvas.height / box - 1) {
       enemyBullets.splice(i, 1);
     }
   }
