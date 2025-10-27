@@ -85,7 +85,7 @@ let wall;
 function start() {
   
   // --- Player ---
-  playerX = canvas.width / box;
+  playerX = canvas.width / box / 2;
   health = 3;
   playerBullets = [];
   playerShotTimer = gameSpeed;
