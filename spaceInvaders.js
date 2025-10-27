@@ -111,7 +111,7 @@ function start() {
   // Miscellaneous
   score = 0;
   round = 0;
-  gameTimer = gameSpeed;
+  gameTimer = gameSpeed - round * 25;
   endGame = false;
   wall = false;
 
@@ -124,31 +124,32 @@ function start() {
 function newRound() {
   
   // --- Player ---
-  playerX = 8;
+  playerX = canvas.width / box;
   playerBullets = [];
-  playerShotTimer = 3 * gameSpeed;
+  playerShotTimer = 2 * gameSpeed;
 
   
   // --- Enemy ---
-  enemyY = 2;
+  enemyY = 1;
   enemyX = 0;
   enemyBullets = [];
   enemyDirection = 'right';
 
   enemies = [
-    [1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 1, 0, 1, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
   ];
 
   
   // Miscellaneous
-  round += 1;
-  endGame = false;
-  gameTimer = gameSpeed;
-  wall = false;
+  round = 0;
+  gameTimer = gameSpeed - round * 25;
+  wall = false;  
 }
 
 
@@ -156,7 +157,7 @@ function newRound() {
 
 // --- Move Right ---
 function moveRight() {
-  if (playerX < 19) {
+  if (playerX < canvas.width / box - 1) {
     playerX += 1;
   }
 }
@@ -171,7 +172,7 @@ function moveLeft() {
 // --- Shoot ---
 function shoot() {
   if (playerShotTimer < 1 && !(playerBullets.some(bullet => bullet[0] === playerX && bullet[1] === playerY - 1))) {
-    playerShotTimer = 3 * gameSpeed;
+    playerShotTimer = 2 * gameSpeed;
     playerBullets.push([playerX, playerY - 1]);
   }
 }
@@ -212,9 +213,9 @@ function drawFrame() {
   }
 
        
-  // --- Things to run every 500 millaseconds ---
+  // --- Things to run every gameSpeed ---
   if (gameTimer < 1) {
-    gameTimer = gameSpeed;
+    gameTimer = gameSpeed - round * 25;
     
     // --- Enemy --- 
     
@@ -223,7 +224,7 @@ function drawFrame() {
       for (let x = 0; x < enemies[y].length; x++) {  
         if (
           enemies[y][x] === 1 &&
-          (enemyX + x > 18 && enemyDirection === 'right' ||
+          (enemyX + x > canvas.width / box - 2 && enemyDirection === 'right' ||
           enemyX + x < 1 && enemyDirection === 'left')
         ) {
           wall = true
@@ -296,7 +297,7 @@ function drawFrame() {
   
   // --- Delete bullets ---
   for (let i = enemyBullets.length - 1; i > -1; i--) {
-    if (enemyBullets[i][1] > 19) {
+    if (enemyBullets[i][1] > canvas.width / box - 1) {
       enemyBullets.splice(i, 1);
     }
   }
@@ -338,23 +339,27 @@ function drawFrame() {
 
   // Health
   for (let i = 0; i < health; i++) {
-    ctx.fillStyle = 'rgb(255, 255, 255)';
-    ctx.fillRect(Math.round(box / 2 + box * 2 * i), Math.round(box / 2), box, box);
+    ctx.fillStyle = 'rgb(50, 120, 250)';
+    ctx.fillRect(2 * box * i + box, canvas.height / box - 1, box, box);
   }
 
   // Player can shoot
   if (playerShotTimer < 1) {
     ctx.fillStyle = 'rgb(255, 255, 255)';
     ctx.beginPath();
-    ctx.arc(19 * box, box, Math.round(box / 2), 0, Math.PI * 2);
+    ctx.arc((canvas.width - 1.5 * box, canvas.height - 1.5 * box, Math.round(box / 2), 0, Math.PI * 2);
     ctx.fill();
   }
+
+  // Red Line
+  ctx.fillStyle = 'rgb(255, 0, 0)';
+  ctx.fillRect(0, canvas.height - 8 * box, 2, canvas.width);
 
   
   // --- End Game ---
   for (let y = 0; y < enemies.length; y++) {
     for (let x = 0; x < enemies[y].length; x++) {
-      if (enemies[y][x] === 1 && enemyY + y > 16) {
+      if (enemies[y][x] === 1 && enemyY + y > canvas.height / box - 8) {
         endGame = true;
       }
     }
