@@ -24,7 +24,7 @@ const speed = 20;
 const gameSpeed = 500 / speed;
 const scoreP = document.getElementById('score');
 
-const playerY = canvas.height / box + 4;
+const playerY = canvas.height / box - 4;
 
 
 // ----- High Score -----
@@ -353,7 +353,7 @@ function drawFrame() {
 
   // Red Line
   ctx.fillStyle = 'rgb(255, 0, 0)';
-  ctx.fillRect(0, canvas.height - 8 * box, 2, canvas.width);
+  ctx.fillRect(0, canvas.height - 8 * box, canvas.width, 2);
 
   
   // --- End Game ---
