@@ -244,7 +244,7 @@ function drawFrame() {
     // Decides which enemies shoot
     for (let y = 0; y < enemies.length; y++) {
       for (let x = 0; x < enemies[y].length; x++) {
-        if ((enemies[y][x] === 1) && (Math.floor(Math.random() * 100) < 2 + round)) {
+        if ((enemies[y][x] === 1) && (Math.floor(Math.random() * 100) < 3 + round)) {
           if (!enemyBullets.some(bullet => (bullet[0] === enemyX + x) && (bullet[1] === enemyY + y + 1))) {
             enemyBullets.push([enemyX + x, enemyY + y + 1]);
           }
