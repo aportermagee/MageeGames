@@ -88,7 +88,7 @@ function start() {
   playerX = canvas.width / box;
   health = 3;
   playerBullets = [];
-  playerShotTimer = 2 * gameSpeed;
+  playerShotTimer = gameSpeed;
 
   
   // --- Enemy ---
@@ -126,8 +126,7 @@ function newRound() {
   // --- Player ---
   playerX = canvas.width / box;
   playerBullets = [];
-  playerShotTimer = 2 * gameSpeed;
-
+  playerShotTimer = gameSpeed;
   
   // --- Enemy ---
   enemyY = 1;
@@ -172,7 +171,7 @@ function moveLeft() {
 // --- Shoot ---
 function shoot() {
   if (playerShotTimer < 1 && !(playerBullets.some(bullet => bullet[0] === playerX && bullet[1] === playerY - 1))) {
-    playerShotTimer = 2 * gameSpeed;
+    playerShotTimer = gameSpeed;
     playerBullets.push([playerX, playerY - 1]);
   }
 }
