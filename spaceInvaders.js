@@ -337,7 +337,7 @@ function drawFrame() {
   }
 
   // Health
-  for (let i = 0; i < health; i++) {
+  for (let i = 0; i < health - 1; i++) {
     ctx.fillStyle = 'rgb(50, 120, 250)';
     ctx.fillRect(2 * box * i + box, canvas.height - 2 * box, box, box);
   }
