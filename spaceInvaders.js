@@ -308,7 +308,7 @@ function drawFrame() {
         if (
           enemies[y][x] === 1 &&
           (enemyX + x * 6 + 2 > canvas.width / box - 2 && enemyDirection === 'right' ||
-          enemyX + x < 1 && enemyDirection === 'left')
+          enemyX + x * 6 < 1 && enemyDirection === 'left')
         ) {
           wall = true
         }
