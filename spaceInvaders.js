@@ -78,6 +78,8 @@ let playerBullets;
 let enemyDirection;
 let endGame;
 let wall;
+let playerRight = false;
+let playerLeft = false;
 
 
 // ----- Start Of Game -----
@@ -189,10 +191,16 @@ document.addEventListener('keydown', event => {
 
 // --- Player Input ---
 document.addEventListener('keydown', event => {
-  if (event.key === 'ArrowLeft') moveLeft();
-  if (event.key === 'ArrowRight') moveRight();
+  if (event.key === 'ArrowLeft') playerLeft = true;
+  if (event.key === 'ArrowRight') playerRight = true;
   if (event.code === 'Space') shoot();
 });
+
+document.addEventListener('keyup', event => {
+  if (event.key === 'ArrowLeft') playerLeft = false;
+  if (event.key === 'ArrowRight') playerRight = false;
+});
+
 
 // ----- Collisions -----
 function playerBulletCollisions(i)  {
@@ -264,6 +272,11 @@ function drawFrame() {
   ctx.fillStyle = 'rgb(0, 0, 0)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+
+  // --- Player Motion ---
+  if (playerRight && gameTimer % 3 === 0) moveRight();
+  if (playerLeft && gameTimer % 3 === 0) moveLeft();
+  
   
   // --- Bullet Movement ---
   if (gameTimer % 2 === 0) {
