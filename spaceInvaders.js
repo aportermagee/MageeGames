@@ -168,8 +168,8 @@ function moveLeft() {
 
 // --- Shoot ---
 function shoot() {
-  if (!playerBullets.some(bullet => ([playerX + x * 6, playerX + x * 6 + 1, playerX + x * 6 + 2].contains(bullet[0])) && 
-    ([playerY + y * 6 + 2, playerY + y * 6 + 3, playerY + y * 6 + 4].contains(bullet[1])))
+  if (!playerBullets.some(bullet => ([playerX + x * 6, playerX + x * 6 + 1, playerX + x * 6 + 2].includes(bullet[0])) && 
+    ([playerY + y * 6 + 2, playerY + y * 6 + 3, playerY + y * 6 + 4].includes(bullet[1])))
      ) {
     playerShotTimer = gameSpeed;
     playerBullets.push([playerX + 1, playerY - 2]);
@@ -198,7 +198,7 @@ function playerBulletCollisions(i)  {
   for (let x = enemyBullets.length - 1; x > -1; x--) {
     if (
       playerBullets[i][0] === enemyBullets[x][0] &&
-      [enemyBullets[x][1] - 1, enemyBullets[x][1], enemyBullets[x][1] + 1].contains(playerBullets[i][1])
+      [enemyBullets[x][1] - 1, enemyBullets[x][1], enemyBullets[x][1] + 1].includes(playerBullets[i][1])
     ) {
       playerBullets.splice(i, 1);
       enemyBullets.splice(x, 1);
@@ -209,8 +209,8 @@ function playerBulletCollisions(i)  {
   for (let y = 0; y < enemies.length; y++) {
     for (let x = 0; x < enemies[y].length; x++) {
       if (enemies[y][x] === 1 &&
-          [enemyX + x * 6, enemyX + x * 6 + 1, enemyX + x * 6 + 2].contains(playerBullets[i][0]) &&
-          [enemyY + y * 6, enemyY + y * 6 + 1, enemyY + y * 6 + 2].contains(playerBullets[i][1])
+          [enemyX + x * 6, enemyX + x * 6 + 1, enemyX + x * 6 + 2].includes(playerBullets[i][0]) &&
+          [enemyY + y * 6, enemyY + y * 6 + 1, enemyY + y * 6 + 2].includes(playerBullets[i][1])
          ) {                                                                                                                                                                   
         enemies[y][x] = 0;
         playerBullets.splice(i, 1);
@@ -232,7 +232,7 @@ function enemyBulletCollisions(i) {
   for (let x = playerBullets.length - 1; x > -1; x--) {
     if (
       enemyBullets[i][0] === playerBullets[x][0] &&
-      [playerBullets[x][1] - 1, playerBullets[x][1], playerBullets[x][1] + 1].contains(enemyBullets[i][1])
+      [playerBullets[x][1] - 1, playerBullets[x][1], playerBullets[x][1] + 1].includes(enemyBullets[i][1])
     ) {
       enemyBullets.splice(i, 1);
       playerBullets.splice(x, 1);
@@ -240,8 +240,8 @@ function enemyBulletCollisions(i) {
     }
   }
   
-  if ([playerX, playerX + 1, playerX + 2].contains(enemyBullets[i][0]) &&
-      [playerY, playerY + 1, playerY + 2].contains(enemyBullets[i][1])) {
+  if ([playerX, playerX + 1, playerX + 2].includes(enemyBullets[i][0]) &&
+      [playerY, playerY + 1, playerY + 2].includes(enemyBullets[i][1])) {
     health -= 1;
     enemyBullets.splice(i, 1);
     return true;
@@ -314,8 +314,8 @@ function drawFrame() {
     for (let y = 0; y < enemies.length; y++) {
       for (let x = 0; x < enemies[y].length; x++) {
         if ((enemies[y][x] === 1) && (Math.round(Math.random() * 100) < 1 + round * 0.5)) {
-          if (!enemyBullets.some(bullet => ([enemyX + x * 6, enemyX + x * 6 + 1, enemyX + x * 6 + 2].contains(bullet[0])) && 
-            ([enemyY + y * 6 + 2, enemyY + y * 6 + 3, enemyY + y * 6 + 4].contains(bullet[1])))
+          if (!enemyBullets.some(bullet => ([enemyX + x * 6, enemyX + x * 6 + 1, enemyX + x * 6 + 2].includes(bullet[0])) && 
+            ([enemyY + y * 6 + 2, enemyY + y * 6 + 3, enemyY + y * 6 + 4].includes(bullet[1])))
              ) {
             enemyBullets.push([enemyX + x * 6, enemyY + y * 6 + 2]);
           }
