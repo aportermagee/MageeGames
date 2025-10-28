@@ -168,8 +168,8 @@ function moveLeft() {
 
 // --- Shoot ---
 function shoot() {
-  if (!playerBullets.some(bullet => ([playerX + x * 6, playerX + x * 6 + 1, playerX + x * 6 + 2].includes(bullet[0])) && 
-    ([playerY + y * 6 + 2, playerY + y * 6 + 3, playerY + y * 6 + 4].includes(bullet[1])))
+  if (!playerBullets.some(bullet => (bullet[0] === playerX + 1) && 
+    ([playerY + 2, playerY + 3, playerY + 4].includes(bullet[1])))
      ) {
     playerShotTimer = gameSpeed;
     playerBullets.push([playerX + 1, playerY - 2]);
@@ -314,7 +314,7 @@ function drawFrame() {
     for (let y = 0; y < enemies.length; y++) {
       for (let x = 0; x < enemies[y].length; x++) {
         if ((enemies[y][x] === 1) && (Math.round(Math.random() * 100) < 1 + round * 0.5)) {
-          if (!enemyBullets.some(bullet => ([enemyX + x * 6, enemyX + x * 6 + 1, enemyX + x * 6 + 2].includes(bullet[0])) && 
+          if (!enemyBullets.some(bullet => (enemyX + x * 6 + 1 === bullet[0]) && 
             ([enemyY + y * 6 + 2, enemyY + y * 6 + 3, enemyY + y * 6 + 4].includes(bullet[1])))
              ) {
             enemyBullets.push([enemyX + x * 6, enemyY + y * 6 + 2]);
