@@ -110,7 +110,7 @@ function start() {
   // Miscellaneous
   score = 0;
   round = 0;
-  gameTimer = Math.max(20, gameSpeed - round * 10);
+  gameTimer = Math.max(1, gameSpeed - round * 10);
   endGame = false;
   wall = false;
 
@@ -145,7 +145,7 @@ function newRound() {
   
   
   // Miscellaneous
-  gameTimer = Math.max(20, gameSpeed - round * 10);
+  gameTimer = Math.max(1, gameSpeed - round * 10);
   wall = false;  
 }
 
@@ -168,7 +168,8 @@ function moveLeft() {
 
 // --- Shoot ---
 function shoot() {
-  if (!playerBullets.some(bullet => (bullet[0] === playerX + 1) && 
+  if (playerShotTimer < 1 &&
+    !playerBullets.some(bullet => (bullet[0] === playerX + 1) && 
     ([playerY - 1, playerY - 2, playerY - 3].includes(bullet[1])))
      ) {
     playerShotTimer = gameSpeed;
