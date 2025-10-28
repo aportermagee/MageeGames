@@ -169,7 +169,7 @@ function moveLeft() {
 // --- Shoot ---
 function shoot() {
   if (!playerBullets.some(bullet => (bullet[0] === playerX + 1) && 
-    ([playerY + 2, playerY + 3, playerY + 4].includes(bullet[1])))
+    ([playerY - 1, playerY - 2, playerY - 3].includes(bullet[1])))
      ) {
     playerShotTimer = gameSpeed;
     playerBullets.push([playerX + 1, playerY - 2]);
