@@ -356,7 +356,7 @@ function drawFrame() {
   // Health
   for (let i = 0; i < health - 1; i++) {
     ctx.fillStyle = 'rgb(50, 120, 250)';
-    ctx.fillRect(6 * box * i + box * 3, canvas.height - 6 * box, box, box);
+    ctx.fillRect(6 * box * i + box * 3, canvas.height - 6 * box, box * 3, box * 3);
   }
 
   // Player can shoot
