@@ -267,6 +267,21 @@ function playerBulletCollisions(i)  {
     }
   }
   
+  for (let z = 0; z < 4; z++) {
+    for (let y = 0; y < defenses[i].length; y++) {
+      for (let x = 0; x < defenses[i][y].length; x++) {
+        if (defenses[i][y][x] === 1 &&
+           playerBullets[i][0] === defensesX + x &&
+           playerBullets[i][1] === defensesY + y
+        ) {
+          defenses[z][y][x] = 0;
+          playerBullets.splice(i, 1);
+          return true;
+        }
+      }
+    }
+  }  
+  
   if (playerBullets[i][1] + 1 < 0) {
     playerBullets.splice(i, 1);
     return true;
@@ -294,11 +309,25 @@ function enemyBulletCollisions(i) {
     return true;
   }
 
+  for (let z = 0; z < 4; z++) {
+    for (let y = 0; y < defenses[i].length; y++) {
+      for (let x = 0; x < defenses[i][y].length; x++) {
+        if (defenses[i][y][x] === 1 &&
+           enemyBullets[i][0] === defensesX + x &&
+           enemyBullets[i][1] === defensesY + y
+        ) {
+          defenses[z][y][x] = 0;
+          enemyBullets.splice(i, 1);
+          return true;
+        }
+      }
+    }
+  }  
+  
   if (enemyBullets[i][1] > canvas.height / box - 1) {
     enemyBullets.splice(i, 1);
     return true;
   }
-
   return false;
 }
 
