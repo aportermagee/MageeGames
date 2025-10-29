@@ -427,7 +427,7 @@ function drawFrame() {
       for (let x = 0; x < defenses[i][y].length; x++) {
         if (defenses[i][y][x] === 1) {
           ctx.fillStyle = 'rgb(0, 170, 50)';
-          ctx.fillRect(defensesX[i] + x, defensesY + y, box, box);
+          ctx.fillRect((defensesX[i] + x) * box, (defensesY + y) * box, box, box);
         }
       }
     }
