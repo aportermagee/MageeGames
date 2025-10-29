@@ -25,6 +25,8 @@ const scoreP = document.getElementById('score');
 
 const playerY = canvas.height / box - 12;
 
+const defensesY = canvas.height / box - 21;
+
 
 // ----- High Score -----
 let highScore;
@@ -80,6 +82,8 @@ let endGame;
 let wall;
 let playerRight = false;
 let playerLeft = false;
+let defenses;
+let defensesX;
 
 
 // ----- Start Of Game -----
@@ -107,6 +111,22 @@ function start() {
     }
     enemies.push(temp);
   }
+
+
+  // --- Defenses ---
+  let first = canvas.width / box / 6;
+  defensesX = [2 * first, 3 * first, 4 * first, 5 * first];
+  defenses = [];
+  
+  for (let i = 0; i < 4; i++) {
+    defenses.push([
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]
+    ]);
+  }    
 
   
   // Miscellaneous
@@ -144,6 +164,22 @@ function newRound() {
     }
     enemies.push(temp);
   }
+  
+
+  // --- Defenses ---
+  let first = canvas.width / box / 6;
+  defensesX = [2 * first, 3 * first, 4 * first, 5 * first];
+  defenses = [];
+  
+  for (let i = 0; i < 4; i++) {
+    defenses.push([
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]
+    ]);
+  }   
   
   
   // Miscellaneous
@@ -385,6 +421,18 @@ function drawFrame() {
   ctx.fillStyle = 'rgb(255, 0, 0)';
   ctx.fillRect(0, canvas.height - 24 * box, canvas.width, 2);
 
+  // Defenses
+  for (let i = 0; i < 4; i++) {
+    for (let y = 0; y < defenses[i].length; y++) {
+      for (let x = 0; x < defenses[i][y].length; x++) {
+        if (defenses[i][y][x] === 1) {
+          ctx.fillStyle = 'rgb(0, 170, 50)';
+          ctx.fillRect(defensesX[i] + x, defensesY + y, box, box);
+        }
+      }
+    }
+  }
+  
   
   // --- End Game ---
   for (let y = 0; y < enemies.length; y++) {
