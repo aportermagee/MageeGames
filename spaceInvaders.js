@@ -114,15 +114,16 @@ function start() {
 
 
   // --- Defenses ---
-  let first = canvas.width / box / 6;
-  defensesX = [2 * first, 3 * first, 4 * first, 5 * first];
+  let first = canvas.width / box / 4.5;
+  defensesX = [0.5 * first, 1.5 * first, 2.5 * first, 3.5 * first];
   defenses = [];
   
   for (let i = 0; i < 4; i++) {
     defenses.push([
+      [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
       [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
       [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]
     ]);
@@ -167,15 +168,16 @@ function newRound() {
   
 
   // --- Defenses ---
-  let first = canvas.width / box / 6;
-  defensesX = [2 * first, 3 * first, 4 * first, 5 * first];
+  let first = canvas.width / box / 4.5;
+  defensesX = [0.5 * first, 1.5 * first, 2.5 * first, 3.5 * first];
   defenses = [];
   
   for (let i = 0; i < 4; i++) {
     defenses.push([
+      [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
       [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
       [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1]
     ]);
