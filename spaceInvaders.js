@@ -271,7 +271,7 @@ function playerBulletCollisions(i)  {
     for (let y = 0; y < defenses[z].length; y++) {
       for (let x = 0; x < defenses[z][y].length; x++) {
         if (defenses[z][y][x] === 1 &&
-           playerBullets[i][0] === defensesX + x &&
+           playerBullets[i][0] === defensesX[z] + x &&
            playerBullets[i][1] === defensesY + y
         ) {
           defenses[z][y][x] = 0;
@@ -313,7 +313,7 @@ function enemyBulletCollisions(i) {
     for (let y = 0; y < defenses[z].length; y++) {
       for (let x = 0; x < defenses[z][y].length; x++) {
         if (defenses[z][y][x] === 1 &&
-           enemyBullets[i][0] === defensesX + x &&
+           enemyBullets[i][0] === defensesX[z] + x &&
            enemyBullets[i][1] === defensesY + y
         ) {
           defenses[z][y][x] = 0;
