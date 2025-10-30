@@ -464,6 +464,11 @@ function drawFrame() {
     }
   }
   
+  // Score
+  ctx.font = '15px Arial';
+  ctx.fillStyle = 'rgb(255, 255, 255)';
+  ctx.fillText('Score: ' + score, canvas.width / 2 - 45, canvas.height - 2 * box * 3);
+
   
   // --- End Game ---
   for (let y = 0; y < enemies.length; y++) {
