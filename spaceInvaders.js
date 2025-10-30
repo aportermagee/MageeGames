@@ -20,7 +20,7 @@ const ctx = canvas.getContext('2d');
 
 const box = 4;
 const speed = 20;
-const gameSpeed = 200 / speed;
+const gameSpeed = 160 / speed;
 const scoreP = document.getElementById('score');
 
 const playerY = canvas.height / box - 12;
@@ -394,11 +394,11 @@ function drawFrame() {
     // Decides which enemies shoot
     for (let y = 0; y < enemies.length; y++) {
       for (let x = 0; x < enemies[y].length; x++) {
-        if ((enemies[y][x] === 1) && (Math.round(Math.random() * 100) < 2 + round)) {
+        if ((enemies[y][x] === 1) && (Math.round(Math.random() * 100) < 3 + round)) {
           if (!enemyBullets.some(bullet => (enemyX + x * 6 + 1 === bullet[0]) && 
             ([enemyY + y * 6 + 2, enemyY + y * 6 + 3, enemyY + y * 6 + 4].includes(bullet[1])))
              ) {
-            enemyBullets.push([enemyX + x * 6, enemyY + y * 6 + 2]);
+            enemyBullets.push([enemyX + x * 6 + 1, enemyY + y * 6 + 3]);
           }
         }
       }
