@@ -468,7 +468,7 @@ function drawFrame() {
   ctx.font = '15px Arial';
   ctx.fillStyle = 'rgb(255, 255, 255)';
   let scoreText = 'Score: ' + score;
-  ctx.fillText(scoreText, canvas.width / 2 - (scoreText.length / 2), canvas.height - 1.5 * box * 3);
+  ctx.fillText(scoreText, canvas.width / 2 - (scoreText.length / 2 * 15), canvas.height - 1.5 * box * 3);
 
   
   // --- End Game ---
