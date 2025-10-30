@@ -93,7 +93,7 @@ function start() {
   playerX = canvas.width / box / 2;
   health = 3;
   playerBullets = [];
-  playerShotTimer = gameSpeed;
+  playerShotTimer = gameSpeed * 2;
 
   
   // --- Enemy ---
@@ -148,7 +148,7 @@ function newRound() {
   // --- Player ---
   playerX = canvas.width / box / 2;
   playerBullets = [];
-  playerShotTimer = gameSpeed;
+  playerShotTimer = gameSpeed * 2;
   
   // --- Enemy ---
   enemyY = 3;
@@ -212,7 +212,7 @@ function shoot() {
     !playerBullets.some(bullet => (bullet[0] === playerX + 1) && 
     ([playerY - 1, playerY - 2, playerY - 3].includes(bullet[1])))
      ) {
-    playerShotTimer = gameSpeed;
+    playerShotTimer = gameSpeed * 2;
     playerBullets.push([playerX + 1, playerY - 2]);
   }
 }
