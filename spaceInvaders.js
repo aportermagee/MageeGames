@@ -355,7 +355,7 @@ function drawFrame() {
     }
   }
 
-  for (let i = playerBullets.length; i > -1; i--) {
+  for (let i = playerBullets.length - 1; i > -1; i--) {
     for (let y = 0; y < 3; y++) {
       playerBullets[i][1] -= 1;
       if (playerBulletCollisions(i)) break;
