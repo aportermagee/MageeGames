@@ -511,6 +511,7 @@ function drawFrame() {
 const startBtn = document.getElementById('startBtn');
 const homeBtn = document.getElementById('homeBtn');
 const controlsBtn = document.getElementById('controlsBtn');
+const infoBtn = document.getElementById('infoBtn');
 
 startBtn.addEventListener('click', function() {
   if (!game) {
@@ -525,4 +526,8 @@ homeBtn.addEventListener('click', function() {
 
 controlsBtn.addEventListener('click', function() {
   alert('Controls:\nSpace Bar: Shoot\nRight Arrow: Right\nLeft Arrow: Left');
+});
+
+infoBtn.addEventListener('click', function() {
+  alert('Shoot enemy ships to increase your score\nThe green blocks are your defenses\nThe white circle indicates when you can shoot\nWhen all enemy ships are eliminated, the next round will start\nThe ships in the bottom left are reserves, if you are hit when there are no more reserve ships, the game ends\nIf an enemy ship reaches the red line the game ends\nGood luck!');
 });
