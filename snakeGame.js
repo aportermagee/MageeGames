@@ -17,7 +17,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-const box = 24;
+const box = 20;
 const speed = 150;
 const scoreP = document.getElementById('score');
 
@@ -75,8 +75,8 @@ function start() {
   direction = 'RIGHT';
   snake = [{x: 2 * box, y: 2 * box}];
   food = {
-    x: Math.floor(Math.random() * 10) * box,
-    y: Math.floor(Math.random() * 10) * box
+    x: Math.floor(Math.random() * 15) * box,
+    y: Math.floor(Math.random() * 15) * box
   };  
   score = 0;
 
@@ -113,8 +113,8 @@ function drawFrame() {
       newHead.x === food.x && newHead.y === food.y
     ) {
       food = {
-        x: Math.floor(Math.random() * 10) * box,
-        y: Math.floor(Math.random() * 10) * box
+        x: Math.floor(Math.random() * 15) * box,
+        y: Math.floor(Math.random() * 15) * box
       };
     }
   } else {
