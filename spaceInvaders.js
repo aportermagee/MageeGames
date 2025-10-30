@@ -115,7 +115,7 @@ function start() {
 
   // --- Defenses ---
   let first = canvas.width / box / 4.5;
-  defensesX = [0.5 * first, 1.5 * first, 2.5 * first, 3.5 * first];
+  defensesX = [0.5 * first, 1.5 * first, 2.5 * first, 3.5 * first].map(Math.round);
   defenses = [];
   
   for (let i = 0; i < 4; i++) {
@@ -169,7 +169,7 @@ function newRound() {
 
   // --- Defenses ---
   let first = canvas.width / box / 4.5;
-  defensesX = [0.5 * first, 1.5 * first, 2.5 * first, 3.5 * first];
+  defensesX = [0.5 * first, 1.5 * first, 2.5 * first, 3.5 * first].map(Math.round);
   defenses = [];
   
   for (let i = 0; i < 4; i++) {
@@ -268,9 +268,9 @@ function playerBulletCollisions(i)  {
   }
   
   for (let z = 0; z < 4; z++) {
-    for (let y = 0; y < defenses[i].length; y++) {
-      for (let x = 0; x < defenses[i][y].length; x++) {
-        if (defenses[i][y][x] === 1 &&
+    for (let y = 0; y < defenses[z].length; y++) {
+      for (let x = 0; x < defenses[z][y].length; x++) {
+        if (defenses[z][y][x] === 1 &&
            playerBullets[i][0] === defensesX + x &&
            playerBullets[i][1] === defensesY + y
         ) {
@@ -310,9 +310,9 @@ function enemyBulletCollisions(i) {
   }
 
   for (let z = 0; z < 4; z++) {
-    for (let y = 0; y < defenses[i].length; y++) {
-      for (let x = 0; x < defenses[i][y].length; x++) {
-        if (defenses[i][y][x] === 1 &&
+    for (let y = 0; y < defenses[z].length; y++) {
+      for (let x = 0; x < defenses[z][y].length; x++) {
+        if (defenses[z][y][x] === 1 &&
            enemyBullets[i][0] === defensesX + x &&
            enemyBullets[i][1] === defensesY + y
         ) {
@@ -347,7 +347,7 @@ function drawFrame() {
   
   // --- Bullet Movement ---
   if (gameTimer % 2 === 0) {
-    for (let i = 0; i < enemyBullets.length; i++) {
+    for (let i = enemyBullets.length - 1; i > -1; i--) {
       for (let y = 0; y < 3; y++) {
         enemyBullets[i][1] += 1;
         if (enemyBulletCollisions(i)) break;
@@ -355,7 +355,7 @@ function drawFrame() {
     }
   }
 
-  for (let i = 0; i < playerBullets.length; i++) {
+  for (let i = playerBullets.length; i > -1; i--) {
     for (let y = 0; y < 3; y++) {
       playerBullets[i][1] -= 1;
       if (playerBulletCollisions(i)) break;
