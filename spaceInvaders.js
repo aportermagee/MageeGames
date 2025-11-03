@@ -20,7 +20,7 @@ const ctx = canvas.getContext('2d');
 
 const box = 4;
 const speed = 20;
-const gameSpeed = 160 / speed;
+const gameSpeed = 400 / speed;
 const scoreP = document.getElementById('score');
 
 const playerY = canvas.height / box - 12;
@@ -84,6 +84,7 @@ let playerRight = false;
 let playerLeft = false;
 let defenses;
 let defensesX;
+let num;
 
 
 // ----- Start Of Game -----
@@ -136,6 +137,7 @@ function start() {
   gameTimer = Math.max(1, gameSpeed - round * 10);
   endGame = false;
   wall = false;
+  num = 0;
 
   // Game Loop
   game = setInterval(drawFrame, speed);
@@ -187,6 +189,7 @@ function newRound() {
   // Miscellaneous
   gameTimer = Math.max(1, gameSpeed - round * 10);
   wall = false;  
+  num = 0;
 }
 
 
@@ -365,7 +368,7 @@ function drawFrame() {
        
   // --- Things to run every gameSpeed ---
   if (gameTimer < 1) {
-    gameTimer = Math.max(20, gameSpeed - round * 10);
+    gameTimer = Math.max(20, gameSpeed - round * 10 - Math.round(num));
     
     // --- Enemy --- 
     
@@ -507,6 +510,7 @@ function drawFrame() {
   // --- Timers ---
   playerShotTimer -= 1;
   gameTimer -= 1;
+  num += 1 / 500;
 
   // --- Update Score ---
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
