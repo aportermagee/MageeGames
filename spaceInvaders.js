@@ -194,7 +194,7 @@ function newRound() {
 
 // --- Move Right ---
 function moveRight() {
-  if (playerX < canvas.width / box - 1) {
+  if (playerX + 2 < canvas.width / box - 1) {
     playerX += 1;
   }
 }
