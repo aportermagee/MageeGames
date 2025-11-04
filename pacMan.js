@@ -14,6 +14,42 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
+// ----- High Score -----
+let highScore;
+
+// Get High Score
+async function getHighScore() {
+  const { data, error } = await supabaseClient
+    .from('HighScores')
+    .select('highScorePacMan')
+    .eq('id', JSON.parse(localStorage.getItem('user')).id)
+    .single();
+
+  if (error) {
+    console.error(error);
+  } else {
+    highScore = data.highScorePacMan;
+  }
+}
+
+// Change Score
+getHighScore().then(function() {
+  scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
+});
+
+// Update High Score
+async function updateHighScore() {
+  const { data, error } = await supabaseClient
+    .from('HighScores')
+    .update({ highScorePacMan: highScore })
+    .eq('id', JSON.parse(localStorage.getItem('user')).id);
+
+  if (error) {
+    console.error(error);
+  }
+}
+
+
 // --- Set Up ---
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
