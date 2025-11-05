@@ -21,7 +21,6 @@ const ctx = canvas.getContext('2d');
 const box = 4;
 const speed = 20;
 const gameSpeed = 400 / speed;
-const scoreP = document.getElementById('score');
 
 const playerY = canvas.height / box - 12;
 
