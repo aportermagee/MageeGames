@@ -98,7 +98,7 @@ function start() {
 
   
   // --- Enemy ---
-  enemyY = 3;
+  enemyY = 8;
   enemyX = 0;
   enemyBullets = [];
   enemyDirection = 'right';
@@ -153,7 +153,7 @@ function newRound() {
   playerShotTimer = gameSpeed * 2;
   
   // --- Enemy ---
-  enemyY = 3;
+  enemyY = 8;
   enemyX = 0;
   enemyBullets = [];
   enemyDirection = 'right';
@@ -467,11 +467,18 @@ function drawFrame() {
     }
   }
   
-  // Score
+  // Text
   ctx.font = '15px Arial';
   ctx.fillStyle = 'rgb(255, 255, 255)';
+
+  ctx.textAlign = 'left';
+  ctx.fillText('High Score: ' + highScore, box, box * 3);
+
+  ctx.textAlign = 'right';
+  ctx.fillText('Round: ' + (round + 1), canvas.width - box, box * 3);
+  
   ctx.textAlign = 'center';
-  ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height - 1.5 * box * 3);
+  ctx.fillText('Score: ' + score, canvas.width / 2, box * 3);
 
   
   // --- End Game ---
@@ -541,3 +548,6 @@ controlsBtn.addEventListener('click', function() {
 infoBtn.addEventListener('click', function() {
   alert('Shoot enemy ships to increase your score\n\nThe green blocks are your defenses\n\nThe white circle indicates when you can shoot\n\nWhen all enemy ships are eliminated, the next round will start\n\nThe ships in the bottom left are reserves, if you are hit when there are no more reserve ships, the game ends\n\nIf an enemy ship reaches the red line the game ends\n\nGood luck!');
 });
+
+newRound()
+drawFrame()
