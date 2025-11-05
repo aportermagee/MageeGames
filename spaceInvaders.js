@@ -45,7 +45,6 @@ async function getHighScore() {
   }
 }
 
-
 // Update High Score
 async function updateHighScore() {
   const { data, error } = await supabaseClient
@@ -65,10 +64,10 @@ let playerX;
 let enemyY;
 let enemyX;
 let enemies;
-let round;
+let round = -1;
 let enemyBullets;
 let game;
-let score;
+let score = 0;
 let playerShotTimer;
 let gameTimer;
 let playerBullets;
@@ -536,5 +535,3 @@ infoBtn.addEventListener('click', function() {
   alert('Shoot enemy ships to increase your score\n\nThe green blocks are your defenses\n\nThe white circle indicates when you can shoot\n\nWhen all enemy ships are eliminated, the next round will start\n\nThe ships in the bottom left are reserves, if you are hit when there are no more reserve ships, the game ends\n\nIf an enemy ship reaches the red line the game ends\n\nGood luck!');
 });
 
-newRound()
-drawFrame()
