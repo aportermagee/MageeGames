@@ -46,10 +46,6 @@ async function getHighScore() {
   }
 }
 
-// Change Score
-getHighScore().then(function() {
-  scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
-});
 
 // Update High Score
 async function updateHighScore() {
@@ -497,11 +493,6 @@ function drawFrame() {
 
     if (score > highScore) {
       highScore = score;
-      
-      updateHighScore().then(function() {
-        scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore
-      });
-
       alert('New High Score!');
     } else {
       alert('Game Over');
@@ -518,9 +509,6 @@ function drawFrame() {
   playerShotTimer -= 1;
   gameTimer -= 1;
   num += 1 / 500;
-
-  // --- Update Score ---
-  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
 
 
