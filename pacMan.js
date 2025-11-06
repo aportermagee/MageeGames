@@ -58,13 +58,28 @@ class Ghost {
     ctx.fillStyle = color;
     
     ctx.beginPath();
-    ctx.arc();
-}
+    ctx.arc((x + 0.5) * box, (y + 0.5) * box, Math.round(box / 2), Math.PI, 0, false);
+    ctx.lineTo(x * box + (box - 1), y * box + (box - 1));
+    ctx.lineTo(x * box + Math.round(box * 3 / 4), y * box + Math.round(box * 3 / 4));
+    ctx.lineTo(x * box + Math.round(box / 2), y * box + (box - 1));
+    ctx.lineTo(x * box + Math.round(box / 4), y * box + Math.round(box * 3 / 4));
+    ctx.lineTo(x * box, y * box);
+    ctx.lineTo(x * box, y * box + Math.round(box / 2));
+    ctx.fill();
+
+    ctx.fillStyle = 'rgb(255, 255, 255)';
+    ctx.fillRect(x * box + Math.round(box / 3), y * box + Math.round(box / 3), 4, 6);
+    ctx.fillRect(x * box + Math.round(box * 2 / 3), y * box + Math.round(box / 3), 4, 6);
+
+    ctx.fillStyle = 'rgb(255, 255, 255)';
+    ctx.fillRect(x * box + Math.round(box / 3) + 1, y * box + Math.round(box / 3) + 2, 2, 3);
+    ctx.fillRect(x * box + Math.round(box * 2 / 3) + 1, y * box + Math.round(box / 3) + 2, 2, 3);
+  }
 
 // --- Set Up ---
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-const box = 20;
+const box = 25;
 const speed = 5;
 const scoreP = document.getElementById('scoreP');
