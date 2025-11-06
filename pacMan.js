@@ -14,10 +14,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
-// ----- High Score -----
+// --- High Score ---
 let highScore;
 
-// Get High Score
 async function getHighScore() {
   const { data, error } = await supabaseClient
     .from('HighScores')
@@ -32,12 +31,10 @@ async function getHighScore() {
   }
 }
 
-// Change Score
 getHighScore().then(function() {
-  scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
+  document.getElementById('scoreP').textContent = 'Score: 0 | High Score: ' + highScore;
 });
 
-// Update High Score
 async function updateHighScore() {
   const { data, error } = await supabaseClient
     .from('HighScores')
@@ -49,9 +46,25 @@ async function updateHighScore() {
   }
 }
 
+// --- Ghost Class ---
+class Ghost {
+  constuctor (x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+  }
+
+  draw () {
+    ctx.fillStyle = color;
+    
+    ctx.beginPath();
+    ctx.arc();
+}
 
 // --- Set Up ---
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 const box = 20;
+const speed = 5;
+const scoreP = document.getElementById('scoreP');
