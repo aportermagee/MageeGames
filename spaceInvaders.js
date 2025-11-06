@@ -92,7 +92,7 @@ function start() {
 
   
   // --- Enemy ---
-  enemyY = 8;
+  enemyY = 11;
   enemyX = 0;
   enemyBullets = [];
   enemyDirection = 'right';
@@ -147,7 +147,7 @@ function newRound() {
   playerShotTimer = gameSpeed * 2;
   
   // --- Enemy ---
-  enemyY = 8;
+  enemyY = 11;
   enemyX = 0;
   enemyBullets = [];
   enemyDirection = 'right';
@@ -472,7 +472,7 @@ function drawFrame() {
   ctx.fillText('Round: ' + (round + 1), canvas.width - box, box * 3);
   
   ctx.textAlign = 'center';
-  ctx.fillText('Score: ' + score, canvas.width / 2, box * 3);
+  ctx.fillText('Score: ' + score, canvas.width / 2, box * 6);
 
   
   // --- End Game ---
