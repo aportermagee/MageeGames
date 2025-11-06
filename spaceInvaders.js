@@ -466,13 +466,13 @@ function drawFrame() {
   ctx.fillStyle = 'rgb(255, 255, 255)';
 
   ctx.textAlign = 'left';
-  ctx.fillText('High Score: ' + highScore, box, box * 3);
+  ctx.fillText('High Score: ' + highScore, box, box * 4);
 
   ctx.textAlign = 'right';
-  ctx.fillText('Round: ' + (round + 1), canvas.width - box, box * 3);
+  ctx.fillText('Round: ' + (round + 1), canvas.width - box, box * 4);
   
   ctx.textAlign = 'center';
-  ctx.fillText('Score: ' + score, canvas.width / 2, box * 6);
+  ctx.fillText('Score: ' + score, canvas.width / 2 + 10, box * 6);
 
   
   // --- End Game ---
