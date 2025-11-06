@@ -535,7 +535,7 @@ infoBtn.addEventListener('click', function() {
   alert('Shoot enemy ships to increase your score\n\nThe green blocks are your defenses\n\nThe white circle indicates when you can shoot\n\nWhen all enemy ships are eliminated, the next round will start\n\nThe ships in the bottom left are reserves, if you are hit when there are no more reserve ships, the game ends\n\nIf an enemy ship reaches the red line the game ends\n\nGood luck!');
 });
 
-getHighScore.then(function() {
+getHighScore().then(function() {
   newRound();
   drawFrame();
 });
