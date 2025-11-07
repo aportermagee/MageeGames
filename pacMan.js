@@ -93,14 +93,14 @@ class PacMan {
   moveUp() {
     switch (this.direction) {
       case 'right':
-        if (maze.layout[this.y - 1][Math.floor(this.x) + 1] !== 1) {
-          this.x = Math.floor(this.x) + 1;
+        if (maze.layout[this.y - 1][Math.floor(this.x + 0.2)] !== 1) {
+          this.x = Math.floor(this.x + 0.2);
           this.direction = 'up';
         }
         break;
       case 'left':
-        if (maze.layout[this.y - 1][Math.floor(this.x)] !== 1) {
-          this.x = Math.floor(this.x);
+        if (maze.layout[this.y - 1][Math.floor(this.x - 0.2)] !== 1) {
+          this.x = Math.floor(this.x - 0.2);
           this.direction = 'up';
         }
         break;
@@ -113,14 +113,14 @@ class PacMan {
   moveDown() {
     switch (this.direction) {
       case 'right':
-        if (![1, 3].includes(maze.layout[this.y + 1][Math.floor(this.x) + 1])) {
-          this.x = Math.floor(this.x) + 1;
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.floor(this.x + 0.2)])) {
+          this.x = Math.floor(this.x + 0.2);
           this.direction = 'down';
         }
         break;
       case 'left':
-        if (![1, 3].includes(maze.layout[this.y + 1][Math.floor(this.x)])) {
-          this.x = Math.floor(this.x);
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.floor(this.x - 0.2)])) {
+          this.x = Math.floor(this.x - 0.2);
           this.direction = 'down';
         }
         break;
@@ -133,14 +133,14 @@ class PacMan {
   moveRight() {
     switch (this.direction) {
       case 'up':
-        if (maze.layout[Math.floor(this.y)][this.x + 1] !== 1) {
-          this.y = Math.floor(this.y);
+        if (maze.layout[Math.floor(this.y - 0.2)][this.x + 1] !== 1) {
+          this.y = Math.floor(this.y - 0.2);
           this.direction = 'right';
         }
         break;
       case 'down':
-        if (maze.layout[Math.floor(this.y) + 1][this.x + 1] !== 1) {
-          this.y = Math.floor(this.y) + 1;
+        if (maze.layout[Math.floor(this.y + 0.2)][this.x + 1] !== 1) {
+          this.y = Math.floor(this.y + 0.2);
           this.direction = 'right';
         }
         break;
@@ -153,14 +153,14 @@ class PacMan {
   moveLeft() {
     switch (this.direction) {
       case 'up':
-        if (maze.layout[Math.floor(this.y)][this.x - 1] !== 1) {
-          this.y = Math.floor(this.y);
+        if (maze.layout[Math.floor(this.y - 0.2)][this.x - 1] !== 1) {
+          this.y = Math.floor(this.y - 0.2);
           this.direction = 'left';
         }
         break;
       case 'down':
-        if (maze.layout[Math.floor(this.y) + 1][this.x - 1] !== 1) {
-          this.y = Math.floor(this.y) + 1;
+        if (maze.layout[Math.floor(this.y + 0.2)][this.x - 1] !== 1) {
+          this.y = Math.floor(this.y + 0.2);
           this.direction = 'left';
         }
         break;
