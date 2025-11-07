@@ -85,6 +85,86 @@ class PacMan {
     this.mouthDirection = 1;
   }
 
+  moveUp() {
+    switch (this.direction) {
+      case 'right':
+        if (maze.layout[this.y - 1][Math.floor(this.x) + 1] !== 1) {
+          this.x = Math.floor(this.x) + 1;
+          this.direction = 'up';
+        }
+        break;
+      case 'left':
+        if (maze.layout[this.y - 1][Math.floor(this.x)] !== 1) {
+          this.x = Math.floor(this.x);
+          this.direction = 'up';
+        }
+        break;
+      case 'down':
+        this.direction = 'up';
+        break;
+    }
+  }
+
+  moveDown() {
+    switch (this.direction) {
+      case 'right':
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.floor(this.x) + 1])) {
+          this.x = Math.floor(this.x) + 1;
+          this.direction = 'down';
+        }
+        break;
+      case 'left':
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.floor(this.x)])) {
+          this.x = Math.floor(this.x);
+          this.direction = 'down';
+        }
+        break;
+      case 'up':
+        this.direction = 'down';
+        break;
+    }
+  }
+
+  moveRight() {
+    switch (this.direction) {
+      case 'up':
+        if (maze.layout[Math.floor(this.y)][this.x + 1] !== 1) {
+          this.y = Math.floor(this.y);
+          this.direction = 'right';
+        }
+        break;
+      case 'down':
+        if (maze.layout[Math.floor(this.y) + 1][this.x + 1] !== 1) {
+          this.y = Math.floor(this.y) + 1;
+          this.direction = 'right';
+        }
+        break;
+      case 'left':
+        this.direction = 'right';
+        break;
+    }
+  }
+
+  moveLeft() {
+    switch (this.direction) {
+      case 'up':
+        if (maze.layout[Math.floor(this.y)][this.x - 1] !== 1) {
+          this.y = Math.floor(this.y);
+          this.direction = 'left';
+        }
+        break;
+      case 'down':
+        if (maze.layout[Math.floor(this.y) + 1][this.x - 1] !== 1) {
+          this.y = Math.floor(this.y) + 1;
+          this.direction = 'left';
+        }
+        break;
+      case 'right':
+        this.direction = 'left';
+        break;
+    }
+  }
+
   draw() {
     ctx.fillStyle = this.color;
     let centerX = this.x * box + box / 2;
@@ -221,3 +301,10 @@ function update() {
 }
 
 testLoop = setInterval(draw, 100);
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'arrowRight') pacMan.moveRight();
+  if (event.key === 'arrowLeft') pacMan.moveLeft();
+  if (event.key === 'arrowUp') pacMan.moveUp();
+  if (event.key === 'arrowDown') pacMan.moveDown();
+});
