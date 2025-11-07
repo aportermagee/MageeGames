@@ -284,7 +284,7 @@ const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled = false;
 
 const box = 26;
-const speed = 1;
+const speed = 3;
 const scoreP = document.getElementById('score');
 
 
@@ -308,25 +308,29 @@ function draw() {
     pacMan.draw();
 }
 
-function update() {
-  let newTime = performance.now();
-  let delta = (newTime - lastTime) / 1000;
-  lastTime = newTime;
-    
+function update(delta) {
   pacMan.update(delta);
 }
-
-function gameLoop() {
-  update();
-  draw();
-}
-
-let lastTime = performance.now();
-testLoop = setInterval(gameLoop, 100);
 
 document.addEventListener('keydown', event => {
   if (event.key === 'ArrowRight') pacMan.moveRight();
   if (event.key === 'ArrowLeft') pacMan.moveLeft();
   if (event.key === 'ArrowUp') pacMan.moveUp();
   if (event.key === 'ArrowDown') pacMan.moveDown();
+  if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+      event.preventDefault();
+  }
 });
+
+lastTime = performance.now();
+
+function gameLoop(currentTime) {
+    let delta = (currentTime - lastTime) / 1000;
+    lastTime = currentTime;
+    
+    update(delta);
+    draw();
+    
+    requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop);
