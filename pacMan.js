@@ -7,12 +7,10 @@ if (!(isLoggedIn())) {
   window.location.href = 'index.html';
 }
 
-
 // --- Initialize Supabase ---
 const SUPABASE_URL = 'https://crvmgootjfbqkokrwsuu.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNydm1nb290amZicWtva3J3c3V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MzkyNTQsImV4cCI6MjA3NjQxNTI1NH0.Em26tIW4z2ulfRePTOVhkCmcMGOa0OOjBqC3kPJ-LpU';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 
 // --- High Score ---
 let highScore;
@@ -71,8 +69,25 @@ class Ghost {
     ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) - 1, this.y * box + Math.round(box / 3), 4, 6);
 
     ctx.fillStyle = 'rgb(0, 0, 0)';
-    ctx.fillRect(this.x * box + Math.floor(box / 3) , this.y * box + Math.round(box / 3) + 3, 2, 3);
-    ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) , this.y * box + Math.round(box / 3) + 3, 2, 3);
+    ctx.fillRect(this.x * box + Math.floor(box / 3), this.y * box + Math.round(box / 3) + 3, 2, 3);
+    ctx.fillRect(this.x * box + Math.floor(box * 2 / 3), this.y * box + Math.round(box / 3) + 3, 2, 3);
+  }
+}
+
+// --- Pac-Man Class ---
+class PacMan {
+  constructor (x, y) {
+    this.x = x;
+    this.y = y;
+    this.color = 'rgb(255, 255, 0)';
+    this.mouth = 10
+  }
+
+  draw () {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x * box + box / 2, this.y * box + box / 2, box / 2, 0, Math.PI * 2 - this.mouth, false);
+    ctx.fill();
   }
 }
 
@@ -85,5 +100,16 @@ const box = 26;
 const speed = 5;
 const scoreP = document.getElementById('score');
 
-const blue = new Ghost(0, 0, 'rgb(0, 0, 255)');
+
+// --- Testing ---
+ctx.fillStyle = 'rgb(0, 0, 0)';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+const blue = new Ghost(0, 0, 'rgb(0, 200, 250)');
+const red = new Ghost(0, 1, 'rgb(255, 0, 0)');
+const pink = new Ghost(1, 0, 'rgb(255, 150, 255)');
+const orange = new Ghost(1, 1, 'rgb(255, 130, 0)');
 blue.draw();
+red.draw();
+pink.draw();
+orange.draw();
