@@ -54,9 +54,9 @@ class Ghost {
 
   draw() {
     let eyeX = (pacMan.x > this.x) ? 1 : -1;
-    let eyeX = (pacMan.x === this.x) ? 0 : eyeX;
-    let eyey = (pacMan.y > this.y) ? 3 : 1;
-    let eyeY = (pacMan.y === this.y) ? 2 : eyeY;
+    eyeX = (pacMan.x === this.x) ? 0 : eyeX;
+    let eyeY = (pacMan.y > this.y) ? 3 : 1;
+    eyeY = (pacMan.y === this.y) ? 2 : eyeY;
     
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -171,7 +171,7 @@ class PacMan {
   }
 
   update(delta) {
-    direction = {
+    let direction = {
       'right': [1, 0],
       'left': [-1, 0],
       'up': [0, -1],
@@ -309,7 +309,11 @@ function draw() {
 }
 
 function update() {
-  pacMan.update();
+  let newTime = performance.now();
+  let delta = (newTime - lastTime) / 1000;
+  lastTime = newTime;
+    
+  pacMan.update(delta);
 }
 
 function gameLoop() {
@@ -317,6 +321,7 @@ function gameLoop() {
   draw();
 }
 
+let lastTime = performance.now();
 testLoop = setInterval(gameLoop, 100);
 
 document.addEventListener('keydown', event => {
