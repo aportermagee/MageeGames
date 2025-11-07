@@ -80,13 +80,31 @@ class PacMan {
     this.x = x;
     this.y = y;
     this.color = 'rgb(255, 255, 0)';
-    this.mouth = 10
+    this.mouth = 0.2;
+    this.direction = 'right';
   }
 
   draw () {
     ctx.fillStyle = this.color;
+    let centerX = this.x * box + box / 2;
+    let centerY = this.y * box + box / 2;
+    let radius = box / 2;
+    let startAngle = 0;
+    let endAngle = 0;
+    const mouthSize = this.mouth * Math.PI;
+    const directions = {
+      right: 0,
+      down: 0.5 * Math.PI,
+      left: Math.PI,
+      up: 1.5 * Math.PI
+    };
+    startAngle = directions[this.direction] + mouthSize;
+    endAngle = directions[this.direction] - mouthSize; 
+    
     ctx.beginPath();
-    ctx.arc(this.x * box + box / 2, this.y * box + box / 2, box / 2, 0, Math.PI * 2 - this.mouth, false);
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle, false);
+    ctx.lineTo(centerX, centerY);
+    ctx.closePath();
     ctx.fill();
   }
 }
