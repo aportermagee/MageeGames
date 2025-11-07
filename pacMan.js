@@ -53,6 +53,11 @@ class Ghost {
   }
 
   draw() {
+    let eyeX = (pacMan.x > this.x) ? 1 : -1;
+    let eyeX = (pacMan.x === this.x) ? 0 : eyeX;
+    let eyey = (pacMan.y > this.y) ? 3 : 1;
+    let eyeY = (pacMan.y === this.y) ? 2 : eyeY;
+    
     ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.arc(this.x * box + Math.floor(box / 2), this.y * box + Math.floor(box / 2), Math.floor(box / 2), Math.PI, 0, false);
@@ -69,8 +74,8 @@ class Ghost {
     ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) - 1, this.y * box + Math.round(box / 3), 4, 6);
 
     ctx.fillStyle = 'rgb(0, 0, 0)';
-    ctx.fillRect(this.x * box + Math.floor(box / 3), this.y * box + Math.round(box / 3) + 3, 2, 3);
-    ctx.fillRect(this.x * box + Math.floor(box * 2 / 3), this.y * box + Math.round(box / 3) + 3, 2, 3);
+    ctx.fillRect(this.x * box + Math.floor(box / 3) + eyeX, this.y * box + Math.round(box / 3) + eyeY, 2, 3);
+    ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) + eyeX, this.y * box + Math.round(box / 3) + eyeY, 2, 3);
   }
 }
 
@@ -165,6 +170,17 @@ class PacMan {
     }
   }
 
+  update(delta) {
+    direction = {
+      'right': [1, 0],
+      'left': [-1, 0],
+      'up': [0, -1],
+      'down': [0, 1]
+    };
+    this.x += direction[this.direction][0] * delta * speed;
+    this.y += direction[this.direction][1] * delta * speed;
+  }
+  
   draw() {
     ctx.fillStyle = this.color;
     let centerX = this.x * box + box / 2;
@@ -268,7 +284,7 @@ const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled = false;
 
 const box = 26;
-const speed = 5;
+const speed = 1;
 const scoreP = document.getElementById('score');
 
 
@@ -294,17 +310,18 @@ function draw() {
 
 function update() {
   pacMan.update();
-  red.update();
-  blue.update();
-  pink.update();
-  orange.update();
 }
 
-testLoop = setInterval(draw, 100);
+function gameLoop() {
+  update();
+  draw();
+}
+
+testLoop = setInterval(gameLoop, 100);
 
 document.addEventListener('keydown', event => {
-  if (event.key === 'arrowRight') pacMan.moveRight();
-  if (event.key === 'arrowLeft') pacMan.moveLeft();
-  if (event.key === 'arrowUp') pacMan.moveUp();
-  if (event.key === 'arrowDown') pacMan.moveDown();
+  if (event.key === 'ArrowRight') pacMan.moveRight();
+  if (event.key === 'ArrowLeft') pacMan.moveLeft();
+  if (event.key === 'ArrowUp') pacMan.moveUp();
+  if (event.key === 'ArrowDown') pacMan.moveDown();
 });
