@@ -80,8 +80,9 @@ class PacMan {
     this.x = x;
     this.y = y;
     this.color = 'rgb(255, 255, 0)';
-    this.mouth = 0.2;
+    this.mouth = 0;
     this.direction = 'right';
+    this.mouthDirection = 1;
   }
 
   draw () {
@@ -106,6 +107,12 @@ class PacMan {
     ctx.lineTo(centerX, centerY);
     ctx.closePath();
     ctx.fill();
+     
+    this.mouth += 0.05 * this.mouthDirection;
+      
+    if (this.mouth >= 0.4 || this.mouth <= 0) {
+        this.mouthDirection *= -1;
+    }
   }
 }
 
@@ -120,14 +127,21 @@ const scoreP = document.getElementById('score');
 
 
 // --- Testing ---
-ctx.fillStyle = 'rgb(0, 0, 0)';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-
 const blue = new Ghost(0, 0, 'rgb(0, 200, 250)');
 const red = new Ghost(0, 1, 'rgb(255, 0, 0)');
 const pink = new Ghost(1, 0, 'rgb(255, 150, 255)');
 const orange = new Ghost(1, 1, 'rgb(255, 130, 0)');
-blue.draw();
-red.draw();
-pink.draw();
-orange.draw();
+const pacMan = new PacMan(2, 0);
+
+function draw() {
+    ctx.fillStyle = 'rgb(0, 0, 0)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    blue.draw();
+    red.draw();
+    pink.draw();
+    orange.draw();
+    pacMan.draw();
+}
+
+testLoop = setInterval(draw, 250);
