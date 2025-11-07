@@ -82,7 +82,7 @@ class Ghost {
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-const box = 25;
+const box = 26;
 const speed = 5;
 const scoreP = document.getElementById('score');
 
