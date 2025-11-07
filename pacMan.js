@@ -46,13 +46,13 @@ async function updateHighScore() {
 
 // --- Ghost Class ---
 class Ghost {
-  constructor (x, y, color) {
+  constructor(x, y, color) {
     this.x = x;
     this.y = y;
     this.color = color;
   }
 
-  draw () {
+  draw() {
     ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.arc(this.x * box + Math.floor(box / 2), this.y * box + Math.floor(box / 2), Math.floor(box / 2), Math.PI, 0, false);
@@ -76,7 +76,7 @@ class Ghost {
 
 // --- Pac-Man Class ---
 class PacMan {
-  constructor (x, y) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
     this.color = 'rgb(255, 255, 0)';
@@ -85,7 +85,7 @@ class PacMan {
     this.mouthDirection = 1;
   }
 
-  draw () {
+  draw() {
     ctx.fillStyle = this.color;
     let centerX = this.x * box + box / 2;
     let centerY = this.y * box + box / 2;
@@ -100,6 +100,10 @@ class PacMan {
     };
     startAngle = directions[this.direction] + mouthSize;
     endAngle = directions[this.direction] - mouthSize; 
+    if (startAngle === endAngle) {
+        startAngle = 0;
+        endAngle = Math.PI * 2;
+    }
     
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, startAngle, endAngle, false);
@@ -117,7 +121,7 @@ class PacMan {
 
 // --- Maze Class ---
 class Maze {
-  constructor () {
+  constructor() {
     this.rows = canvas.width / box;
     this.columns = canvas.height / box;
     this.layout = [
@@ -144,7 +148,7 @@ class Maze {
     ];
   }
 
-  draw () {
+  draw() {
     for (let y = 0; y < this.columns; y++) {
       for(let x = 0; x < this.rows; x++) {
         switch (this.layout[y][x]) {
@@ -207,5 +211,7 @@ function draw() {
     orange.draw();
     pacMan.draw();
 }
+
+function update() {
 
 testLoop = setInterval(draw, 100);
