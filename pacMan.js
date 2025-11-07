@@ -55,9 +55,7 @@ class Ghost {
   }
 
   draw () {
-    console.log('drawling...');
     ctx.fillStyle = this.color;
-    
     ctx.beginPath();
     ctx.arc(this.x * box + Math.floor(box / 2), this.y * box + Math.floor(box / 2), Math.floor(box / 2), Math.PI, 0, false);
     ctx.lineTo(this.x * box + box, this.y * box + box);
