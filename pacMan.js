@@ -59,22 +59,22 @@ class Ghost {
     ctx.fillStyle = this.color;
     
     ctx.beginPath();
-    ctx.arc((this.x + 0.5) * box, (this.y + 0.5) * box, Math.round(box / 2), Math.PI, 0, false);
-    ctx.lineTo(this.x * box + (box - 1), this.y * box + (box - 1));
-    ctx.lineTo(this.x * box + Math.round(box * 3 / 4), this.y * box + Math.round(box * 3 / 4));
-    ctx.lineTo(this.x * box + Math.round(box / 2), this.y * box + (box - 1));
-    ctx.lineTo(this.x * box + Math.round(box / 4), this.y * box + Math.round(box * 3 / 4));
-    ctx.lineTo(this.x * box, this.y * box);
+    ctx.arc(this.x * box + Math.floor(box / 2), this.y * box + Math.floor(box / 2), Math.floor(box / 2), Math.PI, 0, false);
+    ctx.lineTo(this.x * box + box, this.y * box + box);
+    ctx.lineTo(this.x * box + Math.round(box * 3 / 4), this.y * box + Math.round(box * 5 / 6));
+    ctx.lineTo(this.x * box + Math.round(box / 2), this.y * box + box);
+    ctx.lineTo(this.x * box + Math.round(box / 4), this.y * box + Math.round(box * 5 / 6));
+    ctx.lineTo(this.x * box, this.y * box + box);
     ctx.lineTo(this.x * box, this.y * box + Math.round(box / 2));
     ctx.fill();
 
     ctx.fillStyle = 'rgb(255, 255, 255)';
-    ctx.fillRect(this.x * box + Math.round(box / 3), this.y * box + Math.round(box / 3), 4, 6);
-    ctx.fillRect(this.x * box + Math.round(box * 2 / 3), this.y * box + Math.round(box / 3), 4, 6);
+    ctx.fillRect(this.x * box + Math.floor(box / 3) - 1, this.y * box + Math.round(box / 3), 4, 6);
+    ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) - 1, this.y * box + Math.round(box / 3), 4, 6);
 
-    ctx.fillStyle = 'rgb(255, 255, 255)';
-    ctx.fillRect(this.x * box + Math.round(box / 3) + 1, this.y * box + Math.round(box / 3) + 2, 2, 3);
-    ctx.fillRect(this.x * box + Math.round(box * 2 / 3) + 1, this.y * box + Math.round(box / 3) + 2, 2, 3);
+    ctx.fillStyle = 'rgb(0, 0, 0)';
+    ctx.fillRect(this.x * box + Math.floor(box / 3) , this.y * box + Math.round(box / 3) + 3, 2, 3);
+    ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) , this.y * box + Math.round(box / 3) + 3, 2, 3);
   }
 }
 
