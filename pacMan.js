@@ -213,5 +213,11 @@ function draw() {
 }
 
 function update() {
+  pacMan.update();
+  red.update();
+  blue.update();
+  pink.update();
+  orange.update();
+}
 
 testLoop = setInterval(draw, 100);
