@@ -81,6 +81,7 @@ class Ghost {
 // --- Set Up ---
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
+ctx.imageSmoothingEnabled = false;
 
 const box = 26;
 const speed = 5;
