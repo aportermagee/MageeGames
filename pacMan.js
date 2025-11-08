@@ -407,6 +407,24 @@ function gameLoop(currentTime) {
 }
 
 // --- Buttons & Inputs ---
+const startBtn = document.getElementById('startBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+
+pauseBtn.addEventListener('click', function() {
+  if (run) {
+    pause = true;
+  }
+});
+
+startBtn.addEventListener('click', function() {
+  if (!(run || pause)) {
+    round();
+  }
+  if (pause) {
+    resume();
+  }
+});
+
 document.addEventListener('keydown', event => {
   if (pacMan.x < 19.5 && pacMan.x > -0.5) {
     if (event.key === 'ArrowRight') pacMan.moveRight();
