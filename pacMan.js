@@ -89,7 +89,7 @@ class PacMan {
     this.originalX = x;
     this.originalY = y;
     this.color = 'rgb(255, 255, 0)';
-    this.mouth = 0.05;
+    this.mouth = 0.2;
     this.direction = 'right';
     this.mouthDirection = 1;
     this.lastTime = performance.now();
