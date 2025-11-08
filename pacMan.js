@@ -202,18 +202,22 @@ class PacMan {
         if ([1, 3].includes(maze.layout[this.y][Math.floor(this.x + 1)])) {
           this.x = Math.floor(this.x);
         }
+        break;
       case 'left':
         if ([1, 3].includes(maze.layout[this.y][Math.floor(this.x)])) {
           this.x = Math.floor(this.x + 1);
         }
+        break;
       case 'up':
         if ([1, 3].includes(maze.layout[Math.floor(this.y)][this.x])) {
           this.y = Math.floor(this.y + 1);
         }
+        break;
       case 'down':
         if ([1, 3].includes(maze.layout[Math.floor(this.y + 1)][this.x])) {
           this.y = Math.floor(this.y);
         }
+        break;
     }
     if (this.x < -1) {
       this.x = 19.95;
@@ -289,7 +293,7 @@ class Maze {
       [1, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],    
     ];
-    this.originalLayout = this.layout;
+    this.originalLayout = this.layout.map(row => [...row]);
   }
 
   draw() {
