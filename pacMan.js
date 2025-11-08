@@ -367,6 +367,7 @@ function update(delta) {
 
 function resume() {
   run = true;
+  pause = false;
   
   lastTime = performance.now();
   requestAnimationFrame(gameLoop);
