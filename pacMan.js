@@ -199,6 +199,12 @@ class PacMan {
           this.y = Math.floor(this.y);
         }
     }
+    if (this.x <= -1) {
+      this.x = 19.95;
+    }
+    if (this.x >= 20) {
+      this.x = -0.95;
+    }
   }
   
   draw() {
