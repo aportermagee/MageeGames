@@ -199,10 +199,10 @@ class PacMan {
           this.y = Math.floor(this.y);
         }
     }
-    if (this.x <= -1) {
+    if (this.x < -1) {
       this.x = 19.95;
     }
-    if (this.x >= 20) {
+    if (this.x > 19.95) {
       this.x = -0.95;
     }
   }
@@ -339,10 +339,12 @@ function update(delta) {
 }
 
 document.addEventListener('keydown', event => {
-  if (event.key === 'ArrowRight') pacMan.moveRight();
-  if (event.key === 'ArrowLeft') pacMan.moveLeft();
-  if (event.key === 'ArrowUp') pacMan.moveUp();
-  if (event.key === 'ArrowDown') pacMan.moveDown();
+  if (pacMan.x < 19.5 && pacMan.x > -0.5) {
+    if (event.key === 'ArrowRight') pacMan.moveRight();
+    if (event.key === 'ArrowLeft') pacMan.moveLeft();
+    if (event.key === 'ArrowUp') pacMan.moveUp();
+    if (event.key === 'ArrowDown') pacMan.moveDown();
+  }
   if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
       event.preventDefault();
   }
