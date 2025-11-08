@@ -88,6 +88,8 @@ class PacMan {
     this.mouth = 0.05;
     this.direction = 'right';
     this.mouthDirection = 1;
+    this.lastTime = performance.now();
+    this.currentTime;
   }
 
   moveUp() {
@@ -171,6 +173,16 @@ class PacMan {
   }
 
   update(delta) {
+    this.currentTime = performance.now();
+    if (this.currentTime - this.lastTime > 50) {
+      this.lastTime = this.currentTime;
+      this.mouth += 0.05 * this.mouthDirection;
+      
+      if (this.mouth >= 0.3 || this.mouth <= 0.05) {
+          this.mouthDirection *= -1;
+      }
+    }
+    
     let direction = {
       'right': [1, 0],
       'left': [-1, 0],
@@ -232,12 +244,6 @@ class PacMan {
     ctx.lineTo(centerX, centerY);
     ctx.closePath();
     ctx.fill();
-     
-    this.mouth += 0.05 * this.mouthDirection;
-      
-    if (this.mouth >= 0.3 || this.mouth <= 0.05) {
-        this.mouthDirection *= -1;
-    }
   }
 }
 
