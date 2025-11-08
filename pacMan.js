@@ -411,6 +411,8 @@ function gameLoop(currentTime) {
     }
 }
 
+draw();
+
 // --- Buttons & Inputs ---
 const startBtn = document.getElementById('startBtn');
 const pauseBtn = document.getElementById('pauseBtn');
