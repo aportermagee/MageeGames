@@ -49,6 +49,8 @@ class Ghost {
   constructor(x, y, color) {
     this.x = x;
     this.y = y;
+    this.originalX = x;
+    this.originalY = y;
     this.color = color;
   }
 
@@ -84,6 +86,8 @@ class PacMan {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.originalX = x;
+    this.originalY = y;
     this.color = 'rgb(255, 255, 0)';
     this.mouth = 0.05;
     this.direction = 'right';
@@ -285,12 +289,19 @@ class Maze {
       [1, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],    
     ];
+    this.originalLayout = this.layout;
   }
 
   draw() {
     for (let y = 0; y < this.columns; y++) {
       for(let x = 0; x < this.rows; x++) {
         switch (this.layout[y][x]) {
+          case 0:
+            ctx.fillStyle = 'rgb(255, 255, 255)';
+            ctx.beginPath();
+            ctx.arc(x * box + box / 2, y * box + box / 2, Math.floor(box / 6), 0, Math.PI * 2, false);
+            ctx.fill();
+            break;
           case 1:
             ctx.fillStyle = 'rgb(0, 0, 120)';
             ctx.fillRect(x * box, y * box, box, box);
@@ -298,12 +309,6 @@ class Maze {
             ctx.strokeStyle = 'rgb(0, 0, 130)';
             ctx.lineWidth = 2;
             ctx.strokeRect(x * box + 1, y * box + 1, box - 2, box - 2);
-            break;
-          case 0:
-            ctx.fillStyle = 'rgb(255, 255, 255)';
-            ctx.beginPath();
-            ctx.arc(x * box + box / 2, y * box + box / 2, Math.floor(box / 6), 0, Math.PI * 2, false);
-            ctx.fill();
             break;
           case 2:
             ctx.fillStyle = 'rgb(255, 255, 255)';
@@ -331,9 +336,10 @@ const speed = 3;
 const scoreP = document.getElementById('score');
 
 let score = 0;
+let run = false;
+let pause = false;
+let lastTime;
 
-
-// --- Testing ---
 const blue = new Ghost(10, 7, 'rgb(0, 200, 250)');
 const red = new Ghost(9, 7, 'rgb(255, 0, 0)');
 const pink = new Ghost(9, 8, 'rgb(255, 150, 255)');
@@ -359,6 +365,48 @@ function update(delta) {
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
 
+function resume() {
+  run = true;
+  
+  lastTime = performance.now();
+  requestAnimationFrame(gameLoop);
+}
+
+function round() {
+  run = true;
+  
+  blue.x = blue.originalX;
+  blue.y = blue.originalY;
+  red.x = red.originalX;
+  red.y = red.originalY;
+  pink.x = pink.originalX;
+  pink.y = pink.originalY;
+  orange.x = orange.originalX;
+  orange.y = orange.originalY;
+  pacMan.x = pacMan.originalX;
+  pacMan.y = pacMan.originalY;
+  maze.layout = maze.originalLayout;
+
+  lastTime = performance.now();
+  requestAnimationFrame(gameLoop);
+}
+
+// --- Main Loop ---
+lastTime = performance.now();
+
+function gameLoop(currentTime) {
+    let delta = (currentTime - lastTime) / 1000;
+    lastTime = currentTime;
+    
+    update(delta);
+    draw();
+
+    if (!pause) {
+      requestAnimationFrame(gameLoop);
+    }
+}
+
+// --- Buttons & Inputs ---
 document.addEventListener('keydown', event => {
   if (pacMan.x < 19.5 && pacMan.x > -0.5) {
     if (event.key === 'ArrowRight') pacMan.moveRight();
@@ -370,16 +418,3 @@ document.addEventListener('keydown', event => {
       event.preventDefault();
   }
 });
-
-lastTime = performance.now();
-
-function gameLoop(currentTime) {
-    let delta = (currentTime - lastTime) / 1000;
-    lastTime = currentTime;
-    
-    update(delta);
-    draw();
-    
-    requestAnimationFrame(gameLoop);
-}
-requestAnimationFrame(gameLoop);
