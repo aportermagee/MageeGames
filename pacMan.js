@@ -217,6 +217,15 @@ class PacMan {
     if (this.x > 19.95) {
       this.x = -0.95;
     }
+
+    switch (maze.layout[Math.round(this.y)][Math.round(this.x)]) {
+      case 0:
+        score += 5;
+        maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
+      case 2:
+        score += 25;
+        maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
+    }
   }
   
   draw() {
@@ -319,6 +328,8 @@ const box = 26;
 const speed = 3;
 const scoreP = document.getElementById('score');
 
+let score = 0;
+
 
 // --- Testing ---
 const blue = new Ghost(10, 7, 'rgb(0, 200, 250)');
@@ -342,6 +353,8 @@ function draw() {
 
 function update(delta) {
   pacMan.update(delta);
+
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
 
 document.addEventListener('keydown', event => {
