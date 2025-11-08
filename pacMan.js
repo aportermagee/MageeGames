@@ -177,8 +177,28 @@ class PacMan {
       'up': [0, -1],
       'down': [0, 1]
     };
+
     this.x += direction[this.direction][0] * delta * speed;
     this.y += direction[this.direction][1] * delta * speed;
+    
+    switch (this.direction) {
+      case 'right':
+        if ([1, 3].includes(maze.layout[this.y][Math.floor(this.x + 1)])) {
+          this.x = Math.floor(this.x);
+        }
+      case 'left':
+        if ([1, 3].includes(maze.layout[this.y][Math.floor(this.x)])) {
+          this.x = Math.floor(this.x + 1);
+        }
+      case 'up':
+        if ([1, 3].includes(maze.layout[Math.floor(this.y)][this.x])) {
+          this.y = Math.floor(this.y + 1);
+        }
+      case 'down':
+        if ([1, 3].includes(maze.layout[Math.floor(this.y + 1)][this.x])) {
+          this.y = Math.floor(this.y);
+        }
+    }
   }
   
   draw() {
