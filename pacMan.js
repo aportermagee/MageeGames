@@ -222,9 +222,11 @@ class PacMan {
       case 0:
         score += 5;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
+        break;
       case 2:
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
+        break;
     }
   }
   
