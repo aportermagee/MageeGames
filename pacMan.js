@@ -178,7 +178,7 @@ class PacMan {
 
   update(delta) {
     this.currentTime = performance.now();
-    if (this.currentTime - this.lastTime > 50) {
+    if (this.currentTime - this.lastTime > 20) {
       this.lastTime = this.currentTime;
       this.mouth += 0.05 * this.mouthDirection;
       
