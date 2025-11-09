@@ -165,16 +165,16 @@ class Ghost {
       }
       switch (direction) {
         case 'right':
-          moveRight();
+          this.moveRight();
           break;
         case 'left':
-          moveLeft();
+          this.moveLeft();
           break;
         case 'up': 
-          moveUp();
+          this.moveUp();
           break;
         case 'down': 
-          moveDown():
+          this.moveDown();
           break;
       }
 
