@@ -180,6 +180,35 @@ class Ghost {
 
       this.x += directions[this.direction][0] * this.speed * delta;
       this.y += directions[this.direction][1] * this.speed * delta;
+
+      switch (this.direction) {
+        case 'right':
+          if ([1, 3].includes(maze.layout[this.y][Math.ceil(this.x)])) {
+            this.x = Math.floor(this.x);
+          }
+          break;
+        case 'left':
+          if ([1, 3].includes(maze.layout[this.y][Math.floor(this.x)])) {
+            this.x = Math.ceil(this.x);
+          }
+          break;
+        case 'up':
+          if ([1, 3].includes(maze.layout[Math.floor(this.y)][this.x])) {
+            this.y = Math.ceil(this.y);
+          }
+          break;
+        case 'down':
+          if ([1, 3].includes(maze.layout[Math.ceil(this.y)][this.x])) {
+            this.y = Math.floor(this.y);
+          }
+          break;
+      }
+      if (this.x < -1) {
+        this.x = 19.95;
+      }
+      if (this.x > 19.95) {
+        this.x = -0.95;
+      }
     }
   }
   
