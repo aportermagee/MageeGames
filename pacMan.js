@@ -142,7 +142,7 @@ class Ghost {
   update(delta) {
     if (!this.free && performance.now() - this.startTime > this.timer) {
       this.y -= delta * this.speed;
-      if ([1, 3].includes(maze.layout[Math.floor(this.y)][this.x])) {
+      if (maze.layout[Math.floor(this.y)][this.x] === 1) {
         this.y = Math.ceil(this.y);
         this.free = true;
         this.direction = 'right';
