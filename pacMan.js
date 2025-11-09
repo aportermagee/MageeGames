@@ -158,8 +158,8 @@ class Ghost {
       let best = Infinity;
       let direction;
       for (const key in directions) {
-        if (Math.hypot(this.x + directions[key][0], this.y + directions[key][1]) < best) {
-          best = Math.hypot(this.x + directions[key][0], this.y + directions[key][1]);
+        if (Math.hypot((this.x + directions[key][0]) - pacMan.x, (this.y + directions[key][1]) - pacMan.y) < best) {
+          best = Math.hypot((this.x + directions[key][0]) - pacMan.x, (this.y + directions[key][1]) - pacMan.y);
           direction = key;
         }
       }
