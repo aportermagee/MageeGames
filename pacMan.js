@@ -392,7 +392,7 @@ function start() {
   orange.y = orange.originalY;
   pacMan.x = pacMan.originalX;
   pacMan.y = pacMan.originalY;
-  maze.layout = maze.originalLayout;
+  maze.layout = maze.originalLayout.map(row => [...row]);
 
   lastTime = performance.now();
   requestAnimationFrame(gameLoop);
@@ -411,7 +411,7 @@ function round() {
   orange.y = orange.originalY;
   pacMan.x = pacMan.originalX;
   pacMan.y = pacMan.originalY;
-  maze.layout = maze.originalLayout;
+  maze.layout = maze.originalLayout.map(row => [...row]);
 
   lastTime = performance.now();
   requestAnimationFrame(gameLoop);
