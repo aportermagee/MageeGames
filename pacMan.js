@@ -46,14 +46,143 @@ async function updateHighScore() {
 
 // --- Ghost Class ---
 class Ghost {
-  constructor(x, y, color) {
+  constructor(x, y, color, timer) {
     this.x = x;
     this.y = y;
     this.originalX = x;
     this.originalY = y;
     this.color = color;
+    this.direction = 'right';
+    this.free = false;
+    this.timer = timer;
+    this.startTime = performance.now();
+    this.speed = 2;
   }
 
+  moveUp() {
+    switch (this.direction) {
+      case 'right':
+        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.ceil(this.x) === Math.floor(this.x + 0.5)) {
+          this.x = Math.round(this.x);
+          this.direction = 'up';
+        }
+        break;
+      case 'left':
+        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.floor(this.x) === Math.ceil(this.x - 0.5)) {
+          this.x = Math.round(this.x);
+          this.direction = 'up';
+        }
+        break;
+      case 'down':
+        this.direction = 'up';
+        break;
+    }
+  }
+
+  moveDown() {
+    switch (this.direction) {
+      case 'right':
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.ceil(this.x) === Math.floor(this.x + 0.5)) {
+          this.x = Math.round(this.x);
+          this.direction = 'down';
+        }
+        break;
+      case 'left':
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.floor(this.x) === Math.ceil(this.x - 0.5)) {
+          this.x = Math.round(this.x);
+          this.direction = 'down';
+        }
+        break;
+      case 'up':
+        this.direction = 'down';
+        break;
+    }
+  }
+
+  moveRight() {
+    switch (this.direction) {
+      case 'up':
+        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.5)) {
+          this.y = Math.round(this.y);
+          this.direction = 'right';
+        }
+        break;
+      case 'down':
+        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.5)) {
+          this.y = Math.round(this.y);
+          this.direction = 'right';
+        }
+        break;
+      case 'left':
+        this.direction = 'right';
+        break;
+    }
+  }
+
+  moveLeft() {
+    switch (this.direction) {
+      case 'up':
+        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.5)) {
+          this.y = Math.round(this.y);
+          this.direction = 'left';
+        }
+        break;
+      case 'down':
+        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.5)) {
+          this.y = Math.round(this.y);
+          this.direction = 'left';
+        }
+        break;
+      case 'right':
+        this.direction = 'left';
+        break;
+    }
+  }
+
+  update(delta) {
+    if (!this.free && performance.now() - this.startTime > this.timer) {
+      this.y -= delta * this.speed;
+      if ([1, 3].includes(maze.layout[Math.floor(this.y)][this.x])) {
+        this.y = Math.ceil(this.y);
+        this.free = true;
+        this.direction = 'right';
+      }
+    }
+    if (this.free) {
+      let directions = {
+        'right': [1, 0],
+        'left': [-1, 0],
+        'up': [0, -1],
+        'down': [0, 1]
+      };
+      let best = Infinity;
+      let direction;
+      for (const key in directions) {
+        if (Math.hypot(this.x + directions[key][0], this.y + directions[key][1]) < best) {
+          best = Math.hypot(this.x + directions[key][0], this.y + directions[key][1]);
+          direction = key;
+        }
+      }
+      switch (direction) {
+        case 'right':
+          moveRight();
+          break;
+        case 'left':
+          moveLeft();
+          break;
+        case 'up': 
+          moveUp();
+          break;
+        case 'down': 
+          moveDown():
+          break;
+      }
+
+      this.x += directions[this.direction][0] * this.speed * delta;
+      this.y += directions[this.direction][1] * this.speed * delta;
+    }
+  }
+  
   draw() {
     let eyeX = (pacMan.x > this.x) ? 1 : -1;
     eyeX = (pacMan.x === this.x) ? 0 : eyeX;
@@ -344,10 +473,10 @@ let run = false;
 let pause = false;
 let lastTime;
 
-const blue = new Ghost(10, 7, 'rgb(0, 200, 250)');
-const red = new Ghost(9, 7, 'rgb(255, 0, 0)');
-const pink = new Ghost(9, 8, 'rgb(255, 150, 255)');
-const orange = new Ghost(10, 8, 'rgb(255, 130, 0)');
+const blue = new Ghost(10, 7, 'rgb(0, 200, 250)', 0);
+const red = new Ghost(9, 7, 'rgb(255, 0, 0)', 3);
+const pink = new Ghost(9, 8, 'rgb(255, 150, 255)', 6);
+const orange = new Ghost(10, 8, 'rgb(255, 130, 0)', 9);
 const pacMan = new PacMan(9, 18);
 const maze = new Maze();
 
@@ -365,6 +494,10 @@ function draw() {
 
 function update(delta) {
   pacMan.update(delta);
+  red.update(delta);
+  blue.update(delta);
+  orange.update(delta);
+  pink.update(delta);
 
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
 }
@@ -392,6 +525,7 @@ function start() {
   orange.y = orange.originalY;
   pacMan.x = pacMan.originalX;
   pacMan.y = pacMan.originalY;
+  pacMan.direction = 'right';
   maze.layout = maze.originalLayout.map(row => [...row]);
 
   lastTime = performance.now();
@@ -411,6 +545,7 @@ function round() {
   orange.y = orange.originalY;
   pacMan.x = pacMan.originalX;
   pacMan.y = pacMan.originalY;
+  pacMan.direction = 'right';
   maze.layout = maze.originalLayout.map(row => [...row]);
 
   lastTime = performance.now();
