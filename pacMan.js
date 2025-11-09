@@ -55,7 +55,8 @@ class Ghost {
     this.direction = 'right';
     this.free = false;
     this.timer = timer;
-    this.startTime = performance.now();
+    this.startTime = performance.now() / 1000;
+    this.currentTime;
     this.speed = 2;
   }
 
@@ -140,8 +141,8 @@ class Ghost {
   }
 
   update(delta) {
-    currentTime = performance.now() / 1000;
-    if (!this.free && (currentTime - this.startTime) > this.timer) {
+    this.currentTime = performance.now() / 1000;
+    if (!this.free && (this.currentTime - this.startTime) > this.timer) {
       this.y -= delta * this.speed;
       if (maze.layout[Math.floor(this.y)][this.x] === 1) {
         this.y = Math.ceil(this.y);
@@ -549,22 +550,22 @@ function start() {
   blue.y = blue.originalY;
   blue.direction = 'right';
   blue.free = false;
-  blue.startTime = performance.now();
+  blue.startTime = performance.now() / 1000;
   red.x = red.originalX;
   red.y = red.originalY;
   red.direction = 'right';
   red.free = false;
-  red.startTime = performance.now();  
+  red.startTime = performance.now() / 1000;  
   pink.x = pink.originalX;
   pink.y = pink.originalY;
   pink.direction = 'right';
   pink.free = false;
-  pink.startTime = performance.now();  
+  pink.startTime = performance.now() / 1000;  
   orange.x = orange.originalX;
   orange.y = orange.originalY;
   orange.direction = 'right';
   orange.free = false;
-  orange.startTime = performance.now();  
+  orange.startTime = performance.now() / 1000;  
   pacMan.x = pacMan.originalX;
   pacMan.y = pacMan.originalY;
   pacMan.direction = 'right';
@@ -581,22 +582,22 @@ function round() {
   blue.y = blue.originalY;
   blue.direction = 'right';
   blue.free = false;
-  blue.startTime = performance.now();  
+  blue.startTime = performance.now() / 1000;  
   red.x = red.originalX;
   red.y = red.originalY;
   red.direction = 'right';
   red.free = false;
-  red.startTime = performance.now();  
+  red.startTime = performance.now() / 1000;  
   pink.x = pink.originalX;
   pink.y = pink.originalY;
   pink.direction = 'right';
   pink.free = false;
-  pink.startTime = performance.now();
+  pink.startTime = performance.now() / 1000;
   orange.x = orange.originalX;
   orange.y = orange.originalY;
   orange.direction = 'right';
   orange.free = false;
-  orange.startTime = performance.now();
+  orange.startTime = performance.now() / 1000;
   pacMan.x = pacMan.originalX;
   pacMan.y = pacMan.originalY;
   pacMan.direction = 'right';
