@@ -445,7 +445,7 @@ pauseBtn.addEventListener('click', function() {
 });
 
 startBtn.addEventListener('click', function() {
-  if (!(run || pause)) {
+  if (!pause) {
     start();
   }
   if (pause) {
