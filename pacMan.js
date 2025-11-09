@@ -377,6 +377,27 @@ function resume() {
   requestAnimationFrame(gameLoop);
 }
 
+function start() {
+  run = true;
+  pause = false;
+  score = 0;
+  
+  blue.x = blue.originalX;
+  blue.y = blue.originalY;
+  red.x = red.originalX;
+  red.y = red.originalY;
+  pink.x = pink.originalX;
+  pink.y = pink.originalY;
+  orange.x = orange.originalX;
+  orange.y = orange.originalY;
+  pacMan.x = pacMan.originalX;
+  pacMan.y = pacMan.originalY;
+  maze.layout = maze.originalLayout;
+
+  lastTime = performance.now();
+  requestAnimationFrame(gameLoop);
+}
+
 function round() {
   run = true;
   
@@ -425,7 +446,7 @@ pauseBtn.addEventListener('click', function() {
 
 startBtn.addEventListener('click', function() {
   if (!(run || pause)) {
-    round();
+    start();
   }
   if (pause) {
     resume();
