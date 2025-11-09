@@ -140,7 +140,8 @@ class Ghost {
   }
 
   update(delta) {
-    if (!this.free && performance.now() - this.startTime > this.timer) {
+    currentTime = performance.now() / 1000;
+    if (!this.free && (currentTime - this.startTime) > this.timer) {
       this.y -= delta * this.speed;
       if (maze.layout[Math.floor(this.y)][this.x] === 1) {
         this.y = Math.ceil(this.y);
