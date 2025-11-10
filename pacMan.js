@@ -279,7 +279,7 @@ class Ghost {
         'orange': directions[pacMan.direction].map(num => num * 5),
       };
       
-      this.pursue([pacMan.x + targeting[0], pacMan.y + targeting[1]], delta);
+      this.pursue([pacMan.x + targeting[this.name][0], pacMan.y + targeting[this.name][1]], delta);
 
       switch (this.direction) {
         case 'right':
