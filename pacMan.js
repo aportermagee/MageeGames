@@ -277,7 +277,7 @@ class Ghost {
         'blue': [directions[pacMan.direction]].map(num => num * 2),
         'pink': [direction[pacMan.direction]].map(num => num * -2),
         'orange': [direction[pacMan.direction]].map(num => num * 5),
-      }
+      };
       
       this.pursue([pacMan.x + targeting[0], pacMan.y + targeting[1], delta);
 
