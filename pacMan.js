@@ -273,7 +273,7 @@ class Ghost {
       
       let targeting = {
         'red': [0, 0],
-        'blue': directions[pacMan.direction].map(num => num * 2),
+        'blue': directions[pacMan.direction].map(num => num * 3),
         'pink': directions[pacMan.direction].map(num => num * -2),
         'orange': directions[pacMan.direction].map(num => num * 5),
       };
