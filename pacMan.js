@@ -186,7 +186,7 @@ class Ghost {
         return 'up';        
       case 'up':
         row = maze.layout[pos[1] - 1];
-        r = minMove(pos[0], row);
+        r = this.minMove(pos[0], row);
         if (r === 0) {
           return 'up';
         }
@@ -194,9 +194,9 @@ class Ghost {
           return 'right';
         }
         return 'left';
-      case 'down:
+      case 'down':
         row = maze.layout[pos[1] + 1];
-        r = minMove(pos[0], row);
+        r = this.minMove(pos[0], row);
         if (r === 0) {
           return 'down';
         }
