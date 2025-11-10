@@ -46,7 +46,7 @@ async function updateHighScore() {
 
 // --- Ghost Class ---
 class Ghost {
-  constructor(name, x, y, color, timer, target) {
+  constructor(name, x, y, color, timer) {
     this.name = name;
     this.x = x;
     this.y = y;
@@ -59,7 +59,6 @@ class Ghost {
     this.startTime = performance.now() / 1000;
     this.currentTime;
     this.speed = 2;
-    this.target = target;
   }
 
   moveUp() {
