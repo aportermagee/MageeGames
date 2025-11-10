@@ -46,7 +46,8 @@ async function updateHighScore() {
 
 // --- Ghost Class ---
 class Ghost {
-  constructor(x, y, color, timer, target) {
+  constructor(name, x, y, color, timer, target) {
+    this.name = name;
     this.x = x;
     this.y = y;
     this.originalX = x;
@@ -271,7 +272,14 @@ class Ghost {
         'down': [0, 1],
       };
       
-      this.pursue([pacMan.x + directions[pacMan.direction][0] * this.target, pacMan.y + directions[pacMan.direction][1] * this.target], delta);
+      let targeting = {
+        'red': [0, 0],
+        'blue': [directions[pacMan.direction]].map(num => num * 2),
+        'pink': [direction[pacMan.direction]].map(num => num * -2),
+        'orange': [direction[pacMan.direction]].map(num => num * 5),
+      }
+      
+      this.pursue([pacMan.x + targeting[0], pacMan.y + targeting[1], delta);
 
       switch (this.direction) {
         case 'right':
@@ -594,10 +602,10 @@ let run = false;
 let pause = false;
 let lastTime;
 
-const blue = new Ghost(10, 7, 'rgb(0, 200, 250)', 3, 2);
-const red = new Ghost(9, 7, 'rgb(255, 0, 0)', 0, 0);
-const pink = new Ghost(9, 8, 'rgb(255, 150, 255)', 6, -2);
-const orange = new Ghost(10, 8, 'rgb(255, 130, 0)', 9, -1);
+const red = new Ghost('red', 9, 7, 'rgb(255, 0, 0)', 0);
+const blue = new Ghost('blue', 10, 7, 'rgb(0, 200, 250)', 3);
+const pink = new Ghost('pink', 9, 8, 'rgb(255, 150, 255)', 6);
+const orange = new Ghost('orange', 10, 8, 'rgb(255, 130, 0)', 9);
 const pacMan = new PacMan(9, 18);
 const maze = new Maze();
 
@@ -606,16 +614,16 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     maze.draw();
     
-    blue.draw();
     red.draw();
+    blue.draw();
     pink.draw();
     orange.draw();
     pacMan.draw();
 }
 
 function update(delta) {
-  pacMan.update(delta);
   red.update(delta);
+  pacMan.update(delta);
   blue.update(delta);
   orange.update(delta);
   pink.update(delta);
@@ -636,16 +644,16 @@ function start() {
   pause = false;
   score = 0;
   
-  blue.x = blue.originalX;
-  blue.y = blue.originalY;
-  blue.direction = 'right';
-  blue.free = false;
-  blue.startTime = performance.now() / 1000;
   red.x = red.originalX;
   red.y = red.originalY;
   red.direction = 'right';
   red.free = false;
   red.startTime = performance.now() / 1000;  
+  blue.x = blue.originalX;
+  blue.y = blue.originalY;
+  blue.direction = 'right';
+  blue.free = false;
+  blue.startTime = performance.now() / 1000;
   pink.x = pink.originalX;
   pink.y = pink.originalY;
   pink.direction = 'right';
@@ -668,16 +676,16 @@ function start() {
 function round() {
   run = true;
   
-  blue.x = blue.originalX;
-  blue.y = blue.originalY;
-  blue.direction = 'right';
-  blue.free = false;
-  blue.startTime = performance.now() / 1000;  
   red.x = red.originalX;
   red.y = red.originalY;
   red.direction = 'right';
   red.free = false;
   red.startTime = performance.now() / 1000;  
+  blue.x = blue.originalX;
+  blue.y = blue.originalY;
+  blue.direction = 'right';
+  blue.free = false;
+  blue.startTime = performance.now() / 1000;  
   pink.x = pink.originalX;
   pink.y = pink.originalY;
   pink.direction = 'right';
