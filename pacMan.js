@@ -213,6 +213,43 @@ class Ghost {
         return 'left';
     }
   }
+
+  pursue(target) {
+    let directions = {
+      'right': [1, 0],
+      'left': [-1, 0],
+      'up': [0, -1],
+      'down': [0, 1]
+    };
+    let best = Infinity;
+    let direction;
+    for (const key in directions) {
+      if (Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]) < best) {
+        best = Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]);
+        direction = key;
+      }
+    }
+
+    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
+      
+    switch (direction) {
+      case 'right':
+        this.moveRight();
+        break;
+      case 'left':
+        this.moveLeft();
+        break;
+      case 'up': 
+        this.moveUp();
+        break;
+      case 'down': 
+        this.moveDown();
+        break;
+    }
+
+    this.x += directions[this.direction][0] * this.speed * delta;
+    this.y += directions[this.direction][1] * this.speed * delta;    
+  }
   
   update(delta) {
     this.currentTime = performance.now() / 1000;
@@ -226,39 +263,7 @@ class Ghost {
     }
     
     if (this.free) {
-      let directions = {
-        'right': [1, 0],
-        'left': [-1, 0],
-        'up': [0, -1],
-        'down': [0, 1]
-      };
-      let best = Infinity;
-      let direction;
-      for (const key in directions) {
-        if (Math.hypot((this.x + directions[key][0]) - pacMan.x, (this.y + directions[key][1]) - pacMan.y) < best) {
-          best = Math.hypot((this.x + directions[key][0]) - pacMan.x, (this.y + directions[key][1]) - pacMan.y);
-          direction = key;
-        }
-      }
-      direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
-      
-      switch (direction) {
-        case 'right':
-          this.moveRight();
-          break;
-        case 'left':
-          this.moveLeft();
-          break;
-        case 'up': 
-          this.moveUp();
-          break;
-        case 'down': 
-          this.moveDown();
-          break;
-      }
-
-      this.x += directions[this.direction][0] * this.speed * delta;
-      this.y += directions[this.direction][1] * this.speed * delta;
+      this.pursue([pacMan.x, pacMan.y]);
 
       switch (this.direction) {
         case 'right':
