@@ -171,7 +171,7 @@ class Ghost {
           return 'down';
         }
         return 'up';
-      case 'left:
+      case 'left':
         for (let c = 0; c < maze.layout.length; c++) {
           row.push(maze.layout[c][pos[0] - 1]);
         }
