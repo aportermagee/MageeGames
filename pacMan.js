@@ -215,7 +215,7 @@ class Ghost {
     }
   }
 
-  pursue(target) {
+  pursue(target, delta) {
     let directions = {
       'right': [1, 0],
       'left': [-1, 0],
@@ -271,7 +271,7 @@ class Ghost {
         'down': [0, 1],
       };
       
-      this.pursue([pacMan.x + directions[pacMan.direction][0] * this.target, pacMan.y + directions[pacMan.direction][1] * this.target]);
+      this.pursue([pacMan.x + directions[pacMan.direction][0] * this.target, pacMan.y + directions[pacMan.direction][1] * this.target], delta);
 
       switch (this.direction) {
         case 'right':
