@@ -46,7 +46,7 @@ async function updateHighScore() {
 
 // --- Ghost Class ---
 class Ghost {
-  constructor(x, y, color, timer) {
+  constructor(x, y, color, timer, target) {
     this.x = x;
     this.y = y;
     this.originalX = x;
@@ -58,6 +58,7 @@ class Ghost {
     this.startTime = performance.now() / 1000;
     this.currentTime;
     this.speed = 2;
+    this.target = target;
   }
 
   moveUp() {
@@ -263,7 +264,14 @@ class Ghost {
     }
     
     if (this.free) {
-      this.pursue([pacMan.x, pacMan.y]);
+      directions = {
+        'right': [1, 0],
+        'left': [-1, 0],
+        'up': [0, -1],
+        'down': [0, 1],
+      };
+      
+      this.pursue([pacMan.x + directions[pacMan.direction][0] * target, pacMan.y + directions[pacMan.direction][1] * target]);
 
       switch (this.direction) {
         case 'right':
@@ -586,10 +594,10 @@ let run = false;
 let pause = false;
 let lastTime;
 
-const blue = new Ghost(10, 7, 'rgb(0, 200, 250)', 0);
-const red = new Ghost(9, 7, 'rgb(255, 0, 0)', 3);
-const pink = new Ghost(9, 8, 'rgb(255, 150, 255)', 6);
-const orange = new Ghost(10, 8, 'rgb(255, 130, 0)', 9);
+const blue = new Ghost(10, 7, 'rgb(0, 200, 250)', 3, 2);
+const red = new Ghost(9, 7, 'rgb(255, 0, 0)', 0, 0);
+const pink = new Ghost(9, 8, 'rgb(255, 150, 255)', 6, -2);
+const orange = new Ghost(10, 8, 'rgb(255, 130, 0)', 9, -1);
 const pacMan = new PacMan(9, 18);
 const maze = new Maze();
 
