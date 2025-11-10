@@ -140,6 +140,72 @@ class Ghost {
     }
   }
 
+  minMove(pos, L) {
+    let best = Infinity;
+    for (let i = 0; i < L.length; i++) {
+      if ((![1, 3].includes(L[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+        best = i;
+      }
+    }
+    if (pos === best) {
+      return 0;
+    } 
+    if (best > pos) {
+      return 1;
+    }
+    return -1;
+  }
+  
+  findPath(pos, best) {
+    let row = [];
+    switch (best) {
+      case 'right':
+        for (let c = 0; c < maze.layout.length; c++) {
+          row.push(maze.layout[c][pos[0] + 1]);
+        }
+        let r = this.minMove(pos[1], row);
+        if (r === 0) {
+          return 'right';
+        }
+        if (r === 1) {
+          return 'down';
+        }
+        return 'up';
+      case 'left:
+        for (let c = 0; c < maze.layout.length; c++) {
+          row.push(maze.layout[c][pos[0] - 1]);
+        }
+        let r = this.minMove(pos[1], row);
+        if (r === 0) {
+          return 'left';
+        }
+        if (r === 1) {
+          return 'down';
+        }
+        return 'up';        
+      case 'up':
+        row = maze.layout[pos[1] - 1];
+        let r = minMove(pos[0], row);
+        if (r === 0) {
+          return 'up';
+        }
+        if (r === 1) {
+          return 'right';
+        }
+        return 'left';
+      case 'down:
+        row = maze.layout[pos[1] + 1];
+        let r = minMove(pos[0], row);
+        if (r === 0) {
+          return 'down';
+        }
+        if (r === 1) {
+          return 'right';
+        }
+        return 'left';
+    }
+  }
+  
   update(delta) {
     this.currentTime = performance.now() / 1000;
     if (!this.free && (this.currentTime - this.startTime) > this.timer) {
