@@ -216,6 +216,7 @@ class Ghost {
         this.direction = 'right';
       }
     }
+    
     if (this.free) {
       let directions = {
         'right': [1, 0],
@@ -231,6 +232,8 @@ class Ghost {
           direction = key;
         }
       }
+      direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
+      
       switch (direction) {
         case 'right':
           this.moveRight();
