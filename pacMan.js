@@ -158,12 +158,13 @@ class Ghost {
   
   findPath(pos, best) {
     let row = [];
+    let r;
     switch (best) {
       case 'right':
         for (let c = 0; c < maze.layout.length; c++) {
           row.push(maze.layout[c][pos[0] + 1]);
         }
-        let r = this.minMove(pos[1], row);
+        r = this.minMove(pos[1], row);
         if (r === 0) {
           return 'right';
         }
@@ -175,7 +176,7 @@ class Ghost {
         for (let c = 0; c < maze.layout.length; c++) {
           row.push(maze.layout[c][pos[0] - 1]);
         }
-        let r = this.minMove(pos[1], row);
+        r = this.minMove(pos[1], row);
         if (r === 0) {
           return 'left';
         }
@@ -185,7 +186,7 @@ class Ghost {
         return 'up';        
       case 'up':
         row = maze.layout[pos[1] - 1];
-        let r = minMove(pos[0], row);
+        r = minMove(pos[0], row);
         if (r === 0) {
           return 'up';
         }
@@ -195,7 +196,7 @@ class Ghost {
         return 'left';
       case 'down:
         row = maze.layout[pos[1] + 1];
-        let r = minMove(pos[0], row);
+        r = minMove(pos[0], row);
         if (r === 0) {
           return 'down';
         }
