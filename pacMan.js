@@ -271,7 +271,7 @@ class Ghost {
         'down': [0, 1],
       };
       
-      this.pursue([pacMan.x + directions[pacMan.direction][0] * target, pacMan.y + directions[pacMan.direction][1] * target]);
+      this.pursue([pacMan.x + directions[pacMan.direction][0] * this.target, pacMan.y + directions[pacMan.direction][1] * this.target]);
 
       switch (this.direction) {
         case 'right':
