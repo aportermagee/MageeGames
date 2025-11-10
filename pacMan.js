@@ -274,9 +274,9 @@ class Ghost {
       
       let targeting = {
         'red': [0, 0],
-        'blue': [directions[pacMan.direction]].map(num => num * 2),
-        'pink': [directions[pacMan.direction]].map(num => num * -2),
-        'orange': [directions[pacMan.direction]].map(num => num * 5),
+        'blue': directions[pacMan.direction].map(num => num * 2),
+        'pink': directions[pacMan.direction].map(num => num * -2),
+        'orange': directions[pacMan.direction].map(num => num * 5),
       };
       
       this.pursue([pacMan.x + targeting[0], pacMan.y + targeting[1]], delta);
