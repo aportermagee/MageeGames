@@ -140,9 +140,9 @@ class Ghost {
     }
   }
 
-  minMove(pos, L) {
+  minMove(pos, row1, row2) {
     let best = Infinity;
-    for (let i = 0; i < L.length; i++) {
+    for (let i = 0; i < row1.length; i++) {
       if ((![1, 3].includes(L[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
         best = i;
       }
@@ -157,14 +157,16 @@ class Ghost {
   }
   
   findPath(pos, best) {
-    let row = [];
+    let row1 = [];
+    let row2 = [];
     let r;
     switch (best) {
       case 'right':
         for (let c = 0; c < maze.layout.length; c++) {
-          row.push(maze.layout[c][pos[0] + 1]);
+          row1.push(maze.layout[c][pos[0] + 1]);
+          row2.push(maze.layout[c][pos[0]]);
         }
-        r = this.minMove(pos[1], row);
+        r = this.minMove(pos[1], row1, row2);
         if (r === 0) {
           return 'right';
         }
@@ -174,9 +176,10 @@ class Ghost {
         return 'up';
       case 'left':
         for (let c = 0; c < maze.layout.length; c++) {
-          row.push(maze.layout[c][pos[0] - 1]);
+          row1.push(maze.layout[c][pos[0] - 1]);
+          row2.push(maze.layout[c][pos[0]]);
         }
-        r = this.minMove(pos[1], row);
+        r = this.minMove(pos[1], row1, row2);
         if (r === 0) {
           return 'left';
         }
@@ -185,8 +188,9 @@ class Ghost {
         }
         return 'up';        
       case 'up':
-        row = maze.layout[pos[1] - 1];
-        r = this.minMove(pos[0], row);
+        row1 = maze.layout[pos[1] - 1];
+        row2 = maze.layout[pos[1]];
+        r = this.minMove(pos[0], row1, row2);
         if (r === 0) {
           return 'up';
         }
@@ -195,8 +199,9 @@ class Ghost {
         }
         return 'left';
       case 'down':
-        row = maze.layout[pos[1] + 1];
-        r = this.minMove(pos[0], row);
+        row1 = maze.layout[pos[1] + 1];
+        row2 = maze.layout[pos[1]];
+        r = this.minMove(pos[0], row1, row2);
         if (r === 0) {
           return 'down';
         }
