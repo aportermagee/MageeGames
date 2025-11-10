@@ -270,12 +270,16 @@ class Ghost {
         'up': [0, -1],
         'down': [0, 1],
       };
+
+      let blueTargeting = (Math.hypot(this.x - pacMan.x, this.y - pacMan.y) > 4) ? directions[pacMan.direction].map(num => num * 3) : [0, 0];
+      let pinkTargeting = (Math.hypot(this.x - pacMan.x, this.y - pacMan.y) > 3) ? directions[pacMan.direction].map(num => num * -2) : [0, 0];
+      let orangeTargeting = (Math.hypot(this.x - pacMan.x, this.y - pacMan.y) > 7) ? directions[pacMan.direction].map(num => num * 5) : [0, 0];
       
       let targeting = {
         'red': [0, 0],
-        'blue': directions[pacMan.direction].map(num => num * 3),
-        'pink': directions[pacMan.direction].map(num => num * -2),
-        'orange': directions[pacMan.direction].map(num => num * 5),
+        'blue': blueTargeting,
+        'pink': pinkTargeting,
+        'orange': orangeTargeting,
       };
       
       this.pursue([pacMan.x + targeting[this.name][0], pacMan.y + targeting[this.name][1]], delta);
