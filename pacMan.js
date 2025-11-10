@@ -264,7 +264,7 @@ class Ghost {
     }
     
     if (this.free) {
-      directions = {
+      let directions = {
         'right': [1, 0],
         'left': [-1, 0],
         'up': [0, -1],
