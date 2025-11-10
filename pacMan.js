@@ -143,8 +143,10 @@ class Ghost {
   minMove(pos, row1, row2) {
     let best = Infinity;
     for (let i = 0; i < row1.length; i++) {
-      if ((![1, 3].includes(L[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
-        best = i;
+      if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+        if (!row2.splice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.splice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+          best = i;
+        }
       }
     }
     if (pos === best) {
