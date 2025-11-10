@@ -144,7 +144,7 @@ class Ghost {
     let best = Infinity;
     for (let i = 0; i < row1.length; i++) {
       if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
-        if (!row2.splice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.splice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+        if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
           best = i;
         }
       }
