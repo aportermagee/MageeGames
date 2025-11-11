@@ -62,8 +62,6 @@ class Ghost {
     this.currentTime;
     this.speed = 2;
     this.corner = corner;
-    this.reCalculate = 1;
-    this.lastCalculate = performance.now();
   }
 
   moveUp() {
@@ -242,32 +240,32 @@ class Ghost {
       'up': [0, -1],
       'down': [0, 1]
     };
-    if (performance.now() - this.lastCalculate > this.reCalculate) {
-      let best = Infinity;
-      let direction;
-      for (const key in directions) {
-        if (Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]) < best) {
-          best = Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]);
-          direction = key;
-        }
+        
+    let best = Infinity;
+    let direction;
+    for (const key in directions) {
+      if (Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]) < best) {
+        best = Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]);
+        direction = key;
       }
+    }
       
-      direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
+    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
       
-      switch (direction) {
-        case 'right':
-          this.moveRight();
-          break;
-        case 'left':
-          this.moveLeft();
-          break;
-        case 'up': 
-          this.moveUp();
-          break;
-        case 'down': 
-          this.moveDown();
-          break;
-      }
+    switch (direction) {
+      case 'right':
+        this.moveRight();
+        break;
+      case 'left':
+        this.moveLeft();
+        break;
+      case 'up': 
+        this.moveUp();
+        break;
+      case 'down': 
+        this.moveDown();
+        break;
+        
     }
 
     this.x += directions[this.direction][0] * this.speed * delta;
