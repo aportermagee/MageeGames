@@ -155,7 +155,7 @@ class Ghost {
     }
 
     if (pos === best) {
-      for (let i = pos; i < row1.length; i--) {
+      for (let i = pos; i >= row1.length; i--) {
         if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
           if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
             best = i;
@@ -173,7 +173,7 @@ class Ghost {
     return -1;
   }
   
-  findPath(pos, best) {
+  findPath(pos, best, target) {
     let row1 = [];
     let row2 = [];
     let r;
@@ -264,7 +264,7 @@ class Ghost {
       }
     }
 
-    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
+    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction, target);
       
     switch (direction) {
       case 'right':
