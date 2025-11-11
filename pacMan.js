@@ -62,6 +62,8 @@ class Ghost {
     this.currentTime;
     this.speed = 2;
     this.corner = corner;
+    this.reCalculate = 1;
+    this.lastCalculate = performance.now();
   }
 
   moveUp() {
@@ -153,6 +155,9 @@ class Ghost {
         }
       }
     }
+    if (best === Infinity) {
+      return 2;
+    }
     if (pos === best) {
       return 0;
     } 
@@ -179,7 +184,10 @@ class Ghost {
         if (r === 1) {
           return 'down';
         }
-        return 'up';
+        if (r === -1) {
+          return 'up';
+        }
+        return 'left';
       case 'left':
         for (let c = 0; c < maze.layout.length; c++) {
           row1.push(maze.layout[c][pos[0] - 1]);
@@ -192,7 +200,10 @@ class Ghost {
         if (r === 1) {
           return 'down';
         }
-        return 'up';        
+        if (r === -1) {
+          return 'up';  
+        }
+        return 'right';
       case 'up':
         row1 = maze.layout[pos[1] - 1];
         row2 = maze.layout[pos[1]];
@@ -203,7 +214,10 @@ class Ghost {
         if (r === 1) {
           return 'right';
         }
-        return 'left';
+        if (r === -1) {
+          return 'left';
+        }
+        return 'down';
       case 'down':
         row1 = maze.layout[pos[1] + 1];
         row2 = maze.layout[pos[1]];
@@ -214,7 +228,10 @@ class Ghost {
         if (r === 1) {
           return 'right';
         }
-        return 'left';
+        if (r === -1) {
+          return 'left';
+        }
+        return 'up';
     }
   }
 
@@ -225,30 +242,32 @@ class Ghost {
       'up': [0, -1],
       'down': [0, 1]
     };
-    let best = Infinity;
-    let direction;
-    for (const key in directions) {
-      if (Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]) < best) {
-        best = Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]);
-        direction = key;
+    if (performance.now() - this.lastCalculate > this.reCalculate) {
+      let best = Infinity;
+      let direction;
+      for (const key in directions) {
+        if (Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]) < best) {
+          best = Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]);
+          direction = key;
+        }
       }
-    }
-
-    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
       
-    switch (direction) {
-      case 'right':
-        this.moveRight();
-        break;
-      case 'left':
-        this.moveLeft();
-        break;
-      case 'up': 
-        this.moveUp();
-        break;
-      case 'down': 
-        this.moveDown();
-        break;
+      direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
+      
+      switch (direction) {
+        case 'right':
+          this.moveRight();
+          break;
+        case 'left':
+          this.moveLeft();
+          break;
+        case 'up': 
+          this.moveUp();
+          break;
+        case 'down': 
+          this.moveDown();
+          break;
+      }
     }
 
     this.x += directions[this.direction][0] * this.speed * delta;
@@ -353,7 +372,7 @@ class Ghost {
     ctx.fillRect(this.x * box + Math.floor(box / 3) - 1, this.y * box + Math.round(box / 3), 4, 6);
     ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) - 1, this.y * box + Math.round(box / 3), 4, 6);
 
-    ctx.fillStyle = 'rgb(0, 0, 0)';
+    ctx.fillStyle = this.eyeColor;
     ctx.fillRect(this.x * box + Math.floor(box / 3) + eyeX, this.y * box + Math.round(box / 3) + eyeY, 2, 3);
     ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) + eyeX, this.y * box + Math.round(box / 3) + eyeY, 2, 3);
   }
