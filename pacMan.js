@@ -155,7 +155,7 @@ class Ghost {
     }
 
     if (pos === best) {
-      for (let i = pos; i >= row1.length; i--) {
+      for (let i = pos; i >= 0; i--) {
         if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
           if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
             best = i;
@@ -216,8 +216,8 @@ class Ghost {
         if (r === 1) return 'down';
         return 'up';
       case 'up':
-        row1 = maze.layout[pos[1] - 1];
-        row2 = maze.layout[pos[1]];
+        row1 = [...maze.layout[pos[1] - 1]];
+        row2 = [...maze.layout[pos[1]]];
         p = pos[0];
         if (target[0] < pos[0]) {
           p = 19 - p;
@@ -231,8 +231,8 @@ class Ghost {
         if (r === 1) return 'right';
         return 'left';
       case 'down':
-        row1 = maze.layout[pos[1] + 1];
-        row2 = maze.layout[pos[1]];
+        row1 = [...maze.layout[pos[1] + 1]];
+        row2 = [...maze.layout[pos[1]]];
         p = pos[0];
         if (target[0] < pos[0]) {
           p = 19 - p;
