@@ -258,7 +258,6 @@ class Ghost {
   update(delta) {
     if (semiScared) {
       this.color = 'rgb(255, 255, 255)';
-      this.eyeColor = 'rgb(255, 0, 0)';
     } else if (scared) {
       this.color = 'rgb(0, 0, 255)';
       this.eyeColor = 'rgb(0, 0, 255)';
@@ -513,6 +512,8 @@ class PacMan {
       case 2:
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
+        scared = true;
+        scaredTime = this.currentTime;
         break;
     }
   }
@@ -653,6 +654,7 @@ function update(delta, currentTime) {
       scared = false;
       semiScared = false;
     } else if ((currentTime - scaredTime) / 1000 > 5 && (currentTime - lastSemiScared) / 1000 > 1) {
+      lastSemiScared = currentTime;
       semiScared = (semiScared) ? false : true;
     }
   }
