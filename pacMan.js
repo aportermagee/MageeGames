@@ -144,135 +144,90 @@ class Ghost {
     }
   }
 
-  minMove(pos, row1, row2) {
-    let best = Infinity;
-    for (let i = 0; i < row1.length; i++) {
-      if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
-        if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
-          best = i;
-        }
-      }
-    }
-    if (best === Infinity) {
-      return 2;
-    }
-    if (pos === best) {
-      return 0;
-    } 
-    if (best > pos) {
-      return 1;
-    }
-    return -1;
-  }
-  
-  findPath(pos, best) {
-    let row1 = [];
-    let row2 = [];
-    let r;
-    switch (best) {
-      case 'right':
-        for (let c = 0; c < maze.layout.length; c++) {
-          row1.push(maze.layout[c][pos[0] + 1]);
-          row2.push(maze.layout[c][pos[0]]);
-        }
-        r = this.minMove(pos[1], row1, row2);
-        if (r === 0) {
-          return 'right';
-        }
-        if (r === 1) {
-          return 'down';
-        }
-        if (r === -1) {
-          return 'up';
-        }
-        return 'left';
-      case 'left':
-        for (let c = 0; c < maze.layout.length; c++) {
-          row1.push(maze.layout[c][pos[0] - 1]);
-          row2.push(maze.layout[c][pos[0]]);
-        }
-        r = this.minMove(pos[1], row1, row2);
-        if (r === 0) {
-          return 'left';
-        }
-        if (r === 1) {
-          return 'down';
-        }
-        if (r === -1) {
-          return 'up';  
-        }
-        return 'right';
-      case 'up':
-        row1 = maze.layout[pos[1] - 1];
-        row2 = maze.layout[pos[1]];
-        r = this.minMove(pos[0], row1, row2);
-        if (r === 0) {
-          return 'up';
-        }
-        if (r === 1) {
-          return 'right';
-        }
-        if (r === -1) {
-          return 'left';
-        }
-        return 'down';
-      case 'down':
-        row1 = maze.layout[pos[1] + 1];
-        row2 = maze.layout[pos[1]];
-        r = this.minMove(pos[0], row1, row2);
-        if (r === 0) {
-          return 'down';
-        }
-        if (r === 1) {
-          return 'right';
-        }
-        if (r === -1) {
-          return 'left';
-        }
-        return 'up';
-    }
-  }
-
   pursue(target, delta) {
-    target = [target[0] + 0.1, target[1] + 0.1];
-      
     let directions = {
       'right': [1, 0],
       'left': [-1, 0],
       'up': [0, -1],
       'down': [0, 1]
     };
+    
+    const opposites = {
+      'right': 'left', 
+      'left': 'right', 
+      'up': 'down', 
+      'down': 'up'
+    };
+    
+    // Only make decisions at grid-aligned positions or near them
+    const gridX = Math.round(this.x);
+    const gridY = Math.round(this.y);
+    const closeToGrid = Math.abs(this.x - gridX) < 0.1 && Math.abs(this.y - gridY) < 0.1;
+    
+    if (closeToGrid) {
+        // Snap to grid for clean pathfinding
+        this.x = gridX;
+        this.y = gridY;
         
-    let best = Infinity;
-    let direction;
-    for (const key in directions) {
-      if (Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]) < best) {
-        best = Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]);
-        direction = key;
-      }
+        // Find all valid directions (not walls, not reverse)
+        let validDirections = [];
+        
+        for (const dir in directions) {
+            // Skip reverse direction unless it's the only option
+            if (dir === opposites[this.direction]) continue;
+            
+            let nextX = gridX + directions[dir][0];
+            let nextY = gridY + directions[dir][1];
+            
+            // Check if next position is valid (not wall or gate)
+            if (maze.layout[nextY] && ![1, 3].includes(maze.layout[nextY][nextX])) {
+                validDirections.push(dir);
+            }
+        }
+        
+        // If stuck (no valid directions), allow reverse
+        if (validDirections.length === 0) {
+            const reverseDir = opposites[this.direction];
+            let nextX = gridX + directions[reverseDir][0];
+            let nextY = gridY + directions[reverseDir][1];
+            
+            if (maze.layout[nextY] && ![1, 3].includes(maze.layout[nextY][nextX])) {
+                validDirections.push(reverseDir);
+            }
+        }
+        
+        // Choose the direction that gets closest to target
+        if (validDirections.length > 0) {
+            let bestDist = Infinity;
+            let bestDir = this.direction;
+            
+            for (const dir of validDirections) {
+                let nextX = gridX + directions[dir][0];
+                let nextY = gridY + directions[dir][1];
+                let dist = Math.hypot(nextX - target[0], nextY - target[1]);
+                
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestDir = dir;
+                }
+            }
+            
+            // Apply the new direction
+            if (bestDir !== this.direction) {
+                switch (bestDir) {
+                    case 'right': this.moveRight(); break;
+                    case 'left': this.moveLeft(); break;
+                    case 'up': this.moveUp(); break;
+                    case 'down': this.moveDown(); break;
+                }
+            }
+        }
     }
     
-    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
-      
-    switch (direction) {
-      case 'right':
-        this.moveRight();
-        break;
-      case 'left':
-        this.moveLeft();
-        break;
-      case 'up': 
-        this.moveUp();
-        break;
-      case 'down': 
-        this.moveDown();
-        break;
-        
-    }
-
+    // Move in current direction
     this.x += directions[this.direction][0] * this.speed * delta;
-    this.y += directions[this.direction][1] * this.speed * delta;    
-  }
+    this.y += directions[this.direction][1] * this.speed * delta;
+  } 
   
   update(delta) {
     if (semiScared) {
