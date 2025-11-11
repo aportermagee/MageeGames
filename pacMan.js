@@ -151,16 +151,13 @@ class Ghost {
       'up': [0, -1],
       'down': [0, 1]
     };
-    
-    const gridX = Math.round(this.x);
-    const gridY = Math.round(this.y);
         
     let bestDist = Infinity;
     let bestDir = this.direction;
             
     for (const dir of directions) {
-      let nextX = gridX + directions[dir][0] * delta * this.speed;
-      let nextY = gridY + directions[dir][1] * delta * this.speed;
+      let nextX = this.x + directions[dir][0] * delta * this.speed;
+      let nextY = this.y + directions[dir][1] * delta * this.speed;
       let dist = Math.hypot(nextX - target[0], nextY - target[1]);
                 
       if (dist < bestDist) {
@@ -168,7 +165,9 @@ class Ghost {
         bestDir = dir;
       }
     }
-            
+
+    //
+    
     if (bestDir !== this.direction) {
       switch (bestDir) {
         case 'right': this.moveRight(); break;
