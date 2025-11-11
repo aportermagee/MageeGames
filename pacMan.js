@@ -159,72 +159,48 @@ class Ghost {
       'down': 'up'
     };
     
-    // Only make decisions at grid-aligned positions or near them
     const gridX = Math.round(this.x);
     const gridY = Math.round(this.y);
-    const closeToGrid = Math.abs(this.x - gridX) < 0.1 && Math.abs(this.y - gridY) < 0.1;
     
-    if (closeToGrid) {
-        // Snap to grid for clean pathfinding
-        this.x = gridX;
-        this.y = gridY;
+    this.x = gridX;
+    this.y = gridY;
         
-        // Find all valid directions (not walls, not reverse)
-        let validDirections = [];
+    let validDirections = [];
         
-        for (const dir in directions) {
-            // Skip reverse direction unless it's the only option
-            if (dir === opposites[this.direction]) continue;
+    for (const dir in directions) {
+      let nextX = gridX + directions[dir][0];
+      let nextY = gridY + directions[dir][1];
             
-            let nextX = gridX + directions[dir][0];
-            let nextY = gridY + directions[dir][1];
-            
-            // Check if next position is valid (not wall or gate)
-            if (maze.layout[nextY] && ![1, 3].includes(maze.layout[nextY][nextX])) {
-                validDirections.push(dir);
-            }
-        }
+      if (maze.layout[nextY] && ![1, 3].includes(maze.layout[nextY][nextX])) {
+        validDirections.push(dir);
+      }
+    }
         
-        // If stuck (no valid directions), allow reverse
-        if (validDirections.length === 0) {
-            const reverseDir = opposites[this.direction];
-            let nextX = gridX + directions[reverseDir][0];
-            let nextY = gridY + directions[reverseDir][1];
+    if (validDirections.length > 0) {
+        let bestDist = Infinity;
+        let bestDir = this.direction;
             
-            if (maze.layout[nextY] && ![1, 3].includes(maze.layout[nextY][nextX])) {
-                validDirections.push(reverseDir);
-            }
-        }
-        
-        // Choose the direction that gets closest to target
-        if (validDirections.length > 0) {
-            let bestDist = Infinity;
-            let bestDir = this.direction;
-            
-            for (const dir of validDirections) {
-                let nextX = gridX + directions[dir][0];
-                let nextY = gridY + directions[dir][1];
-                let dist = Math.hypot(nextX - target[0], nextY - target[1]);
+        for (const dir of validDirections) {
+          let nextX = gridX + directions[dir][0];
+          let nextY = gridY + directions[dir][1];
+          let dist = Math.hypot(nextX - target[0], nextY - target[1]);
                 
-                if (dist < bestDist) {
-                    bestDist = dist;
-                    bestDir = dir;
-                }
-            }
-            
-            // Apply the new direction
-            if (bestDir !== this.direction) {
-                switch (bestDir) {
-                    case 'right': this.moveRight(); break;
-                    case 'left': this.moveLeft(); break;
-                    case 'up': this.moveUp(); break;
-                    case 'down': this.moveDown(); break;
-                }
-            }
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestDir = dir;
+          }
         }
+            
+        if (bestDir !== this.direction) {
+          switch (bestDir) {
+            case 'right': this.moveRight(); break;
+            case 'left': this.moveLeft(); break;
+            case 'up': this.moveUp(); break;
+            case 'down': this.moveDown(); break;
+        }
+      }
     }
     
-    // Move in current direction
     this.x += directions[this.direction][0] * this.speed * delta;
     this.y += directions[this.direction][1] * this.speed * delta;
   } 
