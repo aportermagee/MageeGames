@@ -178,13 +178,15 @@ class Ghost {
     let row2 = [];
     let r;
     let reverseR = false;
+    let p;
+    
     switch (best) {
       case 'right':
         for (let c = 0; c < maze.layout.length; c++) {
           row1.push(maze.layout[c][pos[0] + 1]);
           row2.push(maze.layout[c][pos[0]]);
         }
-        let p = pos[1];
+        p = pos[1];
         if (target[1] < pos[1]) {
           p = 19 - p;
           row1.reverse();
@@ -201,7 +203,7 @@ class Ghost {
           row1.push(maze.layout[c][pos[0] - 1]);
           row2.push(maze.layout[c][pos[0]]);
         }
-        let p = pos[1];
+        p = pos[1];
         if (target[1] < pos[1]) {
           p = 19 - p;
           row1.reverse();
@@ -216,7 +218,7 @@ class Ghost {
       case 'up':
         row1 = maze.layout[pos[1] - 1];
         row2 = maze.layout[pos[1]];
-        let p = pos[0];
+        p = pos[0];
         if (target[0] < pos[0]) {
           p = 19 - p;
           row1.reverse();
@@ -231,7 +233,7 @@ class Ghost {
       case 'down':
         row1 = maze.layout[pos[1] + 1];
         row2 = maze.layout[pos[1]];
-        let p = pos[0];
+        p = pos[0];
         if (target[0] < pos[0]) {
           p = 19 - p;
           row1.reverse();
