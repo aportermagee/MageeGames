@@ -144,6 +144,80 @@ class Ghost {
     }
   }
 
+  minMove(pos, row1, row2) {
+    let best = Infinity;
+    for (let i = 0; i < row1.length; i++) {
+      if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+        if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+          best = i;
+        }
+      }
+    }
+    if (pos === best) {
+      return 0;
+    } 
+    if (best > pos) {
+      return 1;
+    }
+    return -1;
+  }
+  
+  findPath(pos, best) {
+    let row1 = [];
+    let row2 = [];
+    let r;
+    switch (best) {
+      case 'right':
+        for (let c = 0; c < maze.layout.length; c++) {
+          row1.push(maze.layout[c][pos[0] + 1]);
+          row2.push(maze.layout[c][pos[0]]);
+        }
+        r = this.minMove(pos[1], row1, row2);
+        if (r === 0) {
+          return 'right';
+        }
+        if (r === 1) {
+          return 'down';
+        }
+        return 'up';
+      case 'left':
+        for (let c = 0; c < maze.layout.length; c++) {
+          row1.push(maze.layout[c][pos[0] - 1]);
+          row2.push(maze.layout[c][pos[0]]);
+        }
+        r = this.minMove(pos[1], row1, row2);
+        if (r === 0) {
+          return 'left';
+        }
+        if (r === 1) {
+          return 'down';
+        }
+        return 'up';        
+      case 'up':
+        row1 = maze.layout[pos[1] - 1];
+        row2 = maze.layout[pos[1]];
+        r = this.minMove(pos[0], row1, row2);
+        if (r === 0) {
+          return 'up';
+        }
+        if (r === 1) {
+          return 'right';
+        }
+        return 'left';
+      case 'down':
+        row1 = maze.layout[pos[1] + 1];
+        row2 = maze.layout[pos[1]];
+        r = this.minMove(pos[0], row1, row2);
+        if (r === 0) {
+          return 'down';
+        }
+        if (r === 1) {
+          return 'right';
+        }
+        return 'left';
+    }
+  }
+
   pursue(target, delta) {
     let directions = {
       'right': [1, 0],
@@ -151,36 +225,36 @@ class Ghost {
       'up': [0, -1],
       'down': [0, 1]
     };
-        
-    let bestDist = Infinity;
-    let bestDir = this.direction;
-            
-    for (const dir of directions) {
-      let nextX = this.x + directions[dir][0] * delta * this.speed;
-      let nextY = this.y + directions[dir][1] * delta * this.speed;
-      let dist = Math.hypot(nextX - target[0], nextY - target[1]);
-                
-      if (dist < bestDist) {
-        bestDist = dist;
-        bestDir = dir;
+    let best = Infinity;
+    let direction;
+    for (const key in directions) {
+      if (Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]) < best) {
+        best = Math.hypot((this.x + directions[key][0]) - target[0], (this.y + directions[key][1]) - target[1]);
+        direction = key;
       }
     }
 
-    //
-    
-    if (bestDir !== this.direction) {
-      switch (bestDir) {
-        case 'right': this.moveRight(); break;
-        case 'left': this.moveLeft(); break;
-        case 'up': this.moveUp(); break;
-        case 'down': this.moveDown(); break;
-      }
+    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
+      
+    switch (direction) {
+      case 'right':
+        this.moveRight();
+        break;
+      case 'left':
+        this.moveLeft();
+        break;
+      case 'up': 
+        this.moveUp();
+        break;
+      case 'down': 
+        this.moveDown();
+        break;
     }
-    
+
     this.x += directions[this.direction][0] * this.speed * delta;
-    this.y += directions[this.direction][1] * this.speed * delta;
+    this.y += directions[this.direction][1] * this.speed * delta;    
   }
-
+  
   update(delta) {
     if (semiScared) {
       this.color = 'rgb(255, 255, 255)';
@@ -279,7 +353,7 @@ class Ghost {
     ctx.fillRect(this.x * box + Math.floor(box / 3) - 1, this.y * box + Math.round(box / 3), 4, 6);
     ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) - 1, this.y * box + Math.round(box / 3), 4, 6);
 
-    ctx.fillStyle = this.eyeColor;
+    ctx.fillStyle = 'rgb(0, 0, 0)';
     ctx.fillRect(this.x * box + Math.floor(box / 3) + eyeX, this.y * box + Math.round(box / 3) + eyeY, 2, 3);
     ctx.fillRect(this.x * box + Math.floor(box * 2 / 3) + eyeX, this.y * box + Math.round(box / 3) + eyeY, 2, 3);
   }
