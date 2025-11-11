@@ -146,13 +146,24 @@ class Ghost {
 
   minMove(pos, row1, row2) {
     let best = Infinity;
-    for (let i = 0; i < row1.length; i++) {
+    for (let i = pos; i < row1.length; i++) {
       if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
         if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
           best = i;
         }
       }
     }
+
+    if (pos === best) {
+      for (let i = pos; i < row1.length; i--) {
+        if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+          if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+            best = i;
+          }
+        }
+      }
+    }
+    
     if (pos === best) {
       return 0;
     } 
@@ -166,54 +177,71 @@ class Ghost {
     let row1 = [];
     let row2 = [];
     let r;
+    let reverseR = false;
     switch (best) {
       case 'right':
         for (let c = 0; c < maze.layout.length; c++) {
           row1.push(maze.layout[c][pos[0] + 1]);
           row2.push(maze.layout[c][pos[0]]);
         }
-        r = this.minMove(pos[1], row1, row2);
-        if (r === 0) {
-          return 'right';
+        let p = pos[1];
+        if (target[1] < pos[1]) {
+          p = 19 - p;
+          row1.reverse();
+          row2.reverse();
+          reverseR = true;
         }
-        if (r === 1) {
-          return 'down';
-        }
+        r = this.minMove(p, row1, row2);
+        if (reverseR) r = -r;
+        if (r === 0) return 'right';
+        if (r === 1) return 'down';
         return 'up';
       case 'left':
         for (let c = 0; c < maze.layout.length; c++) {
           row1.push(maze.layout[c][pos[0] - 1]);
           row2.push(maze.layout[c][pos[0]]);
         }
-        r = this.minMove(pos[1], row1, row2);
-        if (r === 0) {
-          return 'left';
+        let p = pos[1];
+        if (target[1] < pos[1]) {
+          p = 19 - p;
+          row1.reverse();
+          row2.reverse();
+          reverseR = true;
         }
-        if (r === 1) {
-          return 'down';
-        }
-        return 'up';        
+        r = this.minMove(p, row1, row2);
+        if (reverseR) r = -r;
+        if (r === 0) return 'left';
+        if (r === 1) return 'down';
+        return 'up';
       case 'up':
         row1 = maze.layout[pos[1] - 1];
         row2 = maze.layout[pos[1]];
-        r = this.minMove(pos[0], row1, row2);
-        if (r === 0) {
-          return 'up';
+        let p = pos[0];
+        if (target[0] < pos[0]) {
+          p = 19 - p;
+          row1.reverse();
+          row2.reverse();
+          reverseR = true;
         }
-        if (r === 1) {
-          return 'right';
-        }
+        r = this.minMove(p, row1, row2);
+        if (reverseR) r = -r;
+        if (r === 0) return 'up';
+        if (r === 1) return 'right';
         return 'left';
       case 'down':
         row1 = maze.layout[pos[1] + 1];
         row2 = maze.layout[pos[1]];
-        r = this.minMove(pos[0], row1, row2);
-        if (r === 0) {
-          return 'down';
+        let p = pos[0];
+        if (target[0] < pos[0]) {
+          p = 19 - p;
+          row1.reverse();
+          row2.reverse();
+          reverseR = true;
         }
-        if (r === 1) {
-          return 'right';
-        }
+        r = this.minMove(p, row1, row2);
+        if (reverseR) r = -r;
+        if (r === 0) return 'down';
+        if (r === 1) return 'right';
         return 'left';
     }
   }
