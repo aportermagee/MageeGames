@@ -234,6 +234,8 @@ class Ghost {
   }
 
   pursue(target, delta) {
+    target = [target[0] + 0.1, target[1] + 0.1];
+      
     let directions = {
       'right': [1, 0],
       'left': [-1, 0],
@@ -249,18 +251,8 @@ class Ghost {
         direction = key;
       }
     }
-
-    let hor = [(Math.round(this.x) === Math.ceil(this.x)) ? Math.ceil(this.x) : Math.floor(this.x), this.y];
-    let vert = [this.x, (Math.round(this.y) === Math.ceil(this.y)) ? Math.ceil(this.y) : Math.floor(this.y)];
     
-    let positions = {
-      'right': hor,
-      'left': hor,
-      'up': vert,
-      'down': vert,
-    };
-    
-    direction = this.findPath(positions[direction], direction);
+    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
       
     switch (direction) {
       case 'right':
