@@ -152,59 +152,36 @@ class Ghost {
       'down': [0, 1]
     };
     
-    const opposites = {
-      'right': 'left', 
-      'left': 'right', 
-      'up': 'down', 
-      'down': 'up'
-    };
-    
     const gridX = Math.round(this.x);
     const gridY = Math.round(this.y);
-    
-    this.x = gridX;
-    this.y = gridY;
         
-    let validDirections = [];
-        
-    for (const dir in directions) {
-      let nextX = gridX + directions[dir][0];
-      let nextY = gridY + directions[dir][1];
+    let bestDist = Infinity;
+    let bestDir = this.direction;
             
-      if (maze.layout[nextY] && ![1, 3].includes(maze.layout[nextY][nextX])) {
-        validDirections.push(dir);
+    for (const dir of directions) {
+      let nextX = gridX + directions[dir][0] * delta * this.speed;
+      let nextY = gridY + directions[dir][1] * delta * this.speed;
+      let dist = Math.hypot(nextX - target[0], nextY - target[1]);
+                
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestDir = dir;
       }
     }
-        
-    if (validDirections.length > 0) {
-        let bestDist = Infinity;
-        let bestDir = this.direction;
             
-        for (const dir of validDirections) {
-          let nextX = gridX + directions[dir][0];
-          let nextY = gridY + directions[dir][1];
-          let dist = Math.hypot(nextX - target[0], nextY - target[1]);
-                
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestDir = dir;
-          }
-        }
-            
-        if (bestDir !== this.direction) {
-          switch (bestDir) {
-            case 'right': this.moveRight(); break;
-            case 'left': this.moveLeft(); break;
-            case 'up': this.moveUp(); break;
-            case 'down': this.moveDown(); break;
-        }
+    if (bestDir !== this.direction) {
+      switch (bestDir) {
+        case 'right': this.moveRight(); break;
+        case 'left': this.moveLeft(); break;
+        case 'up': this.moveUp(); break;
+        case 'down': this.moveDown(); break;
       }
     }
     
     this.x += directions[this.direction][0] * this.speed * delta;
     this.y += directions[this.direction][1] * this.speed * delta;
-  } 
-  
+  }
+
   update(delta) {
     if (semiScared) {
       this.color = 'rgb(255, 255, 255)';
