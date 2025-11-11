@@ -20,8 +20,7 @@ const ctx = canvas.getContext('2d');
 
 const box = 4;
 const speed = 20;
-const gameSpeed = 160 / speed;
-const scoreP = document.getElementById('score');
+const gameSpeed = 400 / speed;
 
 const playerY = canvas.height / box - 12;
 
@@ -46,11 +45,6 @@ async function getHighScore() {
   }
 }
 
-// Change Score
-getHighScore().then(function() {
-  scoreP.textContent = 'Score: 0 | High Score: ' + highScore;
-});
-
 // Update High Score
 async function updateHighScore() {
   const { data, error } = await supabaseClient
@@ -70,10 +64,10 @@ let playerX;
 let enemyY;
 let enemyX;
 let enemies;
-let round;
+let round = -1;
 let enemyBullets;
 let game;
-let score;
+let score = 0;
 let playerShotTimer;
 let gameTimer;
 let playerBullets;
@@ -84,6 +78,7 @@ let playerRight = false;
 let playerLeft = false;
 let defenses;
 let defensesX;
+let num;
 
 
 // ----- Start Of Game -----
@@ -97,7 +92,7 @@ function start() {
 
   
   // --- Enemy ---
-  enemyY = 3;
+  enemyY = 11;
   enemyX = 0;
   enemyBullets = [];
   enemyDirection = 'right';
@@ -136,6 +131,7 @@ function start() {
   gameTimer = Math.max(1, gameSpeed - round * 10);
   endGame = false;
   wall = false;
+  num = 0;
 
   // Game Loop
   game = setInterval(drawFrame, speed);
@@ -151,7 +147,7 @@ function newRound() {
   playerShotTimer = gameSpeed * 2;
   
   // --- Enemy ---
-  enemyY = 3;
+  enemyY = 11;
   enemyX = 0;
   enemyBullets = [];
   enemyDirection = 'right';
@@ -187,6 +183,7 @@ function newRound() {
   // Miscellaneous
   gameTimer = Math.max(1, gameSpeed - round * 10);
   wall = false;  
+  num = 0;
 }
 
 
@@ -194,7 +191,7 @@ function newRound() {
 
 // --- Move Right ---
 function moveRight() {
-  if (playerX < canvas.width / box - 1) {
+  if (playerX + 2 < canvas.width / box - 1) {
     playerX += 1;
   }
 }
@@ -365,7 +362,7 @@ function drawFrame() {
        
   // --- Things to run every gameSpeed ---
   if (gameTimer < 1) {
-    gameTimer = Math.max(20, gameSpeed - round * 10);
+    gameTimer = Math.max(20, gameSpeed - round * 10 - Math.round(num));
     
     // --- Enemy --- 
     
@@ -464,11 +461,18 @@ function drawFrame() {
     }
   }
   
-  // Score
+  // Text
   ctx.font = '15px Arial';
   ctx.fillStyle = 'rgb(255, 255, 255)';
-  let scoreText = 'Score: ' + score;
-  ctx.fillText(scoreText, canvas.width / 2 - (scoreText.length / 2) * 15, canvas.height - 1.5 * box * 3);
+
+  ctx.textAlign = 'left';
+  ctx.fillText('High Score: ' + highScore, box, box * 4);
+
+  ctx.textAlign = 'right';
+  ctx.fillText('Round: ' + (round + 1), canvas.width - box, box * 4);
+  
+  ctx.textAlign = 'center';
+  ctx.fillText('Score: ' + score, canvas.width / 2 + 10, box * 6);
 
   
   // --- End Game ---
@@ -487,11 +491,6 @@ function drawFrame() {
 
     if (score > highScore) {
       highScore = score;
-      
-      updateHighScore().then(function() {
-        scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore
-      });
-
       alert('New High Score!');
     } else {
       alert('Game Over');
@@ -507,9 +506,7 @@ function drawFrame() {
   // --- Timers ---
   playerShotTimer -= 1;
   gameTimer -= 1;
-
-  // --- Update Score ---
-  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+  num += 1 / 500;
 }
 
 
@@ -536,4 +533,9 @@ controlsBtn.addEventListener('click', function() {
 
 infoBtn.addEventListener('click', function() {
   alert('Shoot enemy ships to increase your score\n\nThe green blocks are your defenses\n\nThe white circle indicates when you can shoot\n\nWhen all enemy ships are eliminated, the next round will start\n\nThe ships in the bottom left are reserves, if you are hit when there are no more reserve ships, the game ends\n\nIf an enemy ship reaches the red line the game ends\n\nGood luck!');
+});
+
+getHighScore().then(function() {
+  newRound();
+  drawFrame();
 });
