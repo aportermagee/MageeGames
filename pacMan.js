@@ -46,19 +46,22 @@ async function updateHighScore() {
 
 // --- Ghost Class ---
 class Ghost {
-  constructor(name, x, y, color, timer) {
+  constructor(name, x, y, color, timer, corner) {
     this.name = name;
     this.x = x;
     this.y = y;
     this.originalX = x;
     this.originalY = y;
+    this.eyeColor = 'rgb(0, 0, 0)';
     this.color = color;
+    this.originalColor = color;
     this.direction = 'right';
     this.free = false;
     this.timer = timer;
     this.startTime = performance.now() / 1000;
     this.currentTime;
     this.speed = 2;
+    this.corner = corner;
   }
 
   moveUp() {
@@ -253,6 +256,17 @@ class Ghost {
   }
   
   update(delta) {
+    if (semiScared) {
+      this.color = 'rgb(255, 255, 255)';
+      this.eyeColor = 'rgb(255, 0, 0)';
+    } else if (scared) {
+      this.color = 'rgb(0, 0, 255)';
+      this.eyeColor = 'rgb(0, 0, 255)';
+    } else {
+      this.color = this.originalColor;
+      this.eyeColor = 'rgb(0, 0, 0)';
+    }
+    
     this.currentTime = performance.now() / 1000;
     if (!this.free && (this.currentTime - this.startTime) > this.timer) {
       this.y -= delta * this.speed;
@@ -281,8 +295,12 @@ class Ghost {
         'pink': pinkTargeting,
         'orange': orangeTargeting,
       };
-      
-      this.pursue([pacMan.x + targeting[this.name][0], pacMan.y + targeting[this.name][1]], delta);
+
+      if (scared) {
+        this.pursue(this.corner, delta);
+      } else {
+        this.pursue([pacMan.x + targeting[this.name][0], pacMan.y + targeting[this.name][1]], delta);
+      }
 
       switch (this.direction) {
         case 'right':
@@ -599,16 +617,21 @@ ctx.imageSmoothingEnabled = false;
 const box = 26;
 const speed = 3;
 const scoreP = document.getElementById('score');
+const scareTime = 10;
 
 let score = 0;
 let run = false;
 let pause = false;
 let lastTime;
+let scared = false;
+let semiScared = false;
+let scaredTime;
+let lastSemiScared = performance.now();
 
-const red = new Ghost('red', 9, 7, 'rgb(255, 0, 0)', 0);
-const blue = new Ghost('blue', 10, 7, 'rgb(0, 200, 250)', 3);
-const pink = new Ghost('pink', 9, 8, 'rgb(255, 150, 255)', 6);
-const orange = new Ghost('orange', 10, 8, 'rgb(255, 130, 0)', 9);
+const red = new Ghost('red', 9, 7, 'rgb(255, 0, 0)', 0, [1, 1]);
+const blue = new Ghost('blue', 10, 7, 'rgb(0, 200, 250)', 3, [18, 1]);
+const pink = new Ghost('pink', 9, 8, 'rgb(255, 150, 255)', 6, [18, 18]);
+const orange = new Ghost('orange', 10, 8, 'rgb(255, 130, 0)', 9, [1, 18]);
 const pacMan = new PacMan(9, 18);
 const maze = new Maze();
 
@@ -624,7 +647,16 @@ function draw() {
     pacMan.draw();
 }
 
-function update(delta) {
+function update(delta, currentTime) {
+  if (scared === true) {
+    if ((currentTime - scaredTime) / 1000 > scareTime) {
+      scared = false;
+      semiScared = false;
+    } else if ((currentTime - scaredTime) / 1000 > 5 && (currentTime - lastSemiScared) / 1000 > 1) {
+      semiScared = (semiScared) ? false : true;
+    }
+  }
+
   red.update(delta);
   pacMan.update(delta);
   blue.update(delta);
@@ -715,7 +747,7 @@ function gameLoop(currentTime) {
     let delta = (currentTime - lastTime) / 1000;
     lastTime = currentTime;
     
-    update(delta);
+    update(delta, currentTime);
     draw();
 
     if (!pause) {
