@@ -251,7 +251,7 @@ class Ghost {
     }
 
     let hor = [(Math.round(this.x) === Math.ceil(this.x)) ? Math.ceil(this.x) : Math.floor(this.x), this.y];
-    let vert = [(Math.round(this.y) === Math.ceil(this.y)) ? Math.ceil(this.y) : Math.floor(this.y), this.x];
+    let vert = [this.x, (Math.round(this.y) === Math.ceil(this.y)) ? Math.ceil(this.y) : Math.floor(this.y)];
     
     let positions = {
       'right': hor,
