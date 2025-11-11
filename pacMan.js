@@ -249,8 +249,20 @@ class Ghost {
         direction = key;
       }
     }
-      
-    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
+
+    let right = (Math.round(this.x) === Math.ceil(this.x)) ? Math.ceil(this.x) : Math.floor(this.x);
+    let left = (Math.round(this.x) === Math.ceil(this.x)) ? Math.ceil(this.x) : Math.floor(this.x);
+    let left = (Math.round(this.y) === Math.ceil(this.y)) ? Math.ceil(this.y) : Math.floor(this.y);
+    let left = (Math.round(this.y) === Math.ceil(this.y)) ? Math.ceil(this.y) : Math.floor(this.y);
+    
+    positions = {
+      'right': right,
+      'left': left,
+      'up': up,
+      'down': down,
+    };
+    
+    direction = this.findPath(positions[direction], direction);
       
     switch (direction) {
       case 'right':
