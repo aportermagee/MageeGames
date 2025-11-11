@@ -250,16 +250,14 @@ class Ghost {
       }
     }
 
-    let right = (Math.round(this.x) === Math.ceil(this.x)) ? Math.ceil(this.x) : Math.floor(this.x);
-    let left = (Math.round(this.x) === Math.ceil(this.x)) ? Math.ceil(this.x) : Math.floor(this.x);
-    let left = (Math.round(this.y) === Math.ceil(this.y)) ? Math.ceil(this.y) : Math.floor(this.y);
-    let left = (Math.round(this.y) === Math.ceil(this.y)) ? Math.ceil(this.y) : Math.floor(this.y);
+    let hor = [(Math.round(this.x) === Math.ceil(this.x)) ? Math.ceil(this.x) : Math.floor(this.x), this.y];
+    let vert = [(Math.round(this.y) === Math.ceil(this.y)) ? Math.ceil(this.y) : Math.floor(this.y), this.x];
     
     positions = {
-      'right': right,
-      'left': left,
-      'up': up,
-      'down': down,
+      'right': hor,
+      'left': hor,
+      'up': vert,
+      'down': vert,
     };
     
     direction = this.findPath(positions[direction], direction);
