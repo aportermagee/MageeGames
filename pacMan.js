@@ -194,7 +194,7 @@ class Ghost {
           reverseR = true;
         }
         r = this.minMove(p, row1, row2);
-        if (reverseR) r = -r;
+        if (reverseR) r = r * -1;
         if (r === 0) return 'right';
         if (r === 1) return 'down';
         return 'up';
@@ -211,7 +211,7 @@ class Ghost {
           reverseR = true;
         }
         r = this.minMove(p, row1, row2);
-        if (reverseR) r = -r;
+        if (reverseR) r = r * -1;
         if (r === 0) return 'left';
         if (r === 1) return 'down';
         return 'up';
@@ -226,7 +226,7 @@ class Ghost {
           reverseR = true;
         }
         r = this.minMove(p, row1, row2);
-        if (reverseR) r = -r;
+        if (reverseR) r = r * -1;
         if (r === 0) return 'up';
         if (r === 1) return 'right';
         return 'left';
@@ -241,7 +241,7 @@ class Ghost {
           reverseR = true;
         }
         r = this.minMove(p, row1, row2);
-        if (reverseR) r = -r;
+        if (reverseR) r = r * -1;
         if (r === 0) return 'down';
         if (r === 1) return 'right';
         return 'left';
