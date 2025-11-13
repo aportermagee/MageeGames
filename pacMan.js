@@ -145,27 +145,34 @@ class Ghost {
     }
   }
 
-  minMove(pos, row1, row2) {
-    let best = Infinity;
-    for (let i = pos; i < row1.length; i++) {
-      if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
-        if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+  minMove(pos, row1, row2, r) {
+    switch (r) {
+      case 2:
+        let best = Infinity;
+        if (![1, 3].includes(row1[pos])) {
           best = i;
         }
-      }
-    }
-
-    if (best === Infinity) {
-      for (let i = pos; i >= 0; i--) {
-        if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
-          if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
-            best = i;
+        if (best === Infinity) {
+          for (let i = pos + 1; i < row1.length; i++) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
           }
         }
-      }
+        if (best === Infinity) {
+          for (let i = pos - 1; i >= 0; i--) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) return 2;
     }
 
-    if (best === Infinity) return 2;
     if (pos === best) return 0;
     if (best > pos) return 1;
     return -1;
@@ -209,7 +216,15 @@ class Ghost {
           row2.reverse();
           reverseR = true;
         }
-        r = this.minMove(p, row1, row2);
+        
+        if (this.last === 'left') r = 0;
+        if (this.last === 'down') r = 1;
+        if (this.last === 'up') r = -1;
+        if (this.last === 'right') r = 2;
+        if (reverseR && r !== 2) r = r * -1; 
+        
+        r = this.minMove(p, row1, row2, r);
+        
         if (reverseR) r = r * -1;
         if (r === 0) return 'left';
         if (r === 1) return 'down';
