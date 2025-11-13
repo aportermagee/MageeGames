@@ -62,6 +62,7 @@ class Ghost {
     this.currentTime;
     this.speed = 2;
     this.corner = corner;
+    this.last = 'left';
   }
 
   moveUp() {
@@ -163,13 +164,10 @@ class Ghost {
         }
       }
     }
-    
-    if (pos === best) {
-      return 0;
-    } 
-    if (best > pos) {
-      return 1;
-    }
+
+    if (best === Infinity) return 2;
+    if (pos === best) return 0;
+    if (best > pos) return 1;
     return -1;
   }
   
@@ -197,7 +195,8 @@ class Ghost {
         if (reverseR) r = r * -1;
         if (r === 0) return 'right';
         if (r === 1) return 'down';
-        return 'up';
+        if (r === -1) return 'up';
+        if return 'left';
       case 'left':
         for (let c = 0; c < maze.layout.length; c++) {
           row1.push(maze.layout[c][pos[0] - 1]);
@@ -214,7 +213,8 @@ class Ghost {
         if (reverseR) r = r * -1;
         if (r === 0) return 'left';
         if (r === 1) return 'down';
-        return 'up';
+        if (r === -1) return 'up';
+        return 'right';
       case 'up':
         row1 = [...maze.layout[pos[1] - 1]];
         row2 = [...maze.layout[pos[1]]];
@@ -229,7 +229,8 @@ class Ghost {
         if (reverseR) r = r * -1;
         if (r === 0) return 'up';
         if (r === 1) return 'right';
-        return 'left';
+        if (r === -1) return 'left';
+        return 'down';
       case 'down':
         row1 = [...maze.layout[pos[1] + 1]];
         row2 = [...maze.layout[pos[1]]];
@@ -244,7 +245,8 @@ class Ghost {
         if (reverseR) r = r * -1;
         if (r === 0) return 'down';
         if (r === 1) return 'right';
-        return 'left';
+        if (r === -1) return 'left';
+        return 'up';
     }
   }
 
@@ -265,20 +267,27 @@ class Ghost {
     }
 
     direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction, target);
-      
-    switch (direction) {
-      case 'right':
-        this.moveRight();
-        break;
-      case 'left':
-        this.moveLeft();
-        break;
-      case 'up': 
-        this.moveUp();
-        break;
-      case 'down': 
-        this.moveDown();
-        break;
+    let dir = this.direction;
+    
+    if (this.direction !== direction) {
+      switch (direction) {
+        case 'right':
+          this.moveRight();
+          break;
+        case 'left':
+          this.moveLeft();
+          break;
+        case 'up': 
+          this.moveUp();
+          break;
+        case 'down': 
+          this.moveDown();
+          break;
+      }
+
+      if (this.direction === direction) {
+        this.last = dir;
+      }
     }
 
     this.x += directions[this.direction][0] * this.speed * delta;
