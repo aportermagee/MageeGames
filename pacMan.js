@@ -149,8 +149,62 @@ class Ghost {
     switch (r) {
       case 0:
         let best = Infinity;
-        if (![1, 3].includes(row1[pos])) {
-          best = pos;
+        if (best === Infinity) {
+          for (let i = pos + 1; i < row1.length; i++) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) {
+          for (let i = pos - 1; i >= 0; i--) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) {
+          if (![1, 3].includes(row1[pos])) {
+            best = pos;
+          }
+        }
+        if (best === Infinity) return 2;
+      case 1:
+        let best = Infinity;
+        if (best === Infinity) {
+          if (![1, 3].includes(row1[pos])) {
+            best = pos;
+          }
+        }
+        if (best === Infinity) {
+          for (let i = pos - 1; i >= 0; i--) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) {
+          for (let i = pos + 1; i < row1.length; i++) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) return 2;
+      case -1:
+        let best = Infinity;
+        if (best === Infinity) {
+          if (![1, 3].includes(row1[pos])) {
+            best = pos;
+          }
         }
         if (best === Infinity) {
           for (let i = pos + 1; i < row1.length; i++) {
@@ -222,7 +276,15 @@ class Ghost {
           row2.reverse();
           reverseR = true;
         }
-        r = this.minMove(p, row1, row2);
+        
+        if (this.last === 'right') r = 0;
+        if (this.last === 'down') r = 1;
+        if (this.last === 'up') r = -1;
+        if (this.last === 'left') r = 2;
+        if (reverseR && r !== 2) r = r * -1; 
+        
+        r = this.minMove(p, row1, row2, r);
+        
         if (reverseR) r = r * -1;
         if (r === 0) return 'right';
         if (r === 1) return 'down';
@@ -264,7 +326,15 @@ class Ghost {
           row2.reverse();
           reverseR = true;
         }
-        r = this.minMove(p, row1, row2);
+        
+        if (this.last === 'up') r = 0;
+        if (this.last === 'right') r = 1;
+        if (this.last === 'left') r = -1;
+        if (this.last === 'down') r = 2;
+        if (reverseR && r !== 2) r = r * -1; 
+        
+        r = this.minMove(p, row1, row2, r);
+        
         if (reverseR) r = r * -1;
         if (r === 0) return 'up';
         if (r === 1) return 'right';
@@ -280,7 +350,15 @@ class Ghost {
           row2.reverse();
           reverseR = true;
         }
-        r = this.minMove(p, row1, row2);
+        
+        if (this.last === 'down') r = 0;
+        if (this.last === 'right') r = 1;
+        if (this.last === 'left') r = -1;
+        if (this.last === 'up') r = 2;
+        if (reverseR && r !== 2) r = r * -1; 
+        
+        r = this.minMove(p, row1, row2, r);
+        
         if (reverseR) r = r * -1;
         if (r === 0) return 'down';
         if (r === 1) return 'right';
