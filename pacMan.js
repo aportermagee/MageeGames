@@ -146,9 +146,9 @@ class Ghost {
   }
 
   minMove(pos, row1, row2, r) {
+    let best = Infinity;
     switch (r) {
       case 0:
-        let best = Infinity;
         if (best === Infinity) {
           for (let i = pos + 1; i < row1.length; i++) {
             if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
@@ -174,7 +174,6 @@ class Ghost {
         }
         if (best === Infinity) return 2;
       case 1:
-        let best = Infinity;
         if (best === Infinity) {
           if (![1, 3].includes(row1[pos])) {
             best = pos;
@@ -200,7 +199,6 @@ class Ghost {
         }
         if (best === Infinity) return 2;
       case -1:
-        let best = Infinity;
         if (best === Infinity) {
           if (![1, 3].includes(row1[pos])) {
             best = pos;
@@ -226,7 +224,6 @@ class Ghost {
         }
         if (best === Infinity) return 2;
       case 2:
-        let best = Infinity;
         if (![1, 3].includes(row1[pos])) {
           best = pos;
         }
