@@ -833,6 +833,7 @@ function start() {
   run = true;
   pause = false;
   score = 0;
+  scared = false;
   
   red.x = red.originalX;
   red.y = red.originalY;
@@ -865,6 +866,7 @@ function start() {
 
 function round() {
   run = true;
+  scared = false;
   
   red.x = red.originalX;
   red.y = red.originalY;
