@@ -26,7 +26,6 @@ document.getElementById('login').addEventListener('click', async () => {
   
   localStorage.setItem('user', JSON.stringify(user));
   localStorage.setItem('loggedIn', 'true');
-  localStorage.setItem('supabaseClient', JSON.stringify(supabaseClient));
 
   let emailName = email.split('@')[0];
   

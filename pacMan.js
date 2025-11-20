@@ -62,6 +62,7 @@ class Ghost {
     this.currentTime;
     this.speed = 2;
     this.corner = corner;
+    this.last = 'left';
   }
 
   moveUp() {
@@ -144,77 +145,222 @@ class Ghost {
     }
   }
 
-  minMove(pos, row1, row2) {
+  minMove(pos, row1, row2, r) {
     let best = Infinity;
-    for (let i = 0; i < row1.length; i++) {
-      if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
-        if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
-          best = i;
+    switch (r) {
+      case 0:
+        if (best === Infinity) {
+          for (let i = pos + 1; i < row1.length; i++) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
         }
-      }
+        if (best === Infinity) {
+          for (let i = pos - 1; i >= 0; i--) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) {
+          if (![1, 3].includes(row1[pos])) {
+            best = pos;
+          }
+        }
+        if (best === Infinity) return 2;
+      case 1:
+        if (best === Infinity) {
+          if (![1, 3].includes(row1[pos])) {
+            best = pos;
+          }
+        }
+        if (best === Infinity) {
+          for (let i = pos - 1; i >= 0; i--) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) {
+          for (let i = pos + 1; i < row1.length; i++) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) return 2;
+      case -1:
+        if (best === Infinity) {
+          if (![1, 3].includes(row1[pos])) {
+            best = pos;
+          }
+        }
+        if (best === Infinity) {
+          for (let i = pos + 1; i < row1.length; i++) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) {
+          for (let i = pos - 1; i >= 0; i--) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) return 2;
+      case 2:
+        if (![1, 3].includes(row1[pos])) {
+          best = pos;
+        }
+        if (best === Infinity) {
+          for (let i = pos + 1; i < row1.length; i++) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) {
+          for (let i = pos - 1; i >= 0; i--) {
+            if ((![1, 3].includes(row1[i])) && Math.abs(pos - i) < Math.abs(pos - best)) {
+              if (!row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(1) && !row2.slice(Math.min(pos, i), Math.max(pos, i) + 1).includes(3)) {
+                best = i;
+              }
+            }
+          }
+        }
+        if (best === Infinity) return 2;
     }
-    if (pos === best) {
-      return 0;
-    } 
-    if (best > pos) {
-      return 1;
-    }
+
+    if (pos === best) return 0;
+    if (best > pos) return 1;
     return -1;
   }
   
-  findPath(pos, best) {
+  findPath(pos, best, target) {
     let row1 = [];
     let row2 = [];
     let r;
+    let reverseR = false;
+    let p;
+    
     switch (best) {
       case 'right':
         for (let c = 0; c < maze.layout.length; c++) {
           row1.push(maze.layout[c][pos[0] + 1]);
           row2.push(maze.layout[c][pos[0]]);
         }
-        r = this.minMove(pos[1], row1, row2);
-        if (r === 0) {
-          return 'right';
+        p = pos[1];
+        if (target[1] < pos[1]) {
+          p = 19 - p;
+          row1.reverse();
+          row2.reverse();
+          reverseR = true;
         }
-        if (r === 1) {
-          return 'down';
-        }
-        return 'up';
+        
+        if (this.last === 'right') r = 0;
+        if (this.last === 'down') r = 1;
+        if (this.last === 'up') r = -1;
+        if (this.last === 'left') r = 2;
+        if (reverseR && r !== 2) r = r * -1; 
+        
+        r = this.minMove(p, row1, row2, r);
+        
+        if (reverseR) r = r * -1;
+        if (r === 0) return 'right';
+        if (r === 1) return 'down';
+        if (r === -1) return 'up';
+        return 'left';
       case 'left':
         for (let c = 0; c < maze.layout.length; c++) {
           row1.push(maze.layout[c][pos[0] - 1]);
           row2.push(maze.layout[c][pos[0]]);
         }
-        r = this.minMove(pos[1], row1, row2);
-        if (r === 0) {
-          return 'left';
+        p = pos[1];
+        if (target[1] < pos[1]) {
+          p = 19 - p;
+          row1.reverse();
+          row2.reverse();
+          reverseR = true;
         }
-        if (r === 1) {
-          return 'down';
-        }
-        return 'up';        
+        
+        if (this.last === 'left') r = 0;
+        if (this.last === 'down') r = 1;
+        if (this.last === 'up') r = -1;
+        if (this.last === 'right') r = 2;
+        if (reverseR && r !== 2) r = r * -1; 
+        
+        r = this.minMove(p, row1, row2, r);
+        
+        if (reverseR) r = r * -1;
+        if (r === 0) return 'left';
+        if (r === 1) return 'down';
+        if (r === -1) return 'up';
+        return 'right';
       case 'up':
-        row1 = maze.layout[pos[1] - 1];
-        row2 = maze.layout[pos[1]];
-        r = this.minMove(pos[0], row1, row2);
-        if (r === 0) {
-          return 'up';
+        row1 = [...maze.layout[pos[1] - 1]];
+        row2 = [...maze.layout[pos[1]]];
+        p = pos[0];
+        if (target[0] < pos[0]) {
+          p = 19 - p;
+          row1.reverse();
+          row2.reverse();
+          reverseR = true;
         }
-        if (r === 1) {
-          return 'right';
-        }
-        return 'left';
+        
+        if (this.last === 'up') r = 0;
+        if (this.last === 'right') r = 1;
+        if (this.last === 'left') r = -1;
+        if (this.last === 'down') r = 2;
+        if (reverseR && r !== 2) r = r * -1; 
+        
+        r = this.minMove(p, row1, row2, r);
+        
+        if (reverseR) r = r * -1;
+        if (r === 0) return 'up';
+        if (r === 1) return 'right';
+        if (r === -1) return 'left';
+        return 'down';
       case 'down':
-        row1 = maze.layout[pos[1] + 1];
-        row2 = maze.layout[pos[1]];
-        r = this.minMove(pos[0], row1, row2);
-        if (r === 0) {
-          return 'down';
+        row1 = [...maze.layout[pos[1] + 1]];
+        row2 = [...maze.layout[pos[1]]];
+        p = pos[0];
+        if (target[0] < pos[0]) {
+          p = 19 - p;
+          row1.reverse();
+          row2.reverse();
+          reverseR = true;
         }
-        if (r === 1) {
-          return 'right';
-        }
-        return 'left';
+        
+        if (this.last === 'down') r = 0;
+        if (this.last === 'right') r = 1;
+        if (this.last === 'left') r = -1;
+        if (this.last === 'up') r = 2;
+        if (reverseR && r !== 2) r = r * -1; 
+        
+        r = this.minMove(p, row1, row2, r);
+        
+        if (reverseR) r = r * -1;
+        if (r === 0) return 'down';
+        if (r === 1) return 'right';
+        if (r === -1) return 'left';
+        return 'up';
     }
   }
 
@@ -234,21 +380,28 @@ class Ghost {
       }
     }
 
-    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction);
-      
-    switch (direction) {
-      case 'right':
-        this.moveRight();
-        break;
-      case 'left':
-        this.moveLeft();
-        break;
-      case 'up': 
-        this.moveUp();
-        break;
-      case 'down': 
-        this.moveDown();
-        break;
+    direction = this.findPath([Math.round(this.x), Math.round(this.y)], direction, target);
+    let dir = this.direction;
+    
+    if (this.direction !== direction) {
+      switch (direction) {
+        case 'right':
+          this.moveRight();
+          break;
+        case 'left':
+          this.moveLeft();
+          break;
+        case 'up': 
+          this.moveUp();
+          break;
+        case 'down': 
+          this.moveDown();
+          break;
+      }
+
+      if (this.direction === direction) {
+        this.last = dir;
+      }
     }
 
     this.x += directions[this.direction][0] * this.speed * delta;
@@ -258,7 +411,6 @@ class Ghost {
   update(delta) {
     if (semiScared) {
       this.color = 'rgb(255, 255, 255)';
-      this.eyeColor = 'rgb(255, 0, 0)';
     } else if (scared) {
       this.color = 'rgb(0, 0, 255)';
       this.eyeColor = 'rgb(0, 0, 255)';
@@ -513,6 +665,8 @@ class PacMan {
       case 2:
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
+        scared = true;
+        scaredTime = this.currentTime;
         break;
     }
   }
@@ -553,22 +707,22 @@ class Maze {
     this.layout = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
-      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1],
-      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-      [1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1],
-      [1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-      [1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1],
-      [1, 2, 0, 0, 0, 0, 0, 0, 1, 3, 3, 1, 0, 0, 0, 0, 0, 0, 2, 1],
-      [1, 1, 1, 1, 1, 0, 1, 0, 1, 4, 4, 1, 0, 1, 0, 1, 1, 1, 1, 1],
-      [4, 4, 4, 4, 4, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 4, 4, 4, 4, 4],   
-      [1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1],
-      [1, 2, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 2, 1],
-      [1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1],
-      [1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1],
-      [1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-      [1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1],
+      [1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 0, 1, 3, 3, 1, 0, 1, 0, 1, 1, 1, 0, 1],
+      [1, 0, 0, 0, 0, 0, 1, 0, 1, 4, 4, 1, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1],
+      [4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4],   
+      [1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
+      [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
       [1, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],    
     ];
@@ -628,10 +782,10 @@ let semiScared = false;
 let scaredTime;
 let lastSemiScared = performance.now();
 
-const red = new Ghost('red', 9, 7, 'rgb(255, 0, 0)', 0, [1, 1]);
-const blue = new Ghost('blue', 10, 7, 'rgb(0, 200, 250)', 3, [18, 1]);
-const pink = new Ghost('pink', 9, 8, 'rgb(255, 150, 255)', 6, [18, 18]);
-const orange = new Ghost('orange', 10, 8, 'rgb(255, 130, 0)', 9, [1, 18]);
+const red = new Ghost('red', 9, 6, 'rgb(255, 0, 0)', 0, [1, 1]);
+const blue = new Ghost('blue', 10, 6, 'rgb(0, 200, 250)', 3, [18, 1]);
+const pink = new Ghost('pink', 9, 7, 'rgb(255, 150, 255)', 6, [18, 18]);
+const orange = new Ghost('orange', 10, 7, 'rgb(255, 130, 0)', 9, [1, 18]);
 const pacMan = new PacMan(9, 18);
 const maze = new Maze();
 
@@ -653,6 +807,7 @@ function update(delta, currentTime) {
       scared = false;
       semiScared = false;
     } else if ((currentTime - scaredTime) / 1000 > 5 && (currentTime - lastSemiScared) / 1000 > 1) {
+      lastSemiScared = currentTime;
       semiScared = (semiScared) ? false : true;
     }
   }
@@ -678,6 +833,7 @@ function start() {
   run = true;
   pause = false;
   score = 0;
+  scared = false;
   
   red.x = red.originalX;
   red.y = red.originalY;
@@ -710,6 +866,7 @@ function start() {
 
 function round() {
   run = true;
+  scared = false;
   
   red.x = red.originalX;
   red.y = red.originalY;
