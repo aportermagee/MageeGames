@@ -933,7 +933,7 @@ function round() {
 function checkForDots() {
   for (let y = 0; y < maze.layout.length; y++) {
     for (let x = 0; x < maze.layout[y].length; x++) {
-      if ([0, 2].includes(maze.layout[y][x]) return true;
+      if ([0, 2].includes(maze.layout[y][x])) return true;
     }
   }
   return false;
