@@ -821,19 +821,19 @@ function update(delta, currentTime) {
     }
 
     red.update(delta);
-    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; }
+    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now(); }
     blue.update(delta);
-    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; }
+    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now(); }
     orange.update(delta);
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; }
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now(); }
     pink.update(delta);
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; }
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now(); }
     
     pacMan.update(delta);
-    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; }
-    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; }
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; }
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; }
+    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now(); }
+    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now(); }
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now(); }
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now(); }
   } else {
     red.update(delta);
     if (collision(red, pacMan)) { lives -= 1; round(); }
