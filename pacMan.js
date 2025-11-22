@@ -821,19 +821,19 @@ function update(delta, currentTime) {
     }
 
     red.update(delta);
-    if (collision(red, pacMan)) red.x = red.originalX; red.y = red.originalY;
+    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; }
     blue.update(delta);
-    if (collision(blue, pacMan)) blue.x = blue.originalX; blue.y = blue.originalY;
+    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; }
     orange.update(delta);
-    if (collision(orange, pacMan)) orange.x = orange.originalX; orange.y = orange.originalY;
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; }
     pink.update(delta);
-    if (collision(pink, pacMan)) pink.x = pink.originalX; pink.y = pink.originalY;
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; }
     
     pacMan.update(delta);
-    if (collision(red, pacMan)) red.x = red.originalX; red.y = red.originalY;
-    if (collision(blue, pacMan)) blue.x = blue.originalX; blue.y = blue.originalY;
-    if (collision(orange, pacMan)) orange.x = orange.originalX; orange.y = orange.originalY;
-    if (collision(pink, pacMan)) pink.x = pink.originalX; pink.y = pink.originalY;
+    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; }
+    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; }
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; }
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; }
   } else {
     red.update(delta);
     if (collision(red, pacMan)) { lives -= 1; round(); }
