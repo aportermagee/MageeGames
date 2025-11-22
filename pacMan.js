@@ -661,14 +661,14 @@ class PacMan {
       case 0:
         score += 5;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
-        if (checkForDots() === false) { r += 1; round(); } 
+        if (checkForDots() === false) { r += 1; startPos(); } 
         break;
       case 2:
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
         scared = true;
         scaredTime = this.currentTime;
-        if (checkForDots() === false) { r += 1; round(); }
+        if (checkForDots() === false) { r += 1; startPos(); }
         break;
     }
   }
@@ -937,6 +937,36 @@ function checkForDots() {
     }
   }
   return false;
+}
+
+function startPos() {
+  scared = false;
+  
+  red.x = red.originalX;
+  red.y = red.originalY;
+  red.direction = 'right';
+  red.free = false;
+  red.startTime = performance.now() / 1000;  
+  blue.x = blue.originalX;
+  blue.y = blue.originalY;
+  blue.direction = 'right';
+  blue.free = false;
+  blue.startTime = performance.now() / 1000;  
+  pink.x = pink.originalX;
+  pink.y = pink.originalY;
+  pink.direction = 'right';
+  pink.free = false;
+  pink.startTime = performance.now() / 1000;
+  orange.x = orange.originalX;
+  orange.y = orange.originalY;
+  orange.direction = 'right';
+  orange.free = false;
+  orange.startTime = performance.now() / 1000;
+  pacMan.x = pacMan.originalX;
+  pacMan.y = pacMan.originalY;
+  pacMan.direction = 'right';
+
+  lastTime = performance.now();
 }
 
 // --- Main Loop ---
