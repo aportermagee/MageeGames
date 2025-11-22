@@ -661,14 +661,14 @@ class PacMan {
       case 0:
         score += 5;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
-        if (checkForDots() === false) round += 1; round();
+        if (checkForDots() === false) { r += 1; round(); } 
         break;
       case 2:
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
         scared = true;
         scaredTime = this.currentTime;
-        if (checkForDots() === false) r += 1; round();
+        if (checkForDots() === false) { r += 1; round(); }
         break;
     }
   }
@@ -836,19 +836,19 @@ function update(delta, currentTime) {
     if (collision(pink, pacMan)) pink.x = pink.originalX; pink.y = pink.originalY;
   } else {
     red.update(delta);
-    if (collision(red, pacMan)) lives -= 1; round();
+    if (collision(red, pacMan)) { lives -= 1; round(); }
     blue.update(delta);
-    if (collision(blue, pacMan)) lives -= 1; round();
+    if (collision(blue, pacMan)) { lives -= 1; round(); }
     orange.update(delta);
-    if (collision(orange, pacMan)) lives -= 1; round();
+    if (collision(orange, pacMan)) { lives -= 1; round(); }
     pink.update(delta);
-    if (collision(pink, pacMan)) lives -= 1; round();
+    if (collision(pink, pacMan)) { lives -= 1; round(); }
     
     pacMan.update(delta);
-    if (collision(red, pacMan)) lives -= 1; round();
-    if (collision(blue, pacMan)) lives -= 1; round();
-    if (collision(orange, pacMan)) lives -= 1; round();
-    if (collision(pink, pacMan)) lives -= 1; round();
+    if (collision(red, pacMan)) { lives -= 1; round(); }
+    if (collision(blue, pacMan)) { lives -= 1; round(); }
+    if (collision(orange, pacMan)) { lives -= 1; round(); }
+    if (collision(pink, pacMan)) { lives -= 1; round(); }
   }
   
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
