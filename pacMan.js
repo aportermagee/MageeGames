@@ -668,7 +668,7 @@ class PacMan {
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
         scared = true;
         scaredTime = this.currentTime;
-        if (checkForDots() === false) round += 1; round();
+        if (checkForDots() === false) r += 1; round();
         break;
     }
   }
@@ -784,7 +784,7 @@ let semiScared = false;
 let scaredTime;
 let lastSemiScared = performance.now();
 let lives = 3;
-let round = 1;
+let r = 1;
 
 const red = new Ghost('red', 9, 6, 'rgb(255, 0, 0)', 0, [1, 1]);
 const blue = new Ghost('blue', 10, 6, 'rgb(0, 200, 250)', 3, [18, 1]);
@@ -851,7 +851,7 @@ function update(delta, currentTime) {
     if (collision(pink, pacMan)) lives -= 1; round();
   }
   
-  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + round;
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
 }
 
 function resume() {
@@ -931,9 +931,9 @@ function round() {
 }
 
 function checkForDots() {
-  for (let y = 0; y < Maze.layout.length; y++) {
-    for (let x = 0; x < Maze.layout[y].length; x++) {
-      if ([0, 2].includes(Maze.layout[y][x]) return true;
+  for (let y = 0; y < maze.layout.length; y++) {
+    for (let x = 0; x < maze.layout[y].length; x++) {
+      if ([0, 2].includes(maze.layout[y][x]) return true;
     }
   }
   return false;
