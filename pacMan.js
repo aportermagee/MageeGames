@@ -68,13 +68,13 @@ class Ghost {
   moveUp() {
     switch (this.direction) {
       case 'right':
-        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.ceil(this.x) === Math.floor(this.x + 0.5)) {
+        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.ceil(this.x) === Math.floor(this.x + 0.2)) {
           this.x = Math.round(this.x);
           this.direction = 'up';
         }
         break;
       case 'left':
-        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.floor(this.x) === Math.ceil(this.x - 0.5)) {
+        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.floor(this.x) === Math.ceil(this.x - 0.2)) {
           this.x = Math.round(this.x);
           this.direction = 'up';
         }
@@ -88,13 +88,13 @@ class Ghost {
   moveDown() {
     switch (this.direction) {
       case 'right':
-        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.ceil(this.x) === Math.floor(this.x + 0.5)) {
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.ceil(this.x) === Math.floor(this.x + 0.2)) {
           this.x = Math.round(this.x);
           this.direction = 'down';
         }
         break;
       case 'left':
-        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.floor(this.x) === Math.ceil(this.x - 0.5)) {
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.floor(this.x) === Math.ceil(this.x - 0.2)) {
           this.x = Math.round(this.x);
           this.direction = 'down';
         }
@@ -108,13 +108,13 @@ class Ghost {
   moveRight() {
     switch (this.direction) {
       case 'up':
-        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.5)) {
+        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.2)) {
           this.y = Math.round(this.y);
           this.direction = 'right';
         }
         break;
       case 'down':
-        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.5)) {
+        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.2)) {
           this.y = Math.round(this.y);
           this.direction = 'right';
         }
@@ -128,13 +128,13 @@ class Ghost {
   moveLeft() {
     switch (this.direction) {
       case 'up':
-        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.5)) {
+        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.2)) {
           this.y = Math.round(this.y);
           this.direction = 'left';
         }
         break;
       case 'down':
-        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.5)) {
+        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.2)) {
           this.y = Math.round(this.y);
           this.direction = 'left';
         }
@@ -661,12 +661,14 @@ class PacMan {
       case 0:
         score += 5;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
+        if (checkForDots() === false) round += 1; round();
         break;
       case 2:
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
         scared = true;
         scaredTime = this.currentTime;
+        if (checkForDots() === false) round += 1; round();
         break;
     }
   }
@@ -781,6 +783,8 @@ let scared = false;
 let semiScared = false;
 let scaredTime;
 let lastSemiScared = performance.now();
+let lives = 3;
+let round = 1;
 
 const red = new Ghost('red', 9, 6, 'rgb(255, 0, 0)', 0, [1, 1]);
 const blue = new Ghost('blue', 10, 6, 'rgb(0, 200, 250)', 3, [18, 1]);
@@ -788,6 +792,11 @@ const pink = new Ghost('pink', 9, 7, 'rgb(255, 150, 255)', 6, [18, 18]);
 const orange = new Ghost('orange', 10, 7, 'rgb(255, 130, 0)', 9, [1, 18]);
 const pacMan = new PacMan(9, 18);
 const maze = new Maze();
+
+function collision(a, b) {
+  if (Math.round(a.x) === Math.round(b.x) && Math.round(a.y) === Math.round(b.y)) return true;
+  return false;
+}
 
 function draw() {
     ctx.fillStyle = 'rgb(0, 0, 0)';
@@ -810,15 +819,39 @@ function update(delta, currentTime) {
       lastSemiScared = currentTime;
       semiScared = (semiScared) ? false : true;
     }
+
+    red.update(delta);
+    if (collision(red, pacMan)) red.x = red.originalX; red.y = red.originalY;
+    blue.update(delta);
+    if (collision(blue, pacMan)) blue.x = blue.originalX; blue.y = blue.originalY;
+    orange.update(delta);
+    if (collision(orange, pacMan)) orange.x = orange.originalX; orange.y = orange.originalY;
+    pink.update(delta);
+    if (collision(pink, pacMan)) pink.x = pink.originalX; pink.y = pink.originalY;
+    
+    pacMan.update(delta);
+    if (collision(red, pacMan)) red.x = red.originalX; red.y = red.originalY;
+    if (collision(blue, pacMan)) blue.x = blue.originalX; blue.y = blue.originalY;
+    if (collision(orange, pacMan)) orange.x = orange.originalX; orange.y = orange.originalY;
+    if (collision(pink, pacMan)) pink.x = pink.originalX; pink.y = pink.originalY;
+  } else {
+    red.update(delta);
+    if (collision(red, pacMan)) lives -= 1; round();
+    blue.update(delta);
+    if (collision(blue, pacMan)) lives -= 1; round();
+    orange.update(delta);
+    if (collision(orange, pacMan)) lives -= 1; round();
+    pink.update(delta);
+    if (collision(pink, pacMan)) lives -= 1; round();
+    
+    pacMan.update(delta);
+    if (collision(red, pacMan)) lives -= 1; round();
+    if (collision(blue, pacMan)) lives -= 1; round();
+    if (collision(orange, pacMan)) lives -= 1; round();
+    if (collision(pink, pacMan)) lives -= 1; round();
   }
-
-  red.update(delta);
-  pacMan.update(delta);
-  blue.update(delta);
-  orange.update(delta);
-  pink.update(delta);
-
-  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+  
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + round;
 }
 
 function resume() {
@@ -897,6 +930,15 @@ function round() {
   requestAnimationFrame(gameLoop);
 }
 
+function checkForDots() {
+  for (let y = 0; y < Maze.layout.length; y++) {
+    for (let x = 0; x < Maze.layout[y].length; x++) {
+      if ([0, 2].includes(Maze.layout[y][x]) return true;
+    }
+  }
+  return false;
+}
+
 // --- Main Loop ---
 lastTime = performance.now();
 
@@ -907,7 +949,7 @@ function gameLoop(currentTime) {
     update(delta, currentTime);
     draw();
 
-    if (!pause) {
+    if (!pause && run) {
       requestAnimationFrame(gameLoop);
     }
 }
