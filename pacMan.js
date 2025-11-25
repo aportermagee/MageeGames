@@ -979,6 +979,17 @@ function gameLoop(currentTime) {
     update(delta, currentTime);
     draw();
 
+    if (lives <= 0) {
+      run = false;
+
+      if (highScore < score) {
+        highScore = score;
+        getHighScore().then(function() {
+          document.getElementById('score').textContent = 'Score: 0 | High Score: ' + highScore;
+        });
+      }
+    }
+    
     if (!pause && run) {
       requestAnimationFrame(gameLoop);
     }
