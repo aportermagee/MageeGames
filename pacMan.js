@@ -785,6 +785,7 @@ let scaredTime;
 let lastSemiScared = performance.now();
 let lives = 3;
 let r = 1;
+let scaredTimePauseInterval;
 
 const red = new Ghost('red', 9, 6, 'rgb(255, 0, 0)', 0, [1, 1]);
 const blue = new Ghost('blue', 10, 6, 'rgb(0, 200, 250)', 3, [18, 1]);
@@ -857,6 +858,7 @@ function update(delta, currentTime) {
 function resume() {
   run = true;
   pause = false;
+  scaredTime = performance.now() - scaredTimePauseInterval;
   
   lastTime = performance.now();
   requestAnimationFrame(gameLoop);
@@ -1007,6 +1009,7 @@ const pauseBtn = document.getElementById('pauseBtn');
 pauseBtn.addEventListener('click', function() {
   if (run) {
     pause = true;
+    scaredTimePauseInterval = performance.now() - scaredTime;
   }
 });
 
