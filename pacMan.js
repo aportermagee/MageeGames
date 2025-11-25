@@ -984,7 +984,7 @@ function gameLoop(currentTime) {
 
       if (highScore < score) {
         highScore = score;
-        getHighScore().then(function() {
+        updateHighScore().then(function() {
           document.getElementById('score').textContent = 'Score: 0 | High Score: ' + highScore;
         });
       }
