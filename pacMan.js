@@ -68,13 +68,13 @@ class Ghost {
   moveUp() {
     switch (this.direction) {
       case 'right':
-        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.ceil(this.x) === Math.floor(this.x + 0.5)) {
+        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.ceil(this.x) === Math.floor(this.x + 0.2)) {
           this.x = Math.round(this.x);
           this.direction = 'up';
         }
         break;
       case 'left':
-        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.floor(this.x) === Math.ceil(this.x - 0.5)) {
+        if (maze.layout[this.y - 1][Math.round(this.x)] !== 1 && Math.floor(this.x) === Math.ceil(this.x - 0.2)) {
           this.x = Math.round(this.x);
           this.direction = 'up';
         }
@@ -88,13 +88,13 @@ class Ghost {
   moveDown() {
     switch (this.direction) {
       case 'right':
-        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.ceil(this.x) === Math.floor(this.x + 0.5)) {
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.ceil(this.x) === Math.floor(this.x + 0.2)) {
           this.x = Math.round(this.x);
           this.direction = 'down';
         }
         break;
       case 'left':
-        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.floor(this.x) === Math.ceil(this.x - 0.5)) {
+        if (![1, 3].includes(maze.layout[this.y + 1][Math.round(this.x)]) && Math.floor(this.x) === Math.ceil(this.x - 0.2)) {
           this.x = Math.round(this.x);
           this.direction = 'down';
         }
@@ -108,13 +108,13 @@ class Ghost {
   moveRight() {
     switch (this.direction) {
       case 'up':
-        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.5)) {
+        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.2)) {
           this.y = Math.round(this.y);
           this.direction = 'right';
         }
         break;
       case 'down':
-        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.5)) {
+        if (maze.layout[Math.round(this.y)][this.x + 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.2)) {
           this.y = Math.round(this.y);
           this.direction = 'right';
         }
@@ -128,13 +128,13 @@ class Ghost {
   moveLeft() {
     switch (this.direction) {
       case 'up':
-        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.5)) {
+        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.floor(this.y) === Math.ceil(this.y - 0.2)) {
           this.y = Math.round(this.y);
           this.direction = 'left';
         }
         break;
       case 'down':
-        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.5)) {
+        if (maze.layout[Math.round(this.y)][this.x - 1] !== 1 && Math.ceil(this.y) === Math.floor(this.y + 0.2)) {
           this.y = Math.round(this.y);
           this.direction = 'left';
         }
@@ -661,12 +661,14 @@ class PacMan {
       case 0:
         score += 5;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
+        if (checkForDots() === false) { r += 1; round(); } 
         break;
       case 2:
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
         scared = true;
         scaredTime = this.currentTime;
+        if (checkForDots() === false) { r += 1; round(); }
         break;
     }
   }
@@ -781,6 +783,8 @@ let scared = false;
 let semiScared = false;
 let scaredTime;
 let lastSemiScared = performance.now();
+let lives = 3;
+let r = 1;
 
 const red = new Ghost('red', 9, 6, 'rgb(255, 0, 0)', 0, [1, 1]);
 const blue = new Ghost('blue', 10, 6, 'rgb(0, 200, 250)', 3, [18, 1]);
@@ -788,6 +792,11 @@ const pink = new Ghost('pink', 9, 7, 'rgb(255, 150, 255)', 6, [18, 18]);
 const orange = new Ghost('orange', 10, 7, 'rgb(255, 130, 0)', 9, [1, 18]);
 const pacMan = new PacMan(9, 18);
 const maze = new Maze();
+
+function collision(a, b) {
+  if (Math.round(a.x) === Math.round(b.x) && Math.round(a.y) === Math.round(b.y)) return true;
+  return false;
+}
 
 function draw() {
     ctx.fillStyle = 'rgb(0, 0, 0)';
@@ -810,15 +819,39 @@ function update(delta, currentTime) {
       lastSemiScared = currentTime;
       semiScared = (semiScared) ? false : true;
     }
+
+    red.update(delta);
+    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000; }
+    blue.update(delta);
+    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; }
+    orange.update(delta);
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000; }
+    pink.update(delta);
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000; }
+    
+    pacMan.update(delta);
+    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000; }
+    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; }
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000; }
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000; }
+  } else {
+    red.update(delta);
+    if (collision(red, pacMan)) { lives -= 1; startPos(); }
+    blue.update(delta);
+    if (collision(blue, pacMan)) { lives -= 1; startPos(); }
+    orange.update(delta);
+    if (collision(orange, pacMan)) { lives -= 1; startPos(); }
+    pink.update(delta);
+    if (collision(pink, pacMan)) { lives -= 1; startPos(); }
+    
+    pacMan.update(delta);
+    if (collision(red, pacMan)) { lives -= 1; startPos(); }
+    if (collision(blue, pacMan)) { lives -= 1; startPos(); }
+    if (collision(orange, pacMan)) { lives -= 1; startPos(); }
+    if (collision(pink, pacMan)) { lives -= 1; startPos(); }
   }
-
-  red.update(delta);
-  pacMan.update(delta);
-  blue.update(delta);
-  orange.update(delta);
-  pink.update(delta);
-
-  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore;
+  
+  scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
 }
 
 function resume() {
@@ -897,6 +930,45 @@ function round() {
   requestAnimationFrame(gameLoop);
 }
 
+function checkForDots() {
+  for (let y = 0; y < maze.layout.length; y++) {
+    for (let x = 0; x < maze.layout[y].length; x++) {
+      if ([0, 2].includes(maze.layout[y][x])) return true;
+    }
+  }
+  return false;
+}
+
+function startPos() {
+  scared = false;
+  
+  red.x = red.originalX;
+  red.y = red.originalY;
+  red.direction = 'right';
+  red.free = false;
+  red.startTime = performance.now() / 1000;  
+  blue.x = blue.originalX;
+  blue.y = blue.originalY;
+  blue.direction = 'right';
+  blue.free = false;
+  blue.startTime = performance.now() / 1000;  
+  pink.x = pink.originalX;
+  pink.y = pink.originalY;
+  pink.direction = 'right';
+  pink.free = false;
+  pink.startTime = performance.now() / 1000;
+  orange.x = orange.originalX;
+  orange.y = orange.originalY;
+  orange.direction = 'right';
+  orange.free = false;
+  orange.startTime = performance.now() / 1000;
+  pacMan.x = pacMan.originalX;
+  pacMan.y = pacMan.originalY;
+  pacMan.direction = 'right';
+
+  lastTime = performance.now();
+}
+
 // --- Main Loop ---
 lastTime = performance.now();
 
@@ -907,7 +979,7 @@ function gameLoop(currentTime) {
     update(delta, currentTime);
     draw();
 
-    if (!pause) {
+    if (!pause && run) {
       requestAnimationFrame(gameLoop);
     }
 }
