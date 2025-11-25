@@ -981,6 +981,7 @@ function gameLoop(currentTime) {
 
     if (lives <= 0) {
       run = false;
+      pause = false;
 
       if (highScore < score) {
         highScore = score;
