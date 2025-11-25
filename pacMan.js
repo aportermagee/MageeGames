@@ -785,6 +785,8 @@ let scaredTime;
 let lastSemiScared = performance.now();
 let lives = 3;
 let r = 1;
+let scaredTimePauseInterval;
+let ghostBonus = 200;
 
 const red = new Ghost('red', 9, 6, 'rgb(255, 0, 0)', 0, [1, 1]);
 const blue = new Ghost('blue', 10, 6, 'rgb(0, 200, 250)', 3, [18, 1]);
@@ -812,6 +814,7 @@ function draw() {
 
 function update(delta, currentTime) {
   if (scared === true) {
+    ghostBonus = 200;
     if ((currentTime - scaredTime) / 1000 > scareTime) {
       scared = false;
       semiScared = false;
@@ -821,20 +824,22 @@ function update(delta, currentTime) {
     }
 
     red.update(delta);
-    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000; }
+    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; }
     blue.update(delta);
-    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; }
+    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
     orange.update(delta);
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000; }
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; }
     pink.update(delta);
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000; }
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; }
     
     pacMan.update(delta);
-    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000; }
-    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; }
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000; }
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000; }
+    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
+    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
   } else {
+    semiScared = false;
+    
     red.update(delta);
     if (collision(red, pacMan)) { lives -= 1; startPos(); }
     blue.update(delta);
@@ -857,16 +862,19 @@ function update(delta, currentTime) {
 function resume() {
   run = true;
   pause = false;
+  scaredTime = performance.now() - scaredTimePauseInterval;
   
   lastTime = performance.now();
   requestAnimationFrame(gameLoop);
 }
 
 function start() {
+  console.log('Starting...');
   run = true;
   pause = false;
   score = 0;
   scared = false;
+  lives = 3;
   
   red.x = red.originalX;
   red.y = red.originalY;
@@ -979,6 +987,18 @@ function gameLoop(currentTime) {
     update(delta, currentTime);
     draw();
 
+    if (lives <= 0) {
+      run = false;
+      pause = false;
+
+      if (highScore < score) {
+        highScore = score;
+        updateHighScore().then(function() {
+          document.getElementById('score').textContent = 'Score: 0 | High Score: ' + highScore;
+        });
+      }
+    }
+    
     if (!pause && run) {
       requestAnimationFrame(gameLoop);
     }
@@ -993,6 +1013,7 @@ const pauseBtn = document.getElementById('pauseBtn');
 pauseBtn.addEventListener('click', function() {
   if (run) {
     pause = true;
+    scaredTimePauseInterval = performance.now() - scaredTime;
   }
 });
 
