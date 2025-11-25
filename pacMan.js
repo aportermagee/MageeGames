@@ -863,10 +863,12 @@ function resume() {
 }
 
 function start() {
+  console.log('Starting...');
   run = true;
   pause = false;
   score = 0;
   scared = false;
+  lives = 3;
   
   red.x = red.originalX;
   red.y = red.originalY;
