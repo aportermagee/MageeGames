@@ -820,6 +820,7 @@ function deathEffect() {
       
     if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; return false; }
   }
+  draw();
   return true;
 }
 
