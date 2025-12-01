@@ -818,7 +818,7 @@ function deathEffect() {
     pacMan.lastTime = pacMan.currentTime;
     pacMan.mouth += 0.05;
       
-    if (pacMan.mouth >= 1) return false;
+    if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; return false; }
   }
   return false;
 }
