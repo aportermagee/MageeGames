@@ -787,6 +787,7 @@ let lives = 3;
 let r = 1;
 let scaredTimePauseInterval;
 let ghostBonus = 200;
+let isDying = false;
 
 const red = new Ghost('red', 9, 6, 'rgb(255, 0, 0)', 0, [1, 1]);
 const blue = new Ghost('blue', 10, 6, 'rgb(0, 200, 250)', 3, [18, 1]);
@@ -818,10 +819,8 @@ function deathEffect() {
     pacMan.lastTime = pacMan.currentTime;
     pacMan.mouth += 0.05;
       
-    if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; return false; }
-    draw();
+    if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; isDying = false; startPos(); }
   }
-  return true;
 }
 
 function update(delta, currentTime) {
@@ -853,19 +852,19 @@ function update(delta, currentTime) {
     semiScared = false;
     
     red.update(delta);
-    if (collision(red, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
+    if (collision(red, pacMan)) { lives -= 1; isDying = true; }
     blue.update(delta);
-    if (collision(blue, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
+    if (collision(blue, pacMan)) { lives -= 1; isDying = true; }
     orange.update(delta);
-    if (collision(orange, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
+    if (collision(orange, pacMan)) { lives -= 1; isDying = true; }
     pink.update(delta);
-    if (collision(pink, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
+    if (collision(pink, pacMan)) { lives -= 1; isDying = true; }
     
     pacMan.update(delta);
-    if (collision(red, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
-    if (collision(blue, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
-    if (collision(orange, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
-    if (collision(pink, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
+    if (collision(red, pacMan)) { lives -= 1; isDying = true; }
+    if (collision(blue, pacMan)) { lives -= 1; isDying = true; }
+    if (collision(orange, pacMan)) { lives -= 1; isDying = true; }
+    if (collision(pink, pacMan)) { lives -= 1; isDying = true; }
   }
   
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
