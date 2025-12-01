@@ -1027,6 +1027,8 @@ draw();
 // --- Buttons & Inputs ---
 const startBtn = document.getElementById('startBtn');
 const pauseBtn = document.getElementById('pauseBtn');
+const homeBtn = document.getElementById('homeBtn');
+const controlsBtn = document.getElementById('controlsBtn');
 
 pauseBtn.addEventListener('click', function() {
   if (run) {
@@ -1042,6 +1044,14 @@ startBtn.addEventListener('click', function() {
   if (pause) {
     resume();
   }
+});
+
+homeBtn.addEventListener('click', funtion() {
+  window.location.href = 'home';
+});
+
+controlsBtn.addEventListener('click', function() {
+  alert('Right Arrow: right\nLeft Arrow: Left\nDown Arrow: Down\nUp Arrow: Up');
 });
 
 document.addEventListener('keydown', event => {
