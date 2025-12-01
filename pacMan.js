@@ -1046,7 +1046,7 @@ startBtn.addEventListener('click', function() {
   }
 });
 
-homeBtn.addEventListener('click', funtion() {
+homeBtn.addEventListener('click', function() {
   window.location.href = 'home';
 });
 
