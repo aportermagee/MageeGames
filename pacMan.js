@@ -852,19 +852,19 @@ function update(delta, currentTime) {
     semiScared = false;
     
     red.update(delta);
-    if (collision(red, pacMan)) { lives -= 1; isDying = true; }
+    if (collision(red, pacMan) && !isDying) { lives -= 1; isDying = true; }
     blue.update(delta);
-    if (collision(blue, pacMan)) { lives -= 1; isDying = true; }
+    if (collision(blue, pacMan) && !isDying) { lives -= 1; isDying = true; }
     orange.update(delta);
-    if (collision(orange, pacMan)) { lives -= 1; isDying = true; }
+    if (collision(orange, pacMan) && !isDying) { lives -= 1; isDying = true; }
     pink.update(delta);
-    if (collision(pink, pacMan)) { lives -= 1; isDying = true; }
+    if (collision(pink, pacMan) && !isDying) { lives -= 1; isDying = true; }
     
     pacMan.update(delta);
-    if (collision(red, pacMan)) { lives -= 1; isDying = true; }
-    if (collision(blue, pacMan)) { lives -= 1; isDying = true; }
-    if (collision(orange, pacMan)) { lives -= 1; isDying = true; }
-    if (collision(pink, pacMan)) { lives -= 1; isDying = true; }
+    if (collision(red, pacMan) && !isDying) { lives -= 1; isDying = true; }
+    if (collision(blue, pacMan) && !isDying) { lives -= 1; isDying = true; }
+    if (collision(orange, pacMan) && !isDying) { lives -= 1; isDying = true; }
+    if (collision(pink, pacMan) && !isDying) { lives -= 1; isDying = true; }
   }
   
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
@@ -1017,7 +1017,7 @@ function gameLoop(currentTime) {
       }
     }
     
-    if (!pause && run) {
+    if ((!pause && run) || isDying) {
       requestAnimationFrame(gameLoop);
     }
 }
