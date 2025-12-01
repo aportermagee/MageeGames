@@ -818,10 +818,10 @@ function deathEffect() {
     pacMan.lastTime = pacMan.currentTime;
     pacMan.mouth += 0.05;
       
-    if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; return; }
+    if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; return false; }
+    draw();
   }
-  draw();
-  deathEffect();
+  return true;
 }
 
 function update(delta, currentTime) {
@@ -853,19 +853,19 @@ function update(delta, currentTime) {
     semiScared = false;
     
     red.update(delta);
-    if (collision(red, pacMan)) { lives -= 1; deathEffect(); startPos(); }
+    if (collision(red, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
     blue.update(delta);
-    if (collision(blue, pacMan)) { lives -= 1; deathEffect(); startPos(); }
+    if (collision(blue, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
     orange.update(delta);
-    if (collision(orange, pacMan)) { lives -= 1; deathEffect(); startPos(); }
+    if (collision(orange, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
     pink.update(delta);
-    if (collision(pink, pacMan)) { lives -= 1; deathEffect(); startPos(); }
+    if (collision(pink, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
     
     pacMan.update(delta);
-    if (collision(red, pacMan)) { lives -= 1; deathEffect(); startPos(); }
-    if (collision(blue, pacMan)) { lives -= 1; deathEffect(); startPos(); }
-    if (collision(orange, pacMan)) { lives -= 1; deathEffect(); startPos(); }
-    if (collision(pink, pacMan)) { lives -= 1; deathEffect(); startPos(); }
+    if (collision(red, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
+    if (collision(blue, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
+    if (collision(orange, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
+    if (collision(pink, pacMan)) { lives -= 1; while (deathEffect()); startPos(); }
   }
   
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
