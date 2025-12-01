@@ -11,7 +11,7 @@ document.getElementById('signup').addEventListener('click', async () => {
   const { data, error } = await supabaseClient.auth.signUp({ email, password });
   if (error) return alert('Error: ' + error.message);
 
-  alert('Sign up successful!\n\nOnce you click the verification link that you have recieved via email you will be able to log in (ignore the page the link takes you to)');
+  alert('Sign up successful!');
 });
 
 // --- Login ---
