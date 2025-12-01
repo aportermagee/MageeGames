@@ -1051,7 +1051,7 @@ homeBtn.addEventListener('click', funtion() {
 });
 
 controlsBtn.addEventListener('click', function() {
-  alert('Right Arrow: right\nLeft Arrow: Left\nDown Arrow: Down\nUp Arrow: Up');
+  alert('Controls:\nRight Arrow: right\nLeft Arrow: Left\nDown Arrow: Down\nUp Arrow: Up');
 });
 
 document.addEventListener('keydown', event => {
