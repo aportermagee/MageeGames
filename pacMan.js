@@ -820,7 +820,7 @@ function deathEffect() {
       
     if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; return false; }
   }
-  return false;
+  return true;
 }
 
 function update(delta, currentTime) {
