@@ -817,7 +817,7 @@ function deathEffect() {
   pacMan.currentTime = performance.now();
   if (pacMan.currentTime - pacMan.lastTime > 20) {
     pacMan.lastTime = pacMan.currentTime;
-    pacMan.mouth += 0.05;
+    pacMan.mouth += 0.025;
       
     if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; isDying = false; startPos(); }
   }
@@ -994,6 +994,13 @@ lastTime = performance.now();
 function gameLoop(currentTime) {
     let delta = (currentTime - lastTime) / 1000;
     lastTime = currentTime;
+    
+    if (isDying) {
+      deathEffect();
+      draw();
+      requestAnimationFrame(gameLoop);
+      return;
+    }
     
     update(delta, currentTime);
     draw();
