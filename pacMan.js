@@ -773,6 +773,7 @@ ctx.imageSmoothingEnabled = false;
 const box = 26;
 const speed = 3;
 const scoreP = document.getElementById('score');
+const livesP = document.getElementById('lives');
 const scareTime = 10;
 
 let score = 0;
@@ -868,6 +869,7 @@ function update(delta, currentTime) {
   }
   
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
+  livesP.textContent = 'Lives: ' + lives;
 }
 
 function resume() {
