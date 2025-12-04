@@ -449,7 +449,7 @@ class Ghost {
         'orange': orangeTargeting,
       };
 
-      if (scared && !notScared) {
+      if (scared && !this.notScared) {
         this.pursue(this.corner, delta);
       } else {
         this.pursue([pacMan.x + targeting[this.name][0], pacMan.y + targeting[this.name][1]], delta);
