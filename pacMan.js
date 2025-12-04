@@ -668,6 +668,11 @@ class PacMan {
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
         scared = true;
+        red.notScared = false;
+        blue.notScared = false;
+        pink.notScared = false;
+        orange.notScared = false;
+        semiScared = false;
         scaredTime = this.currentTime;
         if (checkForDots() === false) { r += 1; round(); }
         break;
