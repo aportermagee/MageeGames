@@ -922,6 +922,10 @@ function round() {
   run = true;
   scared = false;
   
+  red.speed += 0.5;
+  blue.speed += 0.5;
+  pink.speed += 0.5;
+  orange.speed += 0.5;
   red.x = red.originalX;
   red.y = red.originalY;
   red.direction = 'right';
