@@ -840,15 +840,15 @@ function update(delta, currentTime) {
     blue.update(delta);
     if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
     orange.update(delta);
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; }
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; }
     pink.update(delta);
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; }
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; }
     
     pacMan.update(delta);
     if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; }
     if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; }
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; }
+    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; }
+    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; }
   } else {
     semiScared = false;
     
