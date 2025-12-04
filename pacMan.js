@@ -63,6 +63,7 @@ class Ghost {
     this.speed = 2;
     this.corner = corner;
     this.last = 'left';
+    this.notScared = false;
   }
 
   moveUp() {
@@ -409,9 +410,9 @@ class Ghost {
   }
   
   update(delta) {
-    if (semiScared) {
+    if (semiScared && !notScared) {
       this.color = 'rgb(255, 255, 255)';
-    } else if (scared) {
+    } else if (scared && !notScared) {
       this.color = 'rgb(0, 0, 255)';
       this.eyeColor = 'rgb(0, 0, 255)';
     } else {
@@ -448,7 +449,7 @@ class Ghost {
         'orange': orangeTargeting,
       };
 
-      if (scared) {
+      if (scared && !notScared) {
         this.pursue(this.corner, delta);
       } else {
         this.pursue([pacMan.x + targeting[this.name][0], pacMan.y + targeting[this.name][1]], delta);
@@ -834,38 +835,68 @@ function update(delta, currentTime) {
       lastSemiScared = currentTime;
       semiScared = (semiScared) ? false : true;
     }
-
-    red.update(delta);
-    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; }
-    blue.update(delta);
-    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
-    orange.update(delta);
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; }
-    pink.update(delta);
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; }
-    
-    pacMan.update(delta);
-    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; }
-    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; }
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; }
-  } else {
-    semiScared = false;
-    
-    red.update(delta);
-    if (collision(red, pacMan) && !isDying) { lives -= 1; isDying = true; }
-    blue.update(delta);
-    if (collision(blue, pacMan) && !isDying) { lives -= 1; isDying = true; }
-    orange.update(delta);
-    if (collision(orange, pacMan) && !isDying) { lives -= 1; isDying = true; }
-    pink.update(delta);
-    if (collision(pink, pacMan) && !isDying) { lives -= 1; isDying = true; }
-    
-    pacMan.update(delta);
-    if (collision(red, pacMan) && !isDying) { lives -= 1; isDying = true; }
-    if (collision(blue, pacMan) && !isDying) { lives -= 1; isDying = true; }
-    if (collision(orange, pacMan) && !isDying) { lives -= 1; isDying = true; }
-    if (collision(pink, pacMan) && !isDying) { lives -= 1; isDying = true; }
+  } else { semiScared = false; }
+  red.update(delta);
+  if (collision(red, pacMan)) { 
+    if (!red.notScared && scared) { 
+      red.notScared = true; red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  blue.update(delta);
+  if (collision(blue, pacMan)) { 
+    if (!blue.notScared && scared) { 
+      blue.notScared = true; blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  orange.update(delta);
+  if (collision(orange, pacMan)) { 
+    if (!orange.notScared && scared) { 
+      orange.notScared = true; orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  pink.update(delta);
+  if (collision(pink, pacMan)) { 
+    if (!pink.notScared && scared) { 
+      pink.notScared = true; pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  
+  pacMan.update(delta);
+  if (collision(red, pacMan)) { 
+    if (!red.notScared && scared) { 
+      red.notScared = true; red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  if (collision(blue, pacMan)) { 
+    if (!blue.notScared && scared) { 
+      blue.notScared = true; blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  if (collision(orange, pacMan)) { 
+    if (!orange.notScared && scared) { 
+      orange.notScared = true; orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  if (collision(pink, pacMan)) { 
+    if (!pink.notScared && scared) { 
+      pink.notScared = true; pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
   }
   
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
