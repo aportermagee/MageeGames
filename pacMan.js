@@ -410,9 +410,9 @@ class Ghost {
   }
   
   update(delta) {
-    if (semiScared && !notScared) {
+    if (semiScared && !this.notScared) {
       this.color = 'rgb(255, 255, 255)';
-    } else if (scared && !notScared) {
+    } else if (scared && !this.notScared) {
       this.color = 'rgb(0, 0, 255)';
       this.eyeColor = 'rgb(0, 0, 255)';
     } else {
