@@ -25,6 +25,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 const snakeGameBtn = document.getElementById('snakeGameBtn');
 const tetrisBtn = document.getElementById('tetrisBtn');
 const spaceInvadersBtn = document.getElementById('spaceInvadersBtn');
+const pacManBtn = document.getElementById('pacManBtn');
 
 logoutBtn.addEventListener('click', function() {
   logout();
@@ -40,4 +41,8 @@ tetrisBtn.addEventListener('click', function() {
 
 spaceInvadersBtn.addEventListener('click', function() {
   window.location.href = 'spaceInvaders';
+});
+
+pacManBtn.addEventListener('click', function() {
+  window.location.href = 'pacMan';
 });

@@ -63,6 +63,7 @@ class Ghost {
     this.speed = 2;
     this.corner = corner;
     this.last = 'left';
+    this.notScared = false;
   }
 
   moveUp() {
@@ -409,9 +410,9 @@ class Ghost {
   }
   
   update(delta) {
-    if (semiScared) {
+    if (semiScared && !this.notScared) {
       this.color = 'rgb(255, 255, 255)';
-    } else if (scared) {
+    } else if (scared && !this.notScared) {
       this.color = 'rgb(0, 0, 255)';
       this.eyeColor = 'rgb(0, 0, 255)';
     } else {
@@ -448,7 +449,7 @@ class Ghost {
         'orange': orangeTargeting,
       };
 
-      if (scared) {
+      if (scared && !this.notScared) {
         this.pursue(this.corner, delta);
       } else {
         this.pursue([pacMan.x + targeting[this.name][0], pacMan.y + targeting[this.name][1]], delta);
@@ -667,6 +668,11 @@ class PacMan {
         score += 25;
         maze.layout[Math.round(this.y)][Math.round(this.x)] = 4;
         scared = true;
+        red.notScared = false;
+        blue.notScared = false;
+        pink.notScared = false;
+        orange.notScared = false;
+        semiScared = false;
         scaredTime = this.currentTime;
         if (checkForDots() === false) { r += 1; round(); }
         break;
@@ -773,6 +779,7 @@ ctx.imageSmoothingEnabled = false;
 const box = 26;
 const speed = 3;
 const scoreP = document.getElementById('score');
+const livesP = document.getElementById('lives');
 const scareTime = 10;
 
 let score = 0;
@@ -787,6 +794,7 @@ let lives = 3;
 let r = 1;
 let scaredTimePauseInterval;
 let ghostBonus = 200;
+let isDying = false;
 
 const red = new Ghost('red', 9, 6, 'rgb(255, 0, 0)', 0, [1, 1]);
 const blue = new Ghost('blue', 10, 6, 'rgb(0, 200, 250)', 3, [18, 1]);
@@ -812,6 +820,16 @@ function draw() {
     pacMan.draw();
 }
 
+function deathEffect() {
+  pacMan.currentTime = performance.now();
+  if (pacMan.currentTime - pacMan.lastTime > 20) {
+    pacMan.lastTime = pacMan.currentTime;
+    pacMan.mouth += 0.025;
+      
+    if (pacMan.mouth >= 1) { pacMan.mouth = 0.1; isDying = false; startPos(); }
+  }
+}
+
 function update(delta, currentTime) {
   if (scared === true) {
     ghostBonus = 200;
@@ -822,41 +840,72 @@ function update(delta, currentTime) {
       lastSemiScared = currentTime;
       semiScared = (semiScared) ? false : true;
     }
-
-    red.update(delta);
-    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; }
-    blue.update(delta);
-    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
-    orange.update(delta);
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; }
-    pink.update(delta);
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; }
-    
-    pacMan.update(delta);
-    if (collision(red, pacMan)) { red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
-    if (collision(blue, pacMan)) { blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
-    if (collision(orange, pacMan)) { orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
-    if (collision(pink, pacMan)) { pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; }
-  } else {
-    semiScared = false;
-    
-    red.update(delta);
-    if (collision(red, pacMan)) { lives -= 1; startPos(); }
-    blue.update(delta);
-    if (collision(blue, pacMan)) { lives -= 1; startPos(); }
-    orange.update(delta);
-    if (collision(orange, pacMan)) { lives -= 1; startPos(); }
-    pink.update(delta);
-    if (collision(pink, pacMan)) { lives -= 1; startPos(); }
-    
-    pacMan.update(delta);
-    if (collision(red, pacMan)) { lives -= 1; startPos(); }
-    if (collision(blue, pacMan)) { lives -= 1; startPos(); }
-    if (collision(orange, pacMan)) { lives -= 1; startPos(); }
-    if (collision(pink, pacMan)) { lives -= 1; startPos(); }
+  } else { semiScared = false; }
+  red.update(delta);
+  if (collision(red, pacMan)) { 
+    if (!red.notScared && scared) { 
+      red.notScared = true; red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  blue.update(delta);
+  if (collision(blue, pacMan)) { 
+    if (!blue.notScared && scared) { 
+      blue.notScared = true; blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  orange.update(delta);
+  if (collision(orange, pacMan)) { 
+    if (!orange.notScared && scared) { 
+      orange.notScared = true; orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  pink.update(delta);
+  if (collision(pink, pacMan)) { 
+    if (!pink.notScared && scared) { 
+      pink.notScared = true; pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  
+  pacMan.update(delta);
+  if (collision(red, pacMan)) { 
+    if (!red.notScared && scared) { 
+      red.notScared = true; red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  if (collision(blue, pacMan)) { 
+    if (!blue.notScared && scared) { 
+      blue.notScared = true; blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  if (collision(orange, pacMan)) { 
+    if (!orange.notScared && scared) { 
+      orange.notScared = true; orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
+  }
+  if (collision(pink, pacMan)) { 
+    if (!pink.notScared && scared) { 
+      pink.notScared = true; pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; 
+    } else {
+      lives -= 1; isDying = true;
+    }
   }
   
   scoreP.textContent = 'Score: ' + score + ' | High Score: ' + highScore + ' | Round: ' + r;
+  livesP.textContent = 'Lives: ' + lives;
 }
 
 function resume() {
@@ -909,6 +958,10 @@ function round() {
   run = true;
   scared = false;
   
+  red.speed += 0.5;
+  blue.speed += 0.5;
+  pink.speed += 0.5;
+  orange.speed += 0.5;
   red.x = red.originalX;
   red.y = red.originalY;
   red.direction = 'right';
@@ -984,6 +1037,13 @@ function gameLoop(currentTime) {
     let delta = (currentTime - lastTime) / 1000;
     lastTime = currentTime;
     
+    if (isDying) {
+      deathEffect();
+      draw();
+      requestAnimationFrame(gameLoop);
+      return;
+    }
+    
     update(delta, currentTime);
     draw();
 
@@ -999,7 +1059,7 @@ function gameLoop(currentTime) {
       }
     }
     
-    if (!pause && run) {
+    if ((!pause && run) || isDying) {
       requestAnimationFrame(gameLoop);
     }
 }
@@ -1009,6 +1069,8 @@ draw();
 // --- Buttons & Inputs ---
 const startBtn = document.getElementById('startBtn');
 const pauseBtn = document.getElementById('pauseBtn');
+const homeBtn = document.getElementById('homeBtn');
+const controlsBtn = document.getElementById('controlsBtn');
 
 pauseBtn.addEventListener('click', function() {
   if (run) {
@@ -1024,6 +1086,14 @@ startBtn.addEventListener('click', function() {
   if (pause) {
     resume();
   }
+});
+
+homeBtn.addEventListener('click', function() {
+  window.location.href = 'home';
+});
+
+controlsBtn.addEventListener('click', function() {
+  alert('Controls:\nRight Arrow: right\nLeft Arrow: Left\nDown Arrow: Down\nUp Arrow: Up');
 });
 
 document.addEventListener('keydown', event => {
