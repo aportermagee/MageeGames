@@ -54,3 +54,8 @@ const startBtn = document.getElementById('startBtn');
 const homeBtn = document.getElementById('homeBtn');                                        
   
 // --- Game Loops
+
+// --- Inputs ---
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowUp') event.preventDefault();
+});
