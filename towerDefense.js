@@ -75,8 +75,10 @@ class Grid {
 // --- Functions ---
 
 // --- Variables ---
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
+ctx.imageSmoothingEnabled = false;
+
 const scoreP = document.getElementById('scoreP');
 const startBtn = document.getElementById('startBtn');
 const homeBtn = document.getElementById('homeBtn');                                        
