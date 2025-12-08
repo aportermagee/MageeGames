@@ -1,1 +1,100 @@
-
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  background-color: rgb(245, 245, 245);
+}
+div {
+  font-family: "Roboto", sans-serif;
+}
+.main-div {
+  background-color: rgb(255, 255, 255);
+  border-radius: 1.5rem;
+  border: none;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35rem;
+  height: fit-content;
+  padding: 2rem 1rem;
+}
+.p {
+  font-size: 1rem;
+}
+.h1 {
+  color: rgb(255, 255, 255);
+  width: 50%;
+  display: inline-block;
+  border-radius: 0.25rem;
+  background-color: rgb(0, 100, 170);
+  padding: 0.25rem;
+}
+.input {
+  border: 0.1rem solid rgb(170, 200, 255);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 0.6rem;
+  outline: none;
+}
+.input:focus {
+  border-color: rgb(0, 100, 170);
+}
+.button {
+  background-color: rgb(255, 255, 255);
+  border-radius: 0.25rem;
+  border: 0.1rem solid rgb(170, 200, 255);
+  color: rgb(0, 0, 0);
+  padding: 0.6rem;
+  display: inline-block;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.button:hover {
+  background-color: rgb(170, 200, 255);
+}
+.button:active {
+  background-color: rgb(0, 100, 170);
+  border-color: rgb(0, 100, 170);
+}
+.center-div {
+  text-align: center;
+}
+.right-div {
+  text-align: right;
+}
+.left-div {
+  text-align: left;
+}
+.errorMessage {
+  text-align: center;
+  color: rgb(255, 0, 0);
+}
+.red-button {
+  background-color: rgb(255, 255, 255);
+  border-radius: 0.25rem;
+  border: 0.1rem solid rgb(255, 0, 0);
+  color: rgb(255, 0, 0);
+  padding: 0.6rem;
+  display: inline-block;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.red-button:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(255, 0, 0);
+}
+.red-button:active {
+  background-color: rgb(170, 0, 0);
+  border-color: rgb(170, 0, 0);
+}
+canvas {
+  background-color: rgb(255, 255, 255);
+  border: 0.15rem solid rgb(0, 125, 210);
+}
+.subheader {
+  color: rgb(210, 210, 210);
+  font-size: 1rem;
+}
