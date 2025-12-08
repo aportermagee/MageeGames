@@ -2,30 +2,19 @@
 <html lang="en">
   <head>
     <title>Pac-Man || MageeGames</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="darkMode.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
-    <div class="center-div" style="margin-bottom: 0.5rem;">
-      <h1 class="h1">Magee Games</h1>
-    </div>
-    <div class="center-div" style="margin-bottom: 0.5rem">
-      <button id="homeBtn" class="button">Home</button>
-      <button id="controlsBtn" class="button">Controls</button>
-    </div>
     <div class="main-div" style="height: 46.25rem;">
       <h1 class="h1">Pac-Man</h1>
+      <button id="homeBtn" class="button">Home</button>
+      <button id="controlsBtn" class="button">Controls</button><br>
       <p class="p" id="score">Score: 0 | High Score: 0</p>
       <p class="p" id="lives">Lives: 3</p>
       <button id="startBtn" class="button">Start</button>
       <button id="pauseBtn" class="button">Pause</button><br><br>
-      <canvas id="game" style="border: 2px solid rgb(0, 0, 130);" width="520" height="520"></canvas>
-    </div>
-    <div class="center-div">
-      <p class="subheader">
-        Designed by Andrew Magee, 2025<br>
-        Copyright &copy 2025 by MageeGames LLC
-      </p>
+      <canvas id="game" width="520" height="520"></canvas>
     </div>
     <script src="pacMan.js"></script>
   </body>
