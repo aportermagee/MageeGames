@@ -12,7 +12,12 @@
       <h1 class="h1">Tower Defense</h1><br>
       <button id="startBtn" class="button">Start</button>
       <button id="homeBtn" class="button">Home</button><br>
-      <p id="score" class="p">Wave: 0 | Best Wave: 0</p><br>
+      <p class="p">Highest Wave: 1</p><br>
+      <div style="display:flex; justify-content: space-between; width: 420px">
+        <span id="wave" style="color: rgb(100, 200, 255);">Wave: 1</span>
+        <span id="cash" style="color: rgb(0, 200, 50);">$100</span>
+        <span id="lives" style="color: rgb(200, 0, 0);">Lives: 15</span>
+      </div>
       <canvas id="game" width="420" height="420"></canvas>
     </div>
     <script src="towerDefense.js"></script>
