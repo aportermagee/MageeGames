@@ -45,10 +45,15 @@ async function updateHighScore() {
 }
 
 // --- Classes ---
+class Grid {
+  
+}
 
 // --- Functions ---
 
 // --- Variables ---
+const box = canvas.width / 20;
+  
 const scoreP = document.getElementById('scoreP');
 const startBtn = document.getElementById('startBtn');
 const homeBtn = document.getElementById('homeBtn');                                        
@@ -57,5 +62,7 @@ const homeBtn = document.getElementById('homeBtn');
 
 // --- Inputs ---
 document.addEventListener('keydown', event => {
-  if (event.key === 'ArrowUp') event.preventDefault();
+  if (['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'].includes(event.key)) {
+    event.preventDefault();
+  }
 });
