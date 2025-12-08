@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <title>Pac-Man || MageeGames</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="darkMode.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
@@ -9,11 +11,11 @@
     <div class="main-div" style="height: 46.25rem;">
       <h1 class="h1">Pac-Man</h1><br>
       <button id="homeBtn" class="button">Home</button>
+      <button id="startBtn" class="button">Start</button>
+      <button id="pauseBtn" class="button">Pause</button>
       <button id="controlsBtn" class="button">Controls</button><br>
       <p class="p" id="score">Score: 0 | High Score: 0</p>
-      <p class="p" id="lives">Lives: 3</p>
-      <button id="startBtn" class="button">Start</button>
-      <button id="pauseBtn" class="button">Pause</button><br><br>
+      <p class="p" id="lives">Lives: 3</p><br>
       <canvas id="game" width="520" height="520"></canvas>
     </div>
     <script src="pacMan.js"></script>
