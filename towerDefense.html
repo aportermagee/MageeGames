@@ -12,17 +12,17 @@
         border-radius: 0.25rem;
         border: 0.1rem solid rgb(0, 0, 100);
         color: rgb(255, 255, 255);
-        padding: 0.3rem;
+        padding: 0.5rem;
         display: inline-block;
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         cursor: pointer;
         text-decoration: none;
         text-align: left;
-        height: 3rem;
-        width: 15rem;
+        width: 10rem;
+        height: 3.8rem
       }
       .tower {
-        width: 5rem;
+        width: 5.5rem;
         height: 4rem;
         display: inline-block;
         text-decoration: none;
@@ -92,12 +92,12 @@
     </style>
   </head>
   <body>
-    <div class="main-div" style="height: 50.5rem; padding-top: 1.5rem;">
+    <div class="main-div" style="height: 52rem; padding-top: 1.5rem;">
       <div class="right-div">
-        <button id="home" style="border: none; background-color: rgb(0, 0, 15); color: rgb(100, 200, 255); font-size: 2rem; margin-right: 1rem;">x</button><br>
+        <button id="homeBtn" style="border: none; background-color: rgb(0, 0, 15); color: rgb(100, 200, 255); font-size: 2rem; margin-right: 1rem;">x</button><br>
       </div>
       <h1 class="h1">Tower Defense</h1><br>
-      <span id="highestWave" class="p">Highest Wave: 1</span><br><br>
+      <p class="p">Highest Wave: 1</p><br>
       <div class="ends-align" style="width: 420px">
         <span id="wave" style="color: rgb(100, 200, 255);">Wave: 1</span>
         <span id="cash" style="color: rgb(0, 200, 50);">$100</span>
@@ -105,14 +105,18 @@
       </div>
       <canvas id="game" width="420" height="420"></canvas><br><br>
       <div class="ends-align">
-        <br><button id="regular" class="tower purple-tower">Regular</button>
-        <button id="sniper" class="tower blue-tower">Sniper</button>
-        <button id="rapidFire" class="tower yellow-tower">Rapid-Fire</button>
-        <button id="tank" class="tower green-tower">Tank</button><br>
+        <br><button class="tower purple-tower">Regular<br>$50</button>
+        <button class="tower blue-tower">Sniper<br>$100</button>
+        <button class="tower yellow-tower">RapidFire<br>$100</button>
+        <button class="tower green-tower">Tank<br>$150</button><br>
       </div><br>
-      <div class="ends-align">
-        <button id="start" class="button" style="margin-top: 1rem; height: 1.5rem; padding-top: 1px;">Start Wave</button>
-        <p id="description" class="description">Hi</p>
+      <div class="ends-align" style="width: 85.3%;">
+        <div class="left-div">
+          <button id="startBtn" class="button" style="margin-top: 1rem; height: 1.5rem; padding-top: 1px; width: 6.5rem">Start Wave</button><br>
+          <button id="startBtn" class="button" style="margin-top: 0.1rem; height: 1.5rem; padding-top: 1px; width: 6.5rem;">Upgrade</button><br>
+          <button id="startBtn" class="button" style="margin-top: 0.1rem; height: 1.5rem; padding-top: 1px; width: 6.5rem;">Delete</button>
+        </div>
+        <p class="description"><b>Regular</b><br>Damage: 1<br>Rate of Fire: 5<br>Range: 5</p>
       </div>
     </div>
     <script src="towerDefense.js"></script>
