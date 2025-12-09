@@ -70,8 +70,13 @@ let html = {
   wave = document.getElementById('wave'),
   cash = document.getElementById('cash'),
   lives = document.getElementById('lives'),
-  start = document.getElementById('startBtn'),
-  home = document.getElementById('homeBtn'),                                        
+  start = document.getElementById('start'),
+  home = document.getElementById('home'),   
+  regular = document.getElementById('regular'),
+  sniper = document.getElementById('sniper'),
+  rapidFire = document.getElementById('rapidFire'),
+  tank = document.getElementById('tank'),
+  description = document.getElementById('description'),
 };
 
 let constants = { 
