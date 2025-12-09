@@ -22,18 +22,65 @@
         width: 15rem;
       }
       .tower {
-        width: 2rem;
-        height: 2rem;
-        border: 2px solid rgb(0, 0, 100);
-        bakground-color: rgb(0, 0, 50);
-        color: rgb(100, 200, 255);
+        width: 5rem;
+        height: 4rem;
         display: inline-block;
         text-decoration: none;
         border-radius: 0.25rem;
         cursor: pointer;
         text-align: center;
-        font-size: 1rem
+        font-size: 1rem;
         padding: 0.3rem;
+      }
+      .green-tower {
+        border: 2px solid rgb(0, 100, 0);
+        background-color: rgb(0, 50, 0);
+        color: rgb(255, 255, 255);
+      }
+      .green-tower:hover {
+        background-color: rgb(0, 100, 0); 
+      }
+      .green-tower:active{
+        background-color: rgb(0, 200, 0);
+        border-color: rgb(0, 200, 0);
+      }
+      .blue-tower {
+        border: 2px solid rgb(0, 0, 150);
+        background-color: rgb(0, 0, 75);
+        color: rgb(255, 255, 255);
+      }
+      .blue-tower:hover {
+        background-color: rgb(0, 0, 150); 
+      }
+      .blue-tower:active{
+        background-color: rgb(0, 0, 250);
+        border-color: rgb(0, 0, 250);
+      }
+      .purple-tower {
+        border: 2px solid rgb(50, 0, 100);
+        background-color: rgb(25, 0, 50);
+        color: rgb(255, 255, 255);
+      }
+      .purple-tower:hover {
+        background-color: rgb(50, 0, 100); 
+        color: rgb(255, 255, 255);
+      }
+      .purple-tower:active{
+        background-color: rgb(100, 0, 200);
+        border-color: rgb(100, 0, 200);
+      }
+      .yellow-tower {
+        border: 2px solid rgb(125, 100, 0);
+        background-color: rgb(50, 50, 0);
+        color: rgb(255, 255, 255);
+      }
+      .yellow-tower:hover {
+        background-color: rgb(125, 100, 0); 
+        color: rgb(255, 255, 255);
+      }
+      .yellow-tower:active{
+        background-color: rgb(250, 200, 0);
+        border-color: rgb(250, 200, 0);
       }
       .ends-align {
         margin-left: auto;
@@ -45,7 +92,7 @@
     </style>
   </head>
   <body>
-    <div class="main-div" style="height: 46rem; padding-top: 1.5rem;">
+    <div class="main-div" style="height: 50.5rem; padding-top: 1.5rem;">
       <div class="right-div">
         <button id="homeBtn" style="border: none; background-color: rgb(0, 0, 15); color: rgb(100, 200, 255); font-size: 2rem; margin-right: 1rem;">x</button><br>
       </div>
@@ -58,7 +105,10 @@
       </div>
       <canvas id="game" width="420" height="420"></canvas><br><br>
       <div class="ends-align">
-        <button class="tower">Regular</button>
+        <br><button class="tower purple-tower">Regular</button>
+        <button class="tower blue-tower">Sniper</button>
+        <button class="tower yellow-tower">Rapid-Fire</button>
+        <button class="tower green-tower">Tank</button><br>
       </div><br>
       <div class="ends-align">
         <button id="startBtn" class="button" style="margin-top: 1rem; height: 1.5rem; padding-top: 1px;">Start Wave</button>
