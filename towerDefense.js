@@ -67,20 +67,21 @@ async function updateHighScore() {
 let html = {
   canvas = document.getElementById('game'),
   ctx = canvas.getContext('2d'),
-  score = document.getElementById('scoreP'),
-  startBtn = document.getElementById('startBtn'),
-  homeBtn = document.getElementById('homeBtn'),                                        
+  wave = document.getElementById('wave'),
+  cash = document.getElementById('cash'),
+  lives = document.getElementById('lives'),
+  start = document.getElementById('startBtn'),
+  home = document.getElementById('homeBtn'),                                        
 };
 
 let constants = { 
   box = canvas.width / 20,
-  startPos = [0, 11],
+  start = [0, 11],
 };
 
 let game = {
   highScore,
 };
-
 
 // --- Game Loops ---
 
@@ -93,6 +94,7 @@ document.addEventListener('keydown', event => {
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
+
 getHighScore().then(function() {
   document.getElementById('score').textContent = 'Score: 0 | High Score: ' + highScore;
 });
