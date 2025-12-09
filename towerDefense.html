@@ -14,12 +14,33 @@
         color: rgb(255, 255, 255);
         padding: 0.3rem;
         display: inline-block;
-        font-size: 1rem;
+        font-size: 0.75rem;
         cursor: pointer;
         text-decoration: none;
         text-align: left;
         height: 3rem;
         width: 15rem;
+      }
+      .tower {
+        width: 2rem;
+        height: 2rem;
+        border: 2px solid rgb(0, 0, 100);
+        bakground-color: rgb(0, 0, 50);
+        color: rgb(100, 200, 255);
+        display: inline-block;
+        text-decoration: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        text-align: center;
+        font-size: 1rem
+        padding: 0.3rem;
+      }
+      .ends-align {
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
       }
     </style>
   </head>
@@ -30,13 +51,16 @@
       </div>
       <h1 class="h1">Tower Defense</h1><br>
       <p class="p">Highest Wave: 1</p><br>
-      <div style="margin-left: auto; margin-right: auto; display:flex; justify-content: space-between; width: 420px">
+      <div class="ends-align" style="width: 420px">
         <span id="wave" style="color: rgb(100, 200, 255);">Wave: 1</span>
         <span id="cash" style="color: rgb(0, 200, 50);">$100</span>
         <span id="lives" style="color: rgb(200, 0, 0);">Lives: 15</span>
       </div>
       <canvas id="game" width="420" height="420"></canvas><br><br>
-      <div style="display:flex; justify-content: space-between; width: 100%">
+      <div class="ends-align">
+        <button class="tower">Regular</button>
+      </div><br>
+      <div class="ends-align">
         <button id="startBtn" class="button" style="margin-top: 1rem; height: 1.5rem; padding-top: 1px;">Start Wave</button>
         <p class="description">Hi</p>
       </div>
