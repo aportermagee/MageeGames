@@ -97,6 +97,10 @@ let html = {
   rapidFire: document.getElementById('rapidFire'),
   tank: document.getElementById('tank'),
   description: document.getElementById('description'),
+  type: document.getElementById('type'),
+  damage: document.getElementById('damage'),
+  rateOfFire: document.getElementById('rateOfFire'),
+  range: document.getElementById('range'),
 };
 
 let constants = { 
