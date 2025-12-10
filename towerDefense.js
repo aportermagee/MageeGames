@@ -34,6 +34,23 @@ class Grid {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
   }
+
+  draw() {
+    for (let y = 0; y < this.layout.length; y++) {
+      for (let x = 0; x < this.layout[y].length; x++) {
+        switch (this.layout[y][x]) {
+          case 0:
+            html.ctx.fillStyle = 'rgb(0, 0, 50)';
+            html.ctx.fillRect(x * constants.box + constants.blankBox, y * constants.box + constants.blankBox, constants.blankBox * 3, constants.blankBox * 3);
+            break;
+          case 1:
+            html.ctx.fillStyle = 'rgb(0, 0, 100)';
+            html.ctx.fillRect(x * constants.box + constants.blankBox, y * constants.box + constants.blankBox, constants.blankBox * 3, constants.blankBox * 3);
+            break;
+        }
+      }
+    }
+  }
 }
 
 // --- Functions ---
@@ -83,6 +100,7 @@ let html = {
 
 let constants = { 
   box = canvas.width / 20,
+  blankBox = Math.round(box / 5);
   start = [0, 11],
 };
 
