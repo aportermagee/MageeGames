@@ -21,7 +21,7 @@ class Grid {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -41,11 +41,19 @@ class Grid {
         switch (this.layout[y][x]) {
           case 0:
             html.ctx.fillStyle = 'rgb(0, 0, 50)';
-            html.ctx.fillRect(x * constants.box + constants.blankBox, y * constants.box + constants.blankBox, constants.blankBox * 3, constants.blankBox * 3);
+            html.ctx.fillRect(x * constants.box, y * constants.box, constants.blankBox * 5, constants.blankBox * 5);
             break;
           case 1:
             html.ctx.fillStyle = 'rgb(0, 0, 100)';
-            html.ctx.fillRect(x * constants.box + constants.blankBox, y * constants.box + constants.blankBox, constants.blankBox * 3, constants.blankBox * 3);
+            html.ctx.fillRect(x * constants.box, y * constants.box, constants.blankBox * 5, constants.blankBox * 5);
+            break;
+          case 2:
+            html.ctx.fillStyle = 'rgb(0, 100, 0)';
+            html.ctx.fillRect(x * constants.box, y * constants.box, constants.blankBox * 5, constants.blankBox * 5);
+            break;
+          case 3:
+            html.ctx.fillStyle = 'rgb(100, 0, 0)';
+            html.ctx.fillRect(x * constants.box, y * constants.box, constants.blankBox * 5, constants.blankBox * 5);
             break;
         }
       }
@@ -80,6 +88,21 @@ async function updateHighScore() {
   }
 }
 
+function toggleActive(button) {
+  let buttons = [
+    html.regular,
+    html.sniper,
+    html.rapidFire,
+    html.tank,
+  ];
+  
+  for (let b of buttons) {
+    if (b.classList.value.includes('active')) b.classList.toggle('active');
+  }
+  
+  button.classList.toggle('active');
+}
+
 // --- Variables ---
 let html = {
   canvas: document.getElementById('game'),
@@ -105,7 +128,7 @@ let html = {
 
 let constants = { 
   box: html.canvas.width / 20,
-  blankBox: Math.round((html.canvas.width / 20) / 5),
+  blankBox: Math.round((html.canvas.width / 20) / 6),
   start: [0, 11],
 };
 
@@ -120,6 +143,11 @@ document.addEventListener('keydown', event => {
     event.preventDefault();
   }
 });
+
+html.regular.addEventListener('click', function() {toggleActive(html.regular)});
+html.sniper.addEventListener('click', function() {toggleActive(html.sniper)});
+html.rapidFire.addEventListener('click', function() {toggleActive(html.rapidFire)});
+html.tank.addEventListener('click', function() {toggleActive(html.tank)});
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
