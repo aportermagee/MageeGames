@@ -57,14 +57,14 @@ class Grid {
 async function getHighScore() {
   const { data, error } = await supabaseClient
     .from('HighScores')
-    .select('highScorePacMan')
+    .select('highestWaveTowerDefense')
     .eq('id', JSON.parse(localStorage.getItem('user')).id)
     .single();
 
   if (error) {
     console.error(error);
   } else {
-    highScore = data.highScorePacMan;
+    game.highestWave = data.highestWaveTowerDefense;
   }
 }
 
@@ -72,7 +72,7 @@ async function getHighScore() {
 async function updateHighScore() {
   const { data, error } = await supabaseClient
     .from('HighScores')
-    .update({ highScorePacMan: highScore })
+    .update({ highestWaveTowerDefense: game.highestWave })
     .eq('id', JSON.parse(localStorage.getItem('user')).id);
 
   if (error) {
@@ -82,33 +82,32 @@ async function updateHighScore() {
 
 // --- Variables ---
 let html = {
-  canvas = document.getElementById('game'),
-  ctx = canvas.getContext('2d'),
-  wave = document.getElementById('wave'),
-  cash = document.getElementById('cash'),
-  lives = document.getElementById('lives'),
-  start = document.getElementById('start'),
-  update = document.getElementById('update'),
-  delete = document.getElementById('delete'),
-  home = document.getElementById('home'),   
-  regular = document.getElementById('regular'),
-  sniper = document.getElementById('sniper'),
-  rapidFire = document.getElementById('rapidFire'),
-  tank = document.getElementById('tank'),
-  description = document.getElementById('description'),
+  canvas: document.getElementById('game'),
+  highestWave: document.getElementById('highestWave'),
+  wave: document.getElementById('wave'),
+  cash: document.getElementById('cash'),
+  lives: document.getElementById('lives'),
+  start: document.getElementById('start'),
+  update: document.getElementById('update'),
+  delete: document.getElementById('delete'),
+  home: document.getElementById('home'),   
+  regular: document.getElementById('regular'),
+  sniper: document.getElementById('sniper'),
+  rapidFire: document.getElementById('rapidFire'),
+  tank: document.getElementById('tank'),
+  description: document.getElementById('description'),
 };
 
 let constants = { 
-  box = canvas.width / 20,
-  blankBox = Math.round(box / 5);
-  start = [0, 11],
+  box: html.canvas.width / 20,
+  blankBox: Math.round(html.box / 5),
+  start: [0, 11],
 };
 
 let game = {
-  highScore,
+  highestWave: 0,
+  grid: new Grid(),
 };
-
-// --- Game Loops ---
 
 // --- Inputs ---
 document.addEventListener('keydown', event => {
@@ -118,8 +117,12 @@ document.addEventListener('keydown', event => {
 });
 
 // --- Init ---
+html.ctx = html.canvas.getContext('2d');
 html.ctx.imageSmoothingEnabled = false;
 
 getHighScore().then(function() {
-  document.getElementById('score').textContent = 'Score: 0 | High Score: ' + highScore;
+  html.highestWave.textContent = game.highestWave;
 });
+
+// --- Game Loops ---
+game.grid.draw();
