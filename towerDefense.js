@@ -83,6 +83,7 @@ async function updateHighScore() {
 // --- Variables ---
 let html = {
   canvas: document.getElementById('game'),
+  ctx: document.getElementById('game').getContext('2d'),
   highestWave: document.getElementById('highestWave'),
   wave: document.getElementById('wave'),
   cash: document.getElementById('cash'),
@@ -100,7 +101,7 @@ let html = {
 
 let constants = { 
   box: html.canvas.width / 20,
-  blankBox: Math.round(html.box / 5),
+  blankBox: Math.round((html.canvas.width / 20) / 5),
   start: [0, 11],
 };
 
@@ -117,8 +118,8 @@ document.addEventListener('keydown', event => {
 });
 
 // --- Init ---
-html.ctx = html.canvas.getContext('2d');
 html.ctx.imageSmoothingEnabled = false;
+
 
 getHighScore().then(function() {
   html.highestWave.textContent = game.highestWave;
