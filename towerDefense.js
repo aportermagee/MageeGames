@@ -103,6 +103,13 @@ function toggleActive(button) {
   button.classList.toggle('active');
 }
 
+function changeDescription(button, level) {
+  html.type.textContent = description.button.type;
+  html.damage.textContent = description.button.damage;
+  html.rateOfFire.textContent = description.button.rateOfFire;
+  html.range.textContent = description.button.range;
+}
+
 // --- Variables ---
 let html = {
   canvas: document.getElementById('game'),
@@ -137,6 +144,33 @@ let game = {
   grid: new Grid(),
 };
 
+let descriptions = {
+  regular: {
+    type: 'Regular',
+    damage: 1,
+    rateOfFire: 5,
+    range: 3,
+  },
+  sniper: {
+    type: 'Sniper',
+    damage: 5,
+    rateOfFire: 2,
+    range: 7,
+  },
+  rapidFire: {
+    type: 'rapidFire',
+    damage: 1,
+    rateOfFire: 10,
+    range: 2,
+  },
+  tank: {
+    type: 'Tank',
+    damage: 10,
+    rateOfFire: 1,
+    range: 3,
+  },
+};
+  
 // --- Inputs ---
 document.addEventListener('keydown', event => {
   if (['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'].includes(event.key)) {
@@ -144,10 +178,10 @@ document.addEventListener('keydown', event => {
   }
 });
 
-html.regular.addEventListener('click', function() {toggleActive(html.regular)});
-html.sniper.addEventListener('click', function() {toggleActive(html.sniper)});
-html.rapidFire.addEventListener('click', function() {toggleActive(html.rapidFire)});
-html.tank.addEventListener('click', function() {toggleActive(html.tank)});
+html.regular.addEventListener('click', function() { toggleActive(html.regular); changeDescription(regular, 1); });
+html.sniper.addEventListener('click', function() { toggleActive(html.sniper); changeDescription(sniper, 1); };
+html.rapidFire.addEventListener('click', function() { toggleActive(html.rapidFire); changeDescription(rapidFire, 1); });
+html.tank.addEventListener('click', function() { toggleActive(html.tank); changeDescription(tank, 1); });
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
