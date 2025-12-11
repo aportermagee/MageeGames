@@ -116,18 +116,30 @@ function changeDescription(tower, level) {
 function placeTower(event, tower) {
   const rect = html.canvas.getBoundingClientRect();
   
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.up;
+  const x = Math.floor((event.clientX - rect.left) / constants.box);
+  const y = Math.floor((event.clientY - rect.top) / constants.box);
   
-  if (game.grid.layout[Math.floor(y / constants.box)][Math.floor(x / constants.box)] === 0) {
+  if (game.grid.layout[y][x] === 0) {
     if (game.cash >= descriptions[tower].cost) {
-      game.grid.layout[Math.floor(y / constants.box)][Math.floor(x / constants.box)] = tower;
+      game.grid.layout[y][x] = tower;
+      game.cash -= descriptions[tower].cost;
+      
+      html.cash.textContent = game.cash;
     } else {
       html.error.textContent = 'Insufficient funds';
     }
   } else {
     html.error.textContent = 'Invalid tower placement';
   }
+  
+  draw();
+}
+
+function draw() {
+  html.ctx.fillStyle = 'rgb(0, 0, 0)';
+  html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
+  
+  game.grid.draw();
 }
 
 // --- Variables ---
@@ -210,7 +222,9 @@ html.sniper.addEventListener('click', function() { toggleActive('sniper'); chang
 html.rapidFire.addEventListener('click', function() { toggleActive('rapidFire'); changeDescription('rapidFire', 1); });
 html.tank.addEventListener('click', function() { toggleActive('tank'); changeDescription('tank', 1); });
 
-html.canvas.addEventListener('click', event => placeTower(event, game.activeTower))
+html.canvas.addEventListener('click', event => placeTower(event, game.activeTower));
+
+html.home.addEventListener('click', function() { window.location.href = 'home'; });
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
