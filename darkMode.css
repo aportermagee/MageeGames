@@ -70,7 +70,7 @@ div {
 }
 .errorMessage {
   text-align: center;
-  color: rgb(255, 0, 0);
+  color: rgb(200, 50, 50);
 }
 .red-button {
   background-color: rgb(50, 0, 0);
