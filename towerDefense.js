@@ -33,6 +33,7 @@ class Grid {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
+    this.originalLayout = this.layout.map(row => [...row]);
   }
 
   draw() {
@@ -88,26 +89,45 @@ async function updateHighScore() {
   }
 }
 
-function toggleActive(button) {
-  let buttons = [
+function toggleActive(tower) {
+  const towers = [
     html.regular,
     html.sniper,
     html.rapidFire,
     html.tank,
   ];
   
-  for (let b of buttons) {
-    if (b.classList.value.includes('active')) b.classList.toggle('active');
+  for (let t of towers) {
+    if (t.classList.value.includes('active')) t.classList.toggle('active');
   }
   
-  button.classList.toggle('active');
+  html[tower].classList.toggle('active');
+  
+  game.activeTower = tower;
 }
 
-function changeDescription(button, level) {
-  html.type.textContent = descriptions[button].type;
-  html.damage.textContent = descriptions[button].damage;
-  html.rateOfFire.textContent = descriptions[button].rateOfFire;
-  html.range.textContent = descriptions[button].range;
+function changeDescription(tower, level) {
+  html.type.textContent = descriptions[tower].type;
+  html.damage.textContent = descriptions[tower].damage;
+  html.rateOfFire.textContent = descriptions[tower].rateOfFire;
+  html.range.textContent = descriptions[tower].range;
+}
+
+function placeTower(event, tower) {
+  const rect = html.canvas.getBoundingClientRect();
+  
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.up;
+  
+  if (game.grid.layout[Math.floor(y / constants.box)][Math.floor(x / constants.box)] === 0) {
+    if (game.cash >= descriptions[tower].cost) {
+      game.grid.layout[Math.floor(y / constants.box)][Math.floor(x / constants.box)] = tower;
+    } else {
+      html.error.textContent = 'Insufficient funds';
+    }
+  } else {
+    html.error.textContent = 'Invalid tower placement';
+  }
 }
 
 // --- Variables ---
@@ -131,6 +151,7 @@ let html = {
   damage: document.getElementById('damage'),
   rateOfFire: document.getElementById('rateOfFire'),
   range: document.getElementById('range'),
+  error: document.getElementById('error'),
 };
 
 let constants = { 
@@ -140,8 +161,10 @@ let constants = {
 };
 
 let game = {
-  highestWave: 0,
+  highestWave: 1,
   grid: new Grid(),
+  cash: 100,
+  activeTower: 'regular',
 };
 
 let descriptions = {
@@ -150,24 +173,28 @@ let descriptions = {
     damage: 1,
     rateOfFire: 5,
     range: 3,
+    cost: 50,
   },
   sniper: {
     type: 'Sniper',
     damage: 5,
     rateOfFire: 2,
     range: 7,
+    cost: 100,
   },
   rapidFire: {
     type: 'RapidFire',
     damage: 1,
     rateOfFire: 10,
     range: 2,
+    cost: 100,
   },
   tank: {
     type: 'Tank',
     damage: 10,
     rateOfFire: 1,
     range: 3,
+    cost: 150,
   },
 };
   
@@ -178,10 +205,12 @@ document.addEventListener('keydown', event => {
   }
 });
 
-html.regular.addEventListener('click', function() { toggleActive(html.regular); changeDescription('regular', 1); });
-html.sniper.addEventListener('click', function() { toggleActive(html.sniper); changeDescription('sniper', 1); });
-html.rapidFire.addEventListener('click', function() { toggleActive(html.rapidFire); changeDescription('rapidFire', 1); });
-html.tank.addEventListener('click', function() { toggleActive(html.tank); changeDescription('tank', 1); });
+html.regular.addEventListener('click', function() { toggleActive('regular'); changeDescription('regular', 1); });
+html.sniper.addEventListener('click', function() { toggleActive('sniper'); changeDescription('sniper', 1); });
+html.rapidFire.addEventListener('click', function() { toggleActive('rapidFire'); changeDescription('rapidFire', 1); });
+html.tank.addEventListener('click', function() { toggleActive('tank'); changeDescription('tank', 1); });
+
+html.canvas.addEventListener('click', event => placeTower(event, game.activeTower))
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
@@ -190,6 +219,8 @@ html.ctx.imageSmoothingEnabled = false;
 getHighScore().then(function() {
   html.highestWave.textContent = game.highestWave;
 });
+
+toggleActive('regular');
 
 // --- Game Loops ---
 game.grid.draw();
