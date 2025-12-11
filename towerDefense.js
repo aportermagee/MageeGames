@@ -104,10 +104,10 @@ function toggleActive(button) {
 }
 
 function changeDescription(button, level) {
-  html.type.textContent = description.button.type;
-  html.damage.textContent = description.button.damage;
-  html.rateOfFire.textContent = description.button.rateOfFire;
-  html.range.textContent = description.button.range;
+  html.type.textContent = descriptions[button].type;
+  html.damage.textContent = descriptions[button].damage;
+  html.rateOfFire.textContent = descriptions[button].rateOfFire;
+  html.range.textContent = descriptions[button].range;
 }
 
 // --- Variables ---
@@ -158,7 +158,7 @@ let descriptions = {
     range: 7,
   },
   rapidFire: {
-    type: 'rapidFire',
+    type: 'RapidFire',
     damage: 1,
     rateOfFire: 10,
     range: 2,
@@ -178,10 +178,10 @@ document.addEventListener('keydown', event => {
   }
 });
 
-html.regular.addEventListener('click', function() { toggleActive(html.regular); changeDescription(regular, 1); });
-html.sniper.addEventListener('click', function() { toggleActive(html.sniper); changeDescription(sniper, 1); };
-html.rapidFire.addEventListener('click', function() { toggleActive(html.rapidFire); changeDescription(rapidFire, 1); });
-html.tank.addEventListener('click', function() { toggleActive(html.tank); changeDescription(tank, 1); });
+html.regular.addEventListener('click', function() { toggleActive(html.regular); changeDescription('regular', 1); });
+html.sniper.addEventListener('click', function() { toggleActive(html.sniper); changeDescription('sniper', 1); });
+html.rapidFire.addEventListener('click', function() { toggleActive(html.rapidFire); changeDescription('rapidFire', 1); });
+html.tank.addEventListener('click', function() { toggleActive(html.tank); changeDescription('tank', 1); });
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
