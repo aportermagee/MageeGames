@@ -86,18 +86,11 @@ function placeTower(event, tower) {
   
   const x = Math.floor((event.clientX - rect.left) / constants.box);
   const y = Math.floor((event.clientY - rect.top) / constants.box);
+
+  let invalidPlacement = false;
   
-  if (true) {
-    if (game.cash >= descriptions[tower].cost) {
-      game.grid.layout[y][x] = tower;
-      game.cash -= descriptions[tower].cost;
-      
-      html.cash.textContent = game.cash;
-    } else {
-      html.error.textContent = 'Insufficient funds';
-    }
-  } else {
-    html.error.textContent = 'Invalid tower placement';
+  for (let tower of game.towers) {
+    if (Math.abs(tower.x - x) < 20 || Math.abs(tower.y - y) < 20) 
   }
   
   draw();
@@ -143,6 +136,9 @@ let game = {
   canvas: new Canvas(),
   cash: 100,
   activeTower: 'regular',
+  towers: [],
+  enemies: [],
+  bullets: [],
 };
 
 let descriptions = {
