@@ -39,6 +39,106 @@ class Canvas {
   }
 }
 
+class Regular {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.damage = 1;
+    this.rateOfFire = 3;
+    this.range = 50;
+    this.cost = 50;
+    this.upgrade = {
+      damage: 0.5,
+      rateOfFire: 0.5,
+      range: 5,
+      cost: 50,
+    };
+  }
+
+  draw() {
+    html.ctx.fillStyle = 'rgb(0, 200, 0)';
+
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 20, 0, 2 * Math.PI);
+    html.ctx.fill();
+  }
+}
+
+class Sniper {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.damage = 5;
+    this.rateOfFire = 1;
+    this.range = 100;
+    this.cost = 150;
+    this.upgrade = {
+      damage: 1,
+      rateOfFire: 0.25,
+      range: 10,
+      cost: 75,
+    };
+  }
+
+  draw() {
+    html.ctx.fillStyle = 'rgb(0, 0, 255)';
+
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 20, 0, 2 * Math.PI);
+    html.ctx.fill();
+  }
+}
+
+class RapidFire {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.damage = 1;
+    this.rateOfFire = 7;
+    this.range = 70;
+    this.cost = 100;
+    this.upgrade = {
+      damage: 0.5,
+      rateOfFire: 1,
+      range: 0.25,
+      cost: 100,
+    };
+  }
+
+  draw() {
+    html.ctx.fillStyle = 'rgb(210, 190, 0)';
+
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 20, 0, 2 * Math.PI);
+    html.ctx.fill();
+  }
+}
+
+class Tank {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.damage = 10;
+    this.rateOfFire = 1;
+    this.range = 40;
+    this.cost = 150;
+    this.upgrade = {
+      damage: 3,
+      rateOfFire: 0.1,
+      range: 5,
+      cost: 100,
+    };
+  }
+
+  draw() {
+    html.ctx.fillStyle = 'rgb(0, 200, 0)';
+
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 20, 0, 2 * Math.PI);
+    html.ctx.fill();
+  }
+}
+
 // --- Functions ---
 async function getHighScore() {
   const { data, error } = await supabaseClient
@@ -126,8 +226,8 @@ function distanceToLineSegment(px, py, x1, y1, x2, y2) {
 function placeTower(event, tower) {
   const rect = html.canvas.getBoundingClientRect();
   
-  const x = Math.floor((event.clientX - rect.left) / constants.box);
-  const y = Math.floor((event.clientY - rect.top) / constants.box);
+  const x = Math.abs(event.clientX - rect.left);
+  const y = Math.abs(event.clientY - rect.top);
 
   let invalidPlacement = false;
   
@@ -157,8 +257,18 @@ function placeTower(event, tower) {
     html.error.textContent = 'Invalid Tower Placement';
     setTimeout(() => html.error.textContent = '', 2000);
     return;
+  } else if (descriptions[game.activeTower].cost > game.cash) {
+    html.error.textContent = 'Insufficient Funds';
+    setTimeout(() => html.error.textContent = '', 2000);
+    return;
   } else {
-    game.towers.push(game.activeTower);
+    switch(game.activeTower) {
+      case 'regular': game.towers.push(new Regular(x, y)); break;
+      case 'sniper': game.towers.push(new Sniper(x, y)); break;
+      case 'rapidFire': game.towers.push(new RapidFire(x, y)); break;
+      case 'tank': game.towers.push(new Tank(x, y)); break;
+    }
+    game.cash -= descriptions[game.activeTower].cost;
   }
   
   draw();
@@ -169,6 +279,14 @@ function draw() {
   html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
   
   game.canvas.draw();
+
+  for (let tower: game.towers) {
+    tower.draw();
+  }
+
+  html.cash.textContent = game.cash;
+  html.wave.textContent = game.wave;
+  html.lives.textContent = game.lives;
 }
 
 // --- Variables ---
@@ -203,6 +321,8 @@ let game = {
   highestWave: 1,
   canvas: new Canvas(),
   cash: 100,
+  wave: 1,
+  lives: 15,
   activeTower: 'regular',
   towers: [],
   enemies: [],
@@ -213,29 +333,29 @@ let descriptions = {
   regular: {
     type: 'Regular',
     damage: 1,
-    rateOfFire: 5,
-    range: 3,
+    rateOfFire: 3,
+    range: 50,
     cost: 50,
   },
   sniper: {
     type: 'Sniper',
     damage: 5,
-    rateOfFire: 2,
-    range: 7,
+    rateOfFire: 1,
+    range: 100,
     cost: 100,
   },
   rapidFire: {
     type: 'RapidFire',
     damage: 1,
-    rateOfFire: 10,
-    range: 2,
+    rateOfFire: 7,
+    range: 70,
     cost: 100,
   },
   tank: {
     type: 'Tank',
     damage: 10,
     rateOfFire: 1,
-    range: 3,
+    range: 40,
     cost: 150,
   },
 };
