@@ -20,9 +20,10 @@ class Canvas {
 
   getLinePositions() {
     let lengths = [0];
-    for (let l = 1; l < this.line.length; l++) {
+    for (let i = 1; i < this.line.length; i++) {
       lengths.push(lengths.at(-1) + Math.sqrt(Math.pow(this.line[i - 1][0] - this.line[i][0], 2) + Math.pow(this.line[i - 1][1] - this.line[i][1], 2)));
     }
+    return lengths;
   }
   
   draw() {
@@ -74,7 +75,7 @@ function toggleActive(tower) {
   ];
   
   for (let t of towers) {
-    if (t.classList.value.includes('active')) t.classList.toggle('active') {}
+    if (t.classList.value.includes('active')) t.classList.toggle('active');
   }
   
   html[tower].classList.toggle('active');
@@ -89,6 +90,39 @@ function changeDescription(tower, level) {
   html.range.textContent = descriptions[tower].range;
 }
 
+function distanceToLineSegment(px, py, x1, y1, x2, y2) {
+  const A = px - x1;
+  const B = py - y1;
+  const C = x2 - x1;
+  const D = y2 - y1;
+
+  const dot = A * C + B * D;
+  const lenSq = C * C + D * D;
+  let param = -1;
+  
+  if (lenSq !== 0) {
+    param = dot / lenSq;
+  }
+
+  let xx, yy;
+
+  if (param < 0) {
+    xx = x1;
+    yy = y1;
+  } else if (param > 1) {
+    xx = x2;
+    yy = y2;
+  } else {
+    xx = x1 + param * C;
+    yy = y1 + param * D;
+  }
+
+  const dx = px - xx;
+  const dy = py - yy;
+  
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
 function placeTower(event, tower) {
   const rect = html.canvas.getBoundingClientRect();
   
@@ -98,7 +132,33 @@ function placeTower(event, tower) {
   let invalidPlacement = false;
   
   for (let tower of game.towers) {
-    if (Math.abs(tower.x - x) < 20 || Math.abs(tower.y - y) < 20) 
+    const distance = Math.sqrt(Math.pow(tower.x - x, 2) + Math.pow(tower.y - y, 2));
+    if (distance < 25) {
+      invalidPlacement = true;
+      break;
+    }
+  }
+  
+  for (let i = 0; i < game.canvas.line.length - 1; i++) {
+    const x1 = game.canvas.line[i][0];
+    const y1 = game.canvas.line[i][1];
+    const x2 = game.canvas.line[i + 1][0];
+    const y2 = game.canvas.line[i + 1][1];
+    
+    const distance = distanceToLineSegment(x, y, x1, y1, x2, y2);
+    
+    if (distance < 25) {
+      invalidPlacement = true;
+      break;
+    }
+  }
+  
+  if (invalidPlacement) {
+    html.error.textContent = 'Invalid Tower Placement';
+    setTimeout(() => html.error.textContent = '', 2000);
+    return;
+  } else {
+    game.towers.push(game.activeTower);
   }
   
   draw();
