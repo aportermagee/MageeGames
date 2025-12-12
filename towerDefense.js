@@ -14,9 +14,17 @@ class Canvas {
       [0, 250], [200, 250], [100, 100],
       [350, 100], [350, 400], [600, 400],
       [500, 250], [700, 250],
-    ]
+    ];
+    this.linePositions = this.getLinePositions();
   }
 
+  getLinePositions() {
+    let lengths = [0];
+    for (let l = 1; l < this.line.length; l++) {
+      lengths.push(lengths.at(-1) + Math.sqrt(Math.pow(this.line[i - 1][0] - this.line[i][0], 2) + Math.pow(this.line[i - 1][1] - this.line[i][1], 2)));
+    }
+  }
+  
   draw() {
     html.ctx.strokeStyle = 'rgb(50, 50, 255)';
     html.ctx.lineWidth = 3;
@@ -66,7 +74,7 @@ function toggleActive(tower) {
   ];
   
   for (let t of towers) {
-    if (t.classList.value.includes('active')) t.classList.toggle('active');
+    if (t.classList.value.includes('active')) t.classList.toggle('active') {}
   }
   
   html[tower].classList.toggle('active');
