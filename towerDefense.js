@@ -8,57 +8,25 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- Classes ---
-class Grid {
+class Canvas {
   constructor() {
-    this.layout = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ];
-    this.originalLayout = this.layout.map(row => [...row]);
+    this.line = [
+      [0, 350], [150, 350], [100, 250],
+      [350, 250], [350, 450], [600, 450],
+      [500, 350], [700, 350],
+    ]
   }
 
   draw() {
-    for (let y = 0; y < this.layout.length; y++) {
-      for (let x = 0; x < this.layout[y].length; x++) {
-        switch (this.layout[y][x]) {
-          case 0:
-            html.ctx.fillStyle = 'rgb(0, 0, 50)';
-            html.ctx.fillRect(x * constants.box, y * constants.box, constants.blankBox * 5, constants.blankBox * 5);
-            break;
-          case 1:
-            html.ctx.fillStyle = 'rgb(0, 0, 100)';
-            html.ctx.fillRect(x * constants.box, y * constants.box, constants.blankBox * 5, constants.blankBox * 5);
-            break;
-          case 2:
-            html.ctx.fillStyle = 'rgb(0, 100, 0)';
-            html.ctx.fillRect(x * constants.box, y * constants.box, constants.blankBox * 5, constants.blankBox * 5);
-            break;
-          case 3:
-            html.ctx.fillStyle = 'rgb(100, 0, 0)';
-            html.ctx.fillRect(x * constants.box, y * constants.box, constants.blankBox * 5, constants.blankBox * 5);
-            break;
-        }
-      }
+    html.ctx.strokeStyle = 'rgb(50, 50, 150)';
+    html.ctx.lineWidth = '1px';
+    
+    html.ctx.beginPath();
+    html.ctx.moveTo(this.line[0][0], this.line[0][1]);
+    for (let i = 1; i < this.line.length; i++) {
+      html.ctx.lineTo(this.line[i][0], this.line[i][1]);
     }
+    html.ctx.stroke();
   }
 }
 
@@ -119,7 +87,7 @@ function placeTower(event, tower) {
   const x = Math.floor((event.clientX - rect.left) / constants.box);
   const y = Math.floor((event.clientY - rect.top) / constants.box);
   
-  if (game.grid.layout[y][x] === 0) {
+  if (true) {
     if (game.cash >= descriptions[tower].cost) {
       game.grid.layout[y][x] = tower;
       game.cash -= descriptions[tower].cost;
@@ -139,7 +107,7 @@ function draw() {
   html.ctx.fillStyle = 'rgb(0, 0, 0)';
   html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
   
-  game.grid.draw();
+  game.canvas.draw();
 }
 
 // --- Variables ---
@@ -167,14 +135,12 @@ let html = {
 };
 
 let constants = { 
-  box: html.canvas.width / 20,
-  blankBox: Math.round((html.canvas.width / 20) / 6),
-  start: [0, 11],
+  
 };
 
 let game = {
   highestWave: 1,
-  grid: new Grid(),
+  canvas: new Canvas(),
   cash: 100,
   activeTower: 'regular',
 };
@@ -237,4 +203,4 @@ getHighScore().then(function() {
 toggleActive('regular');
 
 // --- Game Loops ---
-game.grid.draw();
+game.canvas.draw();
