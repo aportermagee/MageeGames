@@ -56,10 +56,10 @@ class Regular {
   }
 
   draw() {
-    html.ctx.fillStyle = 'rgb(0, 200, 0)';
+    html.ctx.fillStyle = 'rgb(100, 0, 200)';
 
     html.ctx.beginPath();
-    html.ctx.arc(this.x, this.y, 20, 0, 2 * Math.PI);
+    html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
   }
 }
@@ -84,7 +84,7 @@ class Sniper {
     html.ctx.fillStyle = 'rgb(0, 0, 255)';
 
     html.ctx.beginPath();
-    html.ctx.arc(this.x, this.y, 20, 0, 2 * Math.PI);
+    html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
   }
 }
@@ -109,7 +109,7 @@ class RapidFire {
     html.ctx.fillStyle = 'rgb(210, 190, 0)';
 
     html.ctx.beginPath();
-    html.ctx.arc(this.x, this.y, 20, 0, 2 * Math.PI);
+    html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
   }
 }
@@ -134,7 +134,7 @@ class Tank {
     html.ctx.fillStyle = 'rgb(0, 200, 0)';
 
     html.ctx.beginPath();
-    html.ctx.arc(this.x, this.y, 20, 0, 2 * Math.PI);
+    html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
   }
 }
@@ -233,7 +233,7 @@ function placeTower(event, tower) {
   
   for (let tower of game.towers) {
     const distance = Math.sqrt(Math.pow(tower.x - x, 2) + Math.pow(tower.y - y, 2));
-    if (distance < 25) {
+    if (distance < 15) {
       invalidPlacement = true;
       break;
     }
@@ -247,7 +247,7 @@ function placeTower(event, tower) {
     
     const distance = distanceToLineSegment(x, y, x1, y1, x2, y2);
     
-    if (distance < 25) {
+    if (distance < 15) {
       invalidPlacement = true;
       break;
     }
