@@ -11,15 +11,15 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 class Canvas {
   constructor() {
     this.line = [
-      [0, 350], [150, 350], [100, 250],
-      [350, 250], [350, 450], [600, 450],
-      [500, 350], [700, 350],
+      [0, 250], [200, 250], [100, 100],
+      [350, 100], [350, 400], [600, 400],
+      [500, 250], [700, 250],
     ]
   }
 
   draw() {
-    html.ctx.strokeStyle = 'rgb(50, 50, 150)';
-    html.ctx.lineWidth = '1px';
+    html.ctx.strokeStyle = 'rgb(50, 50, 255)';
+    html.ctx.lineWidth = 3;
     
     html.ctx.beginPath();
     html.ctx.moveTo(this.line[0][0], this.line[0][1]);
@@ -104,7 +104,7 @@ function placeTower(event, tower) {
 }
 
 function draw() {
-  html.ctx.fillStyle = 'rgb(0, 0, 0)';
+  html.ctx.fillStyle = 'rgb(0, 0, 20)';
   html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
   
   game.canvas.draw();
@@ -203,4 +203,4 @@ getHighScore().then(function() {
 toggleActive('regular');
 
 // --- Game Loops ---
-game.canvas.draw();
+draw()
