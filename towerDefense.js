@@ -3,17 +3,13 @@ if (!localStorage.getItem('loggedIn') === 'true') {
   window.location.href = 'index.html';
 }
 
-const SUPABASE_URL = 'https://crvmgootjfbqkokrwsuu.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNydm1nb290amZicWtva3J3c3V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MzkyNTQsImV4cCI6MjA3NjQxNTI1NH0.Em26tIW4z2ulfRePTOVhkCmcMGOa0OOjBqC3kPJ-LpU';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 // --- Classes ---
 class Canvas {
   constructor() {
     this.line = [
-      [0, 250], [200, 250], [100, 100],
-      [350, 100], [350, 400], [600, 400],
-      [500, 250], [700, 250],
+      [0, 300], [300, 300], [150, 150],
+      [500, 150], [500, 450], [850, 450],
+      [700, 300], [1000, 300],
     ];
     this.linePositions = this.getLinePositions();
   }
@@ -140,32 +136,6 @@ class Tank {
 }
 
 // --- Functions ---
-async function getHighScore() {
-  const { data, error } = await supabaseClient
-    .from('HighScores')
-    .select('highestWaveTowerDefense')
-    .eq('id', JSON.parse(localStorage.getItem('user')).id)
-    .single();
-
-  if (error) {
-    console.error(error);
-  } else {
-    game.highestWave = data.highestWaveTowerDefense;
-  }
-}
-
-
-async function updateHighScore() {
-  const { data, error } = await supabaseClient
-    .from('HighScores')
-    .update({ highestWaveTowerDefense: game.highestWave })
-    .eq('id', JSON.parse(localStorage.getItem('user')).id);
-
-  if (error) {
-    console.error(error);
-  }
-}
-
 function toggleActive(tower) {
   const towers = [
     html.regular,
@@ -268,7 +238,7 @@ function placeTower(event, tower) {
       case 'rapidFire': game.towers.push(new RapidFire(x, y)); break;
       case 'tank': game.towers.push(new Tank(x, y)); break;
     }
-    game.cash -= descriptions[game.activeTower].cost;
+    game.credits -= descriptions[game.activeTower].cost;
   }
   
   draw();
@@ -280,11 +250,11 @@ function draw() {
   
   game.canvas.draw();
 
-  for (let tower: game.towers) {
+  for (let tower of game.towers) {
     tower.draw();
   }
 
-  html.cash.textContent = game.cash;
+  html.credits.textContent = game.credits;
   html.wave.textContent = game.wave;
   html.lives.textContent = game.lives;
 }
@@ -293,9 +263,8 @@ function draw() {
 let html = {
   canvas: document.getElementById('game'),
   ctx: document.getElementById('game').getContext('2d'),
-  highestWave: document.getElementById('highestWave'),
   wave: document.getElementById('wave'),
-  cash: document.getElementById('cash'),
+  credits: document.getElementById('cash'),
   lives: document.getElementById('lives'),
   start: document.getElementById('start'),
   update: document.getElementById('update'),
@@ -320,7 +289,7 @@ let constants = {
 let game = {
   highestWave: 1,
   canvas: new Canvas(),
-  cash: 100,
+  credits: 100,
   wave: 1,
   lives: 15,
   activeTower: 'regular',
@@ -378,11 +347,6 @@ html.home.addEventListener('click', function() { window.location.href = 'home'; 
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
-
-
-getHighScore().then(function() {
-  html.highestWave.textContent = game.highestWave;
-});
 
 toggleActive('regular');
 
