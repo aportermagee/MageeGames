@@ -65,6 +65,7 @@ class Regular {
       range: 5,
       cost: 50,
     };
+    this.maxLevel = 5;
     this.selected = false;
     this.bullets = [];
     this.lastShot = performance.now();
@@ -160,6 +161,7 @@ class Sniper {
       range: 10,
       cost: 75,
     };
+    this.maxLevel = 5;
     this.selected = false;
     this.bullets = [];
     this.lastShot = performance.now();
@@ -251,6 +253,7 @@ class RapidFire {
       range: 0.25,
       cost: 100,
     };
+    this.maxLevel = 5;
     this.selected = false;
     this.bullets = [];
     this.lastShot = performance.now();
@@ -342,6 +345,7 @@ class Tank {
       range: 5,
       cost: 100,
     };
+    this.maxLevel = 5;
     this.selected = false;
     this.bullets = [];
     this.lastShot = performance.now();
@@ -979,7 +983,7 @@ html.exitDescriptionSelected.addEventListener('click', function() { toggleActive
 html.upgrade.addEventListener('click', function() { 
   let tower = game.selectedTower;
   
-  if (game.credits >= tower.cost) {
+  if (game.credits >= tower.cost && tower.level < tower.maxLevel) {
     game.credits -= tower.cost;
   
     tower.damage += tower.upgrade['damage'];
