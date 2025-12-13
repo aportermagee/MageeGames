@@ -253,9 +253,9 @@ class RapidFire {
     this.cost = 100;
     this.upgrade = {
       damage: 0.5,
-      rateOfFire: 1,
+      rateOfFire: 0.25,
       range: 0.25,
-      cost: 100,
+      cost: 75,
     };
     this.maxLevel = 5;
     this.selected = false;
