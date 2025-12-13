@@ -29,7 +29,7 @@ class Canvas {
       let x = this.line[i][0] - this.line[i - 1][0];
       let y = this.line[i][1] - this.line[i - 1][1];
 
-      lineDirections.push([x / this.linePositions[i][0], y / this.linePositions[i][1]]);
+      lineDirections.push([x / this.linePositions[i], y / this.linePositions[i]]);
     }
     return lineDirections;
   }
@@ -250,7 +250,7 @@ class EnemyRegular {
 
   update(delta) {
     if (this.health <= 0) {
-      game.towers = game.towers.filter(function(item) {
+      game.enemies = game.enemies.filter(function(item) {
         return item !== this;
       });
       return;
@@ -260,7 +260,7 @@ class EnemyRegular {
 
     if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
-      game.towers = game.towers.filter(function(item) {
+      game.enemies = game.enemies.filter(function(item) {
         return item !== this;
       });
       return;
@@ -287,6 +287,7 @@ class EnemySpeed {
   constructor() {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
+    this.pos = 0;
     this.speed = 15 + (game.wave * 0.1);
     this.health = 7 + (game.wave * 0.5);
     this.maxHealth = this.health;
@@ -318,7 +319,7 @@ class EnemySpeed {
 
   update(delta) {
     if (this.health <= 0) {
-      game.towers = game.towers.filter(function(item) {
+      game.enemies = game.enemies.filter(function(item) {
         return item !== this;
       });
       return;
@@ -328,7 +329,7 @@ class EnemySpeed {
 
     if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
-      game.towers = game.towers.filter(function(item) {
+      game.enemies = game.enemies.filter(function(item) {
         return item !== this;
       });
       return;
@@ -355,6 +356,7 @@ class EnemyStrong {
   constructor() {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
+    this.pos = 0;
     this.speed = 5 + (game.wave * 0.1);
     this.health = 20 + (game.wave * 0.5);
     this.maxHealth = this.health;
@@ -388,7 +390,7 @@ class EnemyStrong {
 
   update(delta) {
     if (this.health <= 0) {
-      game.towers = game.towers.filter(function(item) {
+      game.enemies = game.enemies.filter(function(item) {
         return item !== this;
       });
       return;
@@ -398,7 +400,7 @@ class EnemyStrong {
 
     if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
-      game.towers = game.towers.filter(function(item) {
+      game.enemies = game.enemies.filter(function(item) {
         return item !== this;
       });
       return;
@@ -659,7 +661,7 @@ let html = {
   ctx: document.getElementById('game').getContext('2d'),
   
   wave: document.getElementById('wave'),
-  credits: document.getElementById('cash'),
+  credits: document.getElementById('credits'),
   lives: document.getElementById('lives'),
   
   start: document.getElementById('start'),
