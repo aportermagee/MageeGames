@@ -847,7 +847,7 @@ function gameLoop(currentTime) {
   
   if (game.enemiesSpawned >= game.wave + 4 && game.enemies.length === 0) {
     game.run = false;
-    game.credits += 100 + wave * 25;
+    game.credits += 100 + game.wave * 25;
     game.wave += 1;
     game.lastEnemy = 'regular';
     game.enemiesSpawned = 0;
