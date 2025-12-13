@@ -213,7 +213,7 @@ class EnemyRegular {
     this.y = game.canvas.line[0][1];
     this.speed = 10 + (game.wave * 0.1);
     this.health = 10 + (game.wave * 0.5);
-    this.maxHealth = health;
+    this.maxHealth = this.health;
     this.angle = 0;
   }
 
@@ -224,11 +224,11 @@ class EnemyRegular {
     html.ctx.translate(this.x, this.y);
     html.ctx.rotate(angle);
     html.ctx.fillStyle = 'rgb(200, 0, 0)';
-    html.ctx.fillRect(-(this.x - 10), -(this.y - 10), 20, 20);
+    html.ctx.fillRect(-10, -10, 20, 20);
     html.ctx.restore();
 
     html.ctx.strokeStyle = 'rgb(0, 200, 0)';
-    html.ctx.lineWidth = 2;
+    html.ctx.lineWidth = 3;
     html.ctx.beginPath();
     html.ctx.moveTo(this.x - 10, this.y - 20);
     html.ctx.lineTo((this.x - 10) + Math.round(20 * this.health / this.maxHealth), this.y - 20);
@@ -242,7 +242,7 @@ class EnemySpeed {
     this.y = game.canvas.line[0][1];
     this.speed = 15 + (game.wave * 0.1);
     this.health = 7 + (game.wave * 0.5);
-    this.maxHealth = health;
+    this.maxHealth = this.health;
     this.angle = 0;
   }
 
@@ -254,10 +254,10 @@ class EnemySpeed {
     html.ctx.rotate(angle);
     html.ctx.fillStyle = 'rgb(235, 200, 0)';
     html.ctx.beginPath();
-    html.ctx.moveTo(this.x, this.y - 10);
-    html.ctx.lineTo(this.x + 10, this.y + 10);
-    html.ctx.lineTo(this.x - 10, this.y + 10);
-    html.ctx.lineTo(this.x, this.y - 10);
+    html.ctx.moveTo(0, -10);
+    html.ctx.lineTo(10, 10);
+    html.ctx.lineTo(-10, 10);
+    html.ctx.lineTo(0, -10);
     html.ctx.fill();
     html.ctx.restore();
 
@@ -276,7 +276,7 @@ class EnemyStrong {
     this.y = game.canvas.line[0][1];
     this.speed = 5 + (game.wave * 0.1);
     this.health = 20 + (game.wave * 0.5);
-    this.maxHealth = health;
+    this.maxHealth = this.health;
     this.angle = 0;
   }
 
@@ -288,12 +288,12 @@ class EnemyStrong {
     html.ctx.rotate(angle);
     html.ctx.fillStyle = 'rgb(100, 0, 200)';
     html.ctx.beginPath();
-    html.ctx.moveTo(this.x, this.y - 10);
-    html.ctx.lineTo(this.x + 10, this.y - 1);
-    html.ctx.lineTo(this.x + 6, this.y + 10);
-    html.ctx.lineTo(this.x - 6, this.y + 10);
-    html.ctx.lineTo(this.x - 10, this.y - 1);
-    html.ctx.lineTo(this.x, this.y - 10);
+    html.ctx.moveTo(0, -10);
+    html.ctx.lineTo(10, -1);
+    html.ctx.lineTo(6, 10);
+    html.ctx.lineTo(-6, 10);
+    html.ctx.lineTo(-10, -1);
+    html.ctx.lineTo(0, -10);
     html.ctx.fill();
     html.ctx.restore();
 
@@ -537,7 +537,7 @@ let game = {
   activeTower: 'regular',
   selectedTower: 'none',
   towers: [],
-  enemies: [new EnemyRegular()],
+  enemies: [],
 };
 
 let descriptions = {
