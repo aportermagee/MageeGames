@@ -224,7 +224,7 @@ class EnemyRegular {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
     this.pos = 0;
-    this.speed = 10 + (game.wave * 0.1);
+    this.speed = 100 + (game.wave);
     this.health = 10 + (game.wave * 0.5);
     this.maxHealth = this.health;
     this.angle = 0;
@@ -288,7 +288,7 @@ class EnemySpeed {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
     this.pos = 0;
-    this.speed = 15 + (game.wave * 0.1);
+    this.speed = 150 + (game.wave * 0.1);
     this.health = 7 + (game.wave * 0.5);
     this.maxHealth = this.health;
     this.angle = 0;
@@ -357,7 +357,7 @@ class EnemyStrong {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
     this.pos = 0;
-    this.speed = 5 + (game.wave * 0.1);
+    this.speed = 50 + (game.wave * 0.1);
     this.health = 20 + (game.wave * 0.5);
     this.maxHealth = this.health;
     this.angle = 0;
@@ -615,7 +615,7 @@ function update(delta) {
 }
 
 function gameLoop(currentTime) {
-  let delta = currentTime - game.lastTime;
+  let delta = (currentTime - game.lastTime) / 1000;
   
   game.lastTime = performance.now();
 
