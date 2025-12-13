@@ -212,7 +212,11 @@ class Sniper {
       let target = 'none';
   
       for (let enemy of game.enemies) {
-        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) { target = enemy; break; }
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) {
+          if (target === 'none' || enemy.pos > target.pos) {
+            target = enemy;
+          }
+        }
       }
 
       if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
@@ -304,7 +308,11 @@ class RapidFire {
       let target = 'none';
   
       for (let enemy of game.enemies) {
-        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) { target = enemy; break; }
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) {
+          if (target === 'none' || enemy.pos > target.pos) {
+            target = enemy;
+          }
+        }
       }
 
       if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
@@ -396,7 +404,11 @@ class Tank {
       let target = 'none';
   
       for (let enemy of game.enemies) {
-        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) { target = enemy; break; }
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) {
+          if (target === 'none' || enemy.pos > target.pos) {
+            target = enemy;
+          }
+        }
       }
 
       if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
