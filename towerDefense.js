@@ -18,7 +18,7 @@ class Canvas {
   getLinePositions() {
     let lengths = [0];
     for (let i = 1; i < this.line.length; i++) {
-      lengths.push(lengths.at(-1) + Math.hypot(this.line[i - 1][0] - this.line[i][0], 2), this.line[i - 1][1] - this.line[i][1], 2);
+      lengths.push(lengths.at(-1) + Math.hypot(this.line[i - 1][0] - this.line[i][0], this.line[i - 1][1] - this.line[i][1]));
     }
     return lengths;
   }
@@ -67,6 +67,7 @@ class Regular {
     };
     this.selected = false;
     this.bullets = [];
+    this.lastShot = performance.now();
   }
 
   draw() {
@@ -100,15 +101,17 @@ class Regular {
   }
 
   targetDirection(bullet) {
-    let x = bullet[0] - bullet[2].x;
-    let y = bullet.y - bullet[2].y;
-    let distance = Math.hypot(bullet.x - bullet[2].x, bullet.y - bullet[2].y);
+    let x = bullet[2].x - bullet[0];
+    let y = bullet[2].y - bullet[1];
+    let distance = Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y);
 
-    return [bullet.x / distance, bullet.y / distance];
+    return [x / distance, y / distance];
   }
   
   update(delta) {
-    if (performance.now() - this.lastShot > 1 / this.rateOfFire) {
+    if (performance.now() - this.lastShot > 1000 / this.rateOfFire) {
+      this.lastShot = performance.now();
+      
       let target = 'none';
   
       for (let enemy of game.enemies) {
@@ -119,7 +122,7 @@ class Regular {
     }
 
     for (let bullet of this.bullets) {
-      if (!game.enemies.contains(bullet[2])) {
+      if (!game.enemies.includes(bullet[2])) {
         this.bullets = this.bullets.filter(item => item !== bullet);
         return;
       }
@@ -543,7 +546,7 @@ function placeTower(event, tower) {
   let invalidPlacement = false;
   
   for (let t of game.towers) {
-    const distance = Math.hypot(t.x - x, 2, t.y - y, 2);
+    const distance = Math.hypot(t.x - x, t.y - y);
     if (distance < 10) {
       game.selectedTower = t;
       t.selected = true;
@@ -640,9 +643,9 @@ function draw() {
 }
 
 function update(delta) {
-  //for (let tower of game.towers) {
-    //tower.update(delta);
-  //}
+  for (let tower of game.towers) {
+    tower.update(delta);
+  }
 
   for (let enemy of game.enemies) {
     enemy.update(delta);
@@ -652,7 +655,7 @@ function update(delta) {
 function start() {
   game.run = true;
   game.lastTime = performance.now();
-  game.lastSpawnTime = performance.now();
+  game.lastSpawnTime = performance.now() - 1000;
   requestAnimationFrame(gameLoop);
 }
 
@@ -695,7 +698,7 @@ function gameLoop(currentTime) {
 
   draw()
   
-  if (game.enemiesSpawned >= wave + 4 && game.enemies === []) {
+  if (game.enemiesSpawned >= wave + 4 && game.enemies.length === 0) {
     game.run = false;
     game.wave += 1;
     game.lastEnemy = 'regular';
