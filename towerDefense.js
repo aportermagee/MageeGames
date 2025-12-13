@@ -864,7 +864,10 @@ function gameLoop(currentTime) {
   update(delta);
   draw()
   
-  if (game.enemiesSpawned >= game.wave + 4 && game.enemies.length === 0) {
+  if (game.lives <= 0) { 
+    game.gameOver = true;
+  }
+  if (game.enemiesSpawned >= game.wave + 4 && game.enemies.length === 0 && !game.gameOver) {
     game.run = false;
     game.credits += 100;
     game.wave += 1;
@@ -875,7 +878,7 @@ function gameLoop(currentTime) {
     draw();
   }
   
-  if (game.run) {
+  if (game.run && !game.gameOver) {
     requestAnimationFrame(gameLoop);
   }
 }
@@ -940,6 +943,7 @@ let game = {
   enemiesSpawned: 0,
   
   run: false,
+  gameOver: false,
 };
 
 let descriptions = {
