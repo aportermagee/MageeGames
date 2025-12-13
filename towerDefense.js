@@ -626,7 +626,7 @@ function toggleActive(tower) {
     html.tank,
   ];
   
-  if (tower === 'none') { html.descriptionStandard.style.display = 'none'; return; }
+  if (tower === 'none') { html.descriptionStandard.style.display = 'none'; draw(); return; }
   
   for (let t of towers) {
     if (t.classList.value.includes('active')) t.classList.toggle('active');
