@@ -29,7 +29,7 @@ class Canvas {
       let x = this.line[i][0] - this.line[i - 1][0];
       let y = this.line[i][1] - this.line[i - 1][1];
 
-      lineDirections.push([x / this.linePositions[i][0], y / this.linePositions[i][1]);
+      lineDirections.push([x / this.linePositions[i][0], y / this.linePositions[i][1]]);
     }
     return lineDirections;
   }
@@ -258,7 +258,7 @@ class EnemyRegular {
     
     this.pos += this.speed * delta;
 
-    if (pos > game.canvas.linePositions.at(-1)) {
+    if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
       game.towers = game.towers.filter(function(item) {
         return item !== this;
@@ -276,8 +276,8 @@ class EnemyRegular {
       }
     }
 
-    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][0];
-    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][1];
+    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[passed][0];
+    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[passed][1];
 
     this.angle += 180 * delta;
   }
@@ -326,7 +326,7 @@ class EnemySpeed {
     
     this.pos += this.speed * delta;
 
-    if (pos > game.canvas.linePositions.at(-1)) {
+    if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
       game.towers = game.towers.filter(function(item) {
         return item !== this;
@@ -344,8 +344,8 @@ class EnemySpeed {
       }
     }
 
-    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][0];
-    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][1];
+    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[passed][0];
+    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[passed][1];
 
     this.angle += 180 * delta;
   }
@@ -396,7 +396,7 @@ class EnemyStrong {
     
     this.pos += this.speed * delta;
 
-    if (pos > game.canvas.linePositions.at(-1)) {
+    if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
       game.towers = game.towers.filter(function(item) {
         return item !== this;
@@ -414,8 +414,8 @@ class EnemyStrong {
       }
     }
 
-    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][0];
-    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][1];
+    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[passed][0];
+    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[passed][1];
 
     this.angle += 180 * delta;
   }
@@ -614,8 +614,12 @@ function update(delta) {
 
 function gameLoop(currentTime) {
   let delta = currentTime - game.lastTime;
+  
+  game.lastTime = performance.now();
 
   if (currentTime - game.lastSpawnTime > 1000) {
+    game.lastSpawnTime = performance.now();
+    
     let random = Math.round(Math.random() * 9);
 
     if (random <= 6) {
@@ -645,6 +649,8 @@ function gameLoop(currentTime) {
   update(delta);
 
   draw()
+  
+  if (game.run) requestAnimationFrame(gameLoop);
 }
 
 // --- Variables ---
@@ -704,6 +710,8 @@ let game = {
   lastTime: 0,
   lastSpawnTime: 0,
   lastEnemy: 'regular',
+  
+  run: true,
 };
 
 let descriptions = {
@@ -799,8 +807,8 @@ html.ctx.imageSmoothingEnabled = false;
 toggleActive('regular');
 
 // --- Game Loops ---
-draw()
+draw();
 
 game.lastTime = performance.now();
-game.lastSpawnTime = peformance.now();
+game.lastSpawnTime = performance.now();
 requestAnimationFrame(gameLoop);
