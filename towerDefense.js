@@ -39,9 +39,11 @@ class Regular {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.level = 1
+    this.type = 'Regular';
     this.damage = 1;
     this.rateOfFire = 3;
-    this.range = 50;
+    this.range = 70;
     this.cost = 50;
     this.upgrade = {
       damage: 0.5,
@@ -49,31 +51,50 @@ class Regular {
       range: 5,
       cost: 50,
     };
+    this.selected = false;
   }
 
   draw() {
-    html.ctx.fillStyle = 'rgb(100, 0, 200)';
+    html.ctx.fillStyle = 'rgb(150, 0, 255)';
 
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
+  }
+  
+  selectedDraw() {
+    html.ctx.fillStyle = 'rgb(255, 255, 255)';
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    html.ctx.strokeStyle = 'rgb(255, 255, 255)';
+    html.ctx.lineWidth = 2;
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
+    html.ctx.stroke();
   }
 }
 
 class Sniper {
   constructor(x, y) {
     this.x = x;
-    this.y = y;
+    this.y = y
+    this.level = 1;
+    this.type = 'Sniper';
     this.damage = 5;
     this.rateOfFire = 1;
-    this.range = 100;
-    this.cost = 150;
+    this.range = 150;
+    this.cost = 100;
     this.upgrade = {
       damage: 1,
       rateOfFire: 0.25,
       range: 10,
       cost: 75,
     };
+    this.selected = false;
   }
 
   draw() {
@@ -83,12 +104,29 @@ class Sniper {
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
   }
+  
+  selectedDraw() {
+    html.ctx.fillStyle = 'rgb(255, 255, 255)';
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    html.ctx.strokeStyle = 'rgb(255, 255, 255)';
+    html.ctx.lineWidth = 2;
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
+    html.ctx.stroke();
+  }
 }
 
 class RapidFire {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.level = 1;
+    this.type = 'RapidFire';
     this.damage = 1;
     this.rateOfFire = 7;
     this.range = 70;
@@ -99,6 +137,7 @@ class RapidFire {
       range: 0.25,
       cost: 100,
     };
+    this.selected = false;
   }
 
   draw() {
@@ -108,12 +147,29 @@ class RapidFire {
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
   }
+  
+  selectedDraw() {
+    html.ctx.fillStyle = 'rgb(255, 255, 255)';
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    html.ctx.strokeStyle = 'rgb(255, 255, 255)';
+    html.ctx.lineWidth = 2;
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
+    html.ctx.stroke();
+  }
 }
 
 class Tank {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.level = 1;
+    this.type = 'Tank';
     this.damage = 10;
     this.rateOfFire = 1;
     this.range = 40;
@@ -124,6 +180,7 @@ class Tank {
       range: 5,
       cost: 100,
     };
+    this.selected = false;
   }
 
   draw() {
@@ -133,10 +190,30 @@ class Tank {
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
   }
+  
+  selectedDraw() {
+    html.ctx.fillStyle = 'rgb(255, 255, 255)';
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    html.ctx.strokeStyle = 'rgb(255, 255, 255)';
+    html.ctx.lineWidth = 2;
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
+    html.ctx.stroke();
+  }
 }
 
 // --- Functions ---
 function toggleActive(tower) {
+  game.selectedTower.selected = false;
+  game.selectedTower = 'none';
+  
+  html.descriptionSelected.style.display = 'none';
+  
   const towers = [
     html.regular,
     html.sniper,
@@ -144,22 +221,26 @@ function toggleActive(tower) {
     html.tank,
   ];
   
+  if (tower === 'none') { html.descriptionStandard.style.display = 'none'; return; }
+  
   for (let t of towers) {
     if (t.classList.value.includes('active')) t.classList.toggle('active');
   }
+                         
+  if (html.descriptionStandard.style.display === 'none') { html.descriptionStandard.style.display = 'inline-block'; }
   
-  if (tower === 'none') { game.activeTower = 'none'; html.description.style.display = 'none'; return; }
-  if (tower !== 'none' && html.description.style.display === 'none') { html.description.style.display = 'inline-block'; }
   html[tower].classList.toggle('active');
   
   game.activeTower = tower;
+  
+  draw();
 }
 
-function changeDescription(tower, level) {
-  html.type.textContent = descriptions[tower].type;
-  html.damage.textContent = descriptions[tower].damage;
-  html.rateOfFire.textContent = descriptions[tower].rateOfFire;
-  html.range.textContent = descriptions[tower].range;
+function changeDescription(tower) {
+  html.typeStandard.textContent = descriptions[tower].type;
+  html.damageStandard.textContent = descriptions[tower].damage;
+  html.rateOfFireStandard.textContent = descriptions[tower].rateOfFire;
+  html.rangeStandard.textContent = descriptions[tower].range;
 }
 
 function distanceToLineSegment(px, py, x1, y1, x2, y2) {
@@ -196,6 +277,13 @@ function distanceToLineSegment(px, py, x1, y1, x2, y2) {
 }
 
 function placeTower(event, tower) {
+  if (game.selectedTower !== 'none') {
+    game.selectedTower.selected = false;
+    game.selectedTower = 'none';
+  
+    html.descriptionSelected.style.display = 'none';
+  }
+  
   const rect = html.canvas.getBoundingClientRect();
   
   const x = Math.abs(event.clientX - rect.left);
@@ -203,13 +291,46 @@ function placeTower(event, tower) {
 
   let invalidPlacement = false;
   
-  for (let tower of game.towers) {
-    const distance = Math.sqrt(Math.pow(tower.x - x, 2) + Math.pow(tower.y - y, 2));
-    if (distance < 15) {
+  for (let t of game.towers) {
+    const distance = Math.sqrt(Math.pow(t.x - x, 2) + Math.pow(t.y - y, 2));
+    if (distance < 10) {
+      game.selectedTower = t;
+      t.selected = true;
+      
+      const towers = [
+        html.regular,
+        html.sniper,
+        html.rapidFire,
+        html.tank,
+      ];
+      
+      for (let t of towers) {
+        if (t.classList.value.includes('active')) t.classList.toggle('active');
+      }
+      
+      game.activeTower = 'none';
+      html.descriptionStandard.style.display = 'none';
+      
+      html.descriptionSelected.style.display = 'inline-block';
+      
+      html.level.textContent = t.level;
+      html.typeSelected.textContent = t.type;
+      html.damageSelected.textContent = t.damage;
+      html.rateOfFireSelected.textContent = t.rateOfFire;
+      html.rangeSelected.textContent = t.range;
+      html.costSelected.textContent = t.cost;
+      
+      draw();
+      
+      return;
+    }
+    if (distance < 20) {
       invalidPlacement = true;
       break;
     }
   }
+  
+  if (tower === 'none') return;
   
   for (let i = 0; i < game.canvas.line.length - 1; i++) {
     const x1 = game.canvas.line[i][0];
@@ -219,7 +340,7 @@ function placeTower(event, tower) {
     
     const distance = distanceToLineSegment(x, y, x1, y1, x2, y2);
     
-    if (distance < 15) {
+    if (distance < 20) {
       invalidPlacement = true;
       break;
     }
@@ -255,7 +376,9 @@ function draw() {
   for (let tower of game.towers) {
     tower.draw();
   }
-
+  
+  if (game.selectedTower !== 'none') game.selectedTower.selectedDraw(); 
+ 
   html.credits.textContent = game.credits;
   html.wave.textContent = game.wave;
   html.lives.textContent = game.lives;
@@ -272,23 +395,32 @@ let html = {
   
   start: document.getElementById('start'),
   
-  update: document.getElementById('update'),
+  upgrade: document.getElementById('upgrade'),
   remove: document.getElementById('remove'),
   
   home: document.getElementById('home'), 
-  exitDescription: document.getElementById('exitDescription'),
   
   regular: document.getElementById('regular'),
   sniper: document.getElementById('sniper'),
   rapidFire: document.getElementById('rapidFire'),
   tank: document.getElementById('tank'),
   
-  description: document.getElementById('description'),
-  type: document.getElementById('type'),
-  damage: document.getElementById('damage'),
-  rateOfFire: document.getElementById('rateOfFire'),
-  range: document.getElementById('range'),
-  cost: document.getElementById('cost'),
+  descriptionStandard: document.getElementById('descriptionStandard'),
+  typeStandard: document.getElementById('typeStandard'),
+  damageStandard: document.getElementById('damageStandard'),
+  rateOfFireStandard: document.getElementById('rateOfFireStandard'),
+  rangeStandard: document.getElementById('rangeStandard'),
+  costStandard: document.getElementById('costStandard'),
+  exitDescriptionStandard: document.getElementById('exitDescriptionStandard'),
+  
+  descriptionSelected: document.getElementById('descriptionSelected'),
+  level: document.getElementById('level'),
+  typeSelected: document.getElementById('typeSelected'),
+  damageSelected: document.getElementById('damageSelected'),
+  rateOfFireSelected: document.getElementById('rateOfFireSelected'),
+  rangeSelected: document.getElementById('rangeSelected'),
+  costSelected: document.getElementById('costSelected'),
+  exitDescriptionSelected: document.getElementById('exitDescriptionSelected'),
   
   error: document.getElementById('error'),
 };
@@ -300,9 +432,9 @@ let game = {
   lives: 15,
   canvas: new Canvas(),
   activeTower: 'regular',
+  selectedTower: 'none',
   towers: [],
   enemies: [],
-  bullets: [],
 };
 
 let descriptions = {
@@ -310,14 +442,14 @@ let descriptions = {
     type: 'Regular',
     damage: 1,
     rateOfFire: 3,
-    range: 50,
+    range: 70,
     cost: 50,
   },
   sniper: {
     type: 'Sniper',
     damage: 5,
     rateOfFire: 1,
-    range: 100,
+    range: 150,
     cost: 100,
   },
   rapidFire: {
@@ -343,16 +475,54 @@ document.addEventListener('keydown', event => {
   }
 });
 
-html.regular.addEventListener('click', function() { toggleActive('regular'); changeDescription('regular', 1); });
-html.sniper.addEventListener('click', function() { toggleActive('sniper'); changeDescription('sniper', 1); });
-html.rapidFire.addEventListener('click', function() { toggleActive('rapidFire'); changeDescription('rapidFire', 1); });
-html.tank.addEventListener('click', function() { toggleActive('tank'); changeDescription('tank', 1); });
+html.regular.addEventListener('click', function() { toggleActive('regular'); changeDescription('regular'); });
+html.sniper.addEventListener('click', function() { toggleActive('sniper'); changeDescription('sniper'); });
+html.rapidFire.addEventListener('click', function() { toggleActive('rapidFire'); changeDescription('rapidFire'); });
+html.tank.addEventListener('click', function() { toggleActive('tank'); changeDescription('tank'); });
 
 html.canvas.addEventListener('click', event => placeTower(event, game.activeTower));
 
 html.home.addEventListener('click', function() { window.location.href = 'home'; });
 
-html.exitDescription.addEventListener('click', function() { toggleActive('none'); });
+html.exitDescriptionStandard.addEventListener('click', function() { toggleActive('none'); });
+html.exitDescriptionSelected.addEventListener('click', function() { toggleActive('none'); });
+
+html.upgrade.addEventListener('click', function() { 
+  let tower = game.selectedTower;
+  
+  game.credits -= tower.cost;
+  
+  tower.damage += tower.upgrade['damage'];
+  tower.rateOfFire += tower.upgrade['rateOfFire'];
+  tower.range += tower.upgrade['range'];
+  tower.cost += tower.upgrade['cost'];
+  tower.level += 1;
+  
+  html.level.textContent = tower.level;
+  html.typeSelected.textContent = tower.type;
+  html.damageSelected.textContent = tower.damage;
+  html.rateOfFireSelected.textContent = tower.rateOfFire;
+  html.rangeSelected.textContent = tower.range;
+  html.costSelected.textContent = tower.cost;
+  
+  draw();
+});
+
+html.remove.addEventListener('click', function() { 
+  let tower = game.selectedTower;
+  
+  game.selectedTower = 'none';
+  
+  game.towers = game.towers.filter(function(item) {
+    return item !== tower;
+  });
+  
+  toggleActive('none');
+  
+  game.credits += Math.round(tower.cost / 2);
+  
+  draw();
+});
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
