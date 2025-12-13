@@ -1006,7 +1006,7 @@ html.upgrade.addEventListener('click', function() {
     tower.damage += tower.upgrade['damage'];
     tower.rateOfFire += tower.upgrade['rateOfFire'];
     tower.range += tower.upgrade['range'];
-    tower.cost += tower.upgrade['cost'];
+    tower.cost += tower.upgrade['cost'] * tower.level;
     tower.level += 1;
   
     html.level.textContent = tower.level;
