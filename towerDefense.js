@@ -249,6 +249,13 @@ class EnemyRegular {
   }
 
   update(delta) {
+    if (this.health <= 0) {
+      game.towers = game.towers.filter(function(item) {
+        return item !== this;
+      });
+      return;
+    }
+    
     this.pos += this.speed * delta;
 
     if (pos > game.canvas.linePositions.at(-1)) {
@@ -310,6 +317,13 @@ class EnemySpeed {
   }
 
   update(delta) {
+    if (this.health <= 0) {
+      game.towers = game.towers.filter(function(item) {
+        return item !== this;
+      });
+      return;
+    }
+    
     this.pos += this.speed * delta;
 
     if (pos > game.canvas.linePositions.at(-1)) {
@@ -373,6 +387,13 @@ class EnemyStrong {
   }
 
   update(delta) {
+    if (this.health <= 0) {
+      game.towers = game.towers.filter(function(item) {
+        return item !== this;
+      });
+      return;
+    }
+    
     this.pos += this.speed * delta;
 
     if (pos > game.canvas.linePositions.at(-1)) {
