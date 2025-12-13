@@ -994,8 +994,13 @@ html.exitDescriptionSelected.addEventListener('click', function() { toggleActive
 
 html.upgrade.addEventListener('click', function() { 
   let tower = game.selectedTower;
+
+  if (tower.level >= tower.maxLevel) {
+    html.error.textContent = 'Tower Is At Its Max Level';
+    setTimeout(() => html.error.textContent = '', 2000);
+  }
   
-  if (game.credits >= tower.cost && tower.level < tower.maxLevel) {
+  if (game.credits >= tower.cost) {
     game.credits -= tower.cost;
   
     tower.damage += tower.upgrade['damage'];
