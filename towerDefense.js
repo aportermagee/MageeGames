@@ -157,6 +157,8 @@ class Sniper {
       cost: 75,
     };
     this.selected = false;
+    this.bullets = [];
+    this.lastShot = performance.now();
   }
 
   draw() {
@@ -165,6 +167,13 @@ class Sniper {
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
+    
+    for (let bullet of this.bullets) {
+      html.ctx.fillStyle = 'rgb(0, 0, 255)';
+      html.ctx.beginPath();
+      html.ctx.arc(bullet[0], bullet[1], 3, 0, 2 * Math.PI);
+      html.ctx.fill();
+    }
   }
   
   selectedDraw() {
@@ -180,6 +189,45 @@ class Sniper {
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
     html.ctx.stroke();
+  }
+  
+  targetDirection(bullet) {
+    let x = bullet[2].x - bullet[0];
+    let y = bullet[2].y - bullet[1];
+    let distance = Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y);
+
+    return [x / distance, y / distance];
+  }
+  
+  update(delta) {
+    if (performance.now() - this.lastShot > 1000 / this.rateOfFire) {
+      this.lastShot = performance.now();
+      
+      let target = 'none';
+  
+      for (let enemy of game.enemies) {
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) { target = enemy; break; }
+      }
+
+      if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
+    }
+
+    for (let bullet of this.bullets) {
+      if (!game.enemies.includes(bullet[2])) {
+        this.bullets = this.bullets.filter(item => item !== bullet);
+        return;
+      }
+      
+      let direction = this.targetDirection(bullet);
+
+      bullet[0] += direction[0] * 1000 * delta;
+      bullet[1] += direction[1] * 1000 * delta;
+      
+      if (Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y) <= 8) { 
+        bullet[2].health -= this.damage;
+        this.bullets = this.bullets.filter(item => item !== bullet);
+      }
+    }
   }
 }
 
@@ -200,6 +248,8 @@ class RapidFire {
       cost: 100,
     };
     this.selected = false;
+    this.bullets = [];
+    this.lastShot = performance.now();
   }
 
   draw() {
@@ -208,6 +258,13 @@ class RapidFire {
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
+    
+    for (let bullet of this.bullets) {
+      html.ctx.fillStyle = 'rgb(210, 190, 0)';
+      html.ctx.beginPath();
+      html.ctx.arc(bullet[0], bullet[1], 3, 0, 2 * Math.PI);
+      html.ctx.fill();
+    }
   }
   
   selectedDraw() {
@@ -223,6 +280,45 @@ class RapidFire {
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
     html.ctx.stroke();
+  }
+  
+  targetDirection(bullet) {
+    let x = bullet[2].x - bullet[0];
+    let y = bullet[2].y - bullet[1];
+    let distance = Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y);
+
+    return [x / distance, y / distance];
+  }
+  
+  update(delta) {
+    if (performance.now() - this.lastShot > 1000 / this.rateOfFire) {
+      this.lastShot = performance.now();
+      
+      let target = 'none';
+  
+      for (let enemy of game.enemies) {
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) { target = enemy; break; }
+      }
+
+      if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
+    }
+
+    for (let bullet of this.bullets) {
+      if (!game.enemies.includes(bullet[2])) {
+        this.bullets = this.bullets.filter(item => item !== bullet);
+        return;
+      }
+      
+      let direction = this.targetDirection(bullet);
+
+      bullet[0] += direction[0] * 1000 * delta;
+      bullet[1] += direction[1] * 1000 * delta;
+      
+      if (Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y) <= 8) { 
+        bullet[2].health -= this.damage;
+        this.bullets = this.bullets.filter(item => item !== bullet);
+      }
+    }
   }
 }
 
@@ -243,6 +339,8 @@ class Tank {
       cost: 100,
     };
     this.selected = false;
+    this.bullets = [];
+    this.lastShot = performance.now();
   }
 
   draw() {
@@ -251,6 +349,13 @@ class Tank {
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
+    
+    for (let bullet of this.bullets) {
+      html.ctx.fillStyle = 'rgb(0, 200, 0)';
+      html.ctx.beginPath();
+      html.ctx.arc(bullet[0], bullet[1], 3, 0, 2 * Math.PI);
+      html.ctx.fill();
+    }
   }
   
   selectedDraw() {
@@ -266,6 +371,45 @@ class Tank {
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
     html.ctx.stroke();
+  }
+  
+  targetDirection(bullet) {
+    let x = bullet[2].x - bullet[0];
+    let y = bullet[2].y - bullet[1];
+    let distance = Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y);
+
+    return [x / distance, y / distance];
+  }
+  
+  update(delta) {
+    if (performance.now() - this.lastShot > 1000 / this.rateOfFire) {
+      this.lastShot = performance.now();
+      
+      let target = 'none';
+  
+      for (let enemy of game.enemies) {
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) { target = enemy; break; }
+      }
+
+      if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
+    }
+
+    for (let bullet of this.bullets) {
+      if (!game.enemies.includes(bullet[2])) {
+        this.bullets = this.bullets.filter(item => item !== bullet);
+        return;
+      }
+      
+      let direction = this.targetDirection(bullet);
+
+      bullet[0] += direction[0] * 1000 * delta;
+      bullet[1] += direction[1] * 1000 * delta;
+      
+      if (Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y) <= 8) { 
+        bullet[2].health -= this.damage;
+        this.bullets = this.bullets.filter(item => item !== bullet);
+      }
+    }
   }
 }
 
