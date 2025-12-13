@@ -18,7 +18,7 @@ class Canvas {
   getLinePositions() {
     let lengths = [0];
     for (let i = 1; i < this.line.length; i++) {
-      lengths.push(lengths.at(-1) + Math.sqrt(Math.pow(this.line[i - 1][0] - this.line[i][0], 2) + Math.pow(this.line[i - 1][1] - this.line[i][1], 2)));
+      lengths.push(lengths.at(-1) + Math.hypot(this.line[i - 1][0] - this.line[i][0], 2), this.line[i - 1][1] - this.line[i][1], 2);
     }
     return lengths;
   }
@@ -66,6 +66,7 @@ class Regular {
       cost: 50,
     };
     this.selected = false;
+    this.bullets = [];
   }
 
   draw() {
@@ -74,6 +75,13 @@ class Regular {
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
+
+    for (let bullet of this.bullets) {
+      html.ctx.fillStyle = 'rgb(150, 0, 255)';
+      html.ctx.beginPath();
+      html.ctx.arc(bullet[0], bullet[1], 3, 0, 2 * Math.PI);
+      html.ctx.fill();
+    }
   }
   
   selectedDraw() {
@@ -89,6 +97,43 @@ class Regular {
     html.ctx.beginPath();
     html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
     html.ctx.stroke();
+  }
+
+  targetDirection(bullet) {
+    let x = bullet[0] - bullet[2].x;
+    let y = bullet.y - bullet[2].y;
+    let distance = Math.hypot(bullet.x - bullet[2].x, bullet.y - bullet[2].y);
+
+    return [bullet.x / distance, bullet.y / distance];
+  }
+  
+  update(delta) {
+    if (performance.now() - this.lastShot > 1 / this.rateOfFire) {
+      let target = 'none';
+  
+      for (let enemy of game.enemies) {
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) { target = enemy; break; }
+      }
+
+      if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
+    }
+
+    for (let bullet of this.bullets) {
+      if (!game.enemies.contains(bullet[2])) {
+        this.bullets = this.bullets.filter(item => item !== bullet);
+        return;
+      }
+      
+      let direction = this.targetDirection(bullet);
+
+      bullet[0] += direction[0] * 1000 * delta;
+      bullet[1] += direction[1] * 1000 * delta;
+      
+      if (Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y) <= 8) { 
+        bullet[2].health -= this.damage;
+        this.bullets = this.bullets.filter(item => item !== bullet);
+      }
+    }
   }
 }
 
@@ -226,8 +271,8 @@ class EnemyRegular {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
     this.pos = 0;
-    this.speed = 100 + (game.wave);
-    this.health = 10 + (game.wave * 0.5);
+    this.speed = 95 + (game.wave * 5);
+    this.health = 9.5 + (game.wave * 0.5);
     this.maxHealth = this.health;
     this.angle = 0;
   }
@@ -286,8 +331,8 @@ class EnemySpeed {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
     this.pos = 0;
-    this.speed = 150 + (game.wave * 0.1);
-    this.health = 7 + (game.wave * 0.5);
+    this.speed = 145 + (game.wave * 5);
+    this.health = 6.5 + (game.wave * 0.5);
     this.maxHealth = this.health;
     this.angle = 0;
   }
@@ -351,8 +396,8 @@ class EnemyStrong {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
     this.pos = 0;
-    this.speed = 50 + (game.wave * 0.1);
-    this.health = 20 + (game.wave * 0.5);
+    this.speed = 45 + (game.wave * 5);
+    this.health = 19.5 + (game.wave * 0.5);
     this.maxHealth = this.health;
     this.angle = 0;
   }
@@ -498,7 +543,7 @@ function placeTower(event, tower) {
   let invalidPlacement = false;
   
   for (let t of game.towers) {
-    const distance = Math.sqrt(Math.pow(t.x - x, 2) + Math.pow(t.y - y, 2));
+    const distance = Math.hypot(t.x - x, 2, t.y - y, 2);
     if (distance < 10) {
       game.selectedTower = t;
       t.selected = true;
