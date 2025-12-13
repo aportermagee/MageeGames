@@ -16,16 +16,16 @@
         background-color: rgb(100, 200, 255);
       }
       .description {
-        background-color: rgba(0, 0, 100, 0.1);
-        border-radius: 0.25rem;
-        border: 1px solid rgb(0, 0, 75);
+        border: 1px solid rgb(50, 150, 255);
+        background-color: rgba(0, 0, 100, 0.3);
+        border-radius: 0.2rem;
         color: rgb(255, 255, 255);
         padding: 0.5rem;
         display: inline-block;
         font-size: 1rem;
         text-align: left;
         width: 15rem;
-        height: 8rem;
+        height: 11.1rem;
       }
       .tower {
         width: 5.5rem;
@@ -56,6 +56,58 @@
         justify-content: space-between;
         width: 100%;
       }
+      .exitButton {
+        border: none;
+        background-color: rgba(0, 0, 0, 0);
+        color: rgb(50, 100, 175);
+        font-size: 1.3rem;
+        margin: 0rem;
+        padding: 0rem;
+      }
+      .exitButton:hover {
+        color: rgb(100, 200, 255);
+      }
+      .exitButton:active {
+        color: rgb(200, 255, 255);
+      }
+      .upgrade {
+        border: 1px solid rgb(0, 100, 0);
+        background-color: rgba(0, 100, 0, 0.5);
+        color: rgb(0, 180, 0);
+        text-decoration: none;
+        transition-duration: 0.3s;
+        width: 7rem;
+        height: 2.5rem;
+        padding: 0.5rem 0.2rem;
+        margin: 0rem;
+        font-size: 1rem;
+      }
+      .upgrade:hover {
+        background-color: rgb(0, 75, 0);
+      }
+      .upgrade:active {
+        background-color: rgb(0, 125, 0);
+        transition-duration: 0s;
+      }
+      .remove {
+        border: 1px solid rgb(125, 0, 0);
+        background-color: rgba(125, 0, 0, 0.5);
+        color: rgb(225, 0, 0);
+        text-decoration: none;
+        transition-duration: 0.3s;
+        width: 7rem;
+        height: 2.5rem;
+        padding: 0.5rem 0.2rem;
+        margin: 0rem;
+        font-size: 1rem;
+      }
+      .remove:hover {
+        background-color: rgb(100, 0, 0);
+      }
+      .remove:active {
+        background-color: rgb(150, 0, 0);
+        transition-duration: 0s;
+      }
     </style>
   </head>
   <body>
@@ -66,14 +118,14 @@
           <span style="color: rgb(100, 200, 255); font-size: 1.3rem;padding-right: 2rem;">Credits: $<span id="cash">100</span></span>
           <span style="color: rgb(100, 200, 255); font-size: 1.3rem;">Lives: <span id="lives">15</span></span> 
         </div>
-        <button id="home" style="border: none; background-color: rgb(0, 0, 15); color: rgb(100, 200, 255); font-size: 1.3rem; margin: 0rem; padding: 0rem; padding-right: 2rem;">X</button>
+        <button id="home" class="exitButton" style="padding-right: 2rem;">X</button>
       </div>
       <div style="position: relative; width: 1000px; height: 600px; margin-bottom: 1rem; border-bottom: 2px solid rgb(0, 0, 75);">
         <canvas id="game" width="1000" height="600" style="margin: 0rem; border: none;"></canvas>
-        <div class="description" style="position: absolute; top: 1rem; right: 1rem; padding-top: 1rem;">
+        <div id="description" class="description" style="position: absolute; top: 1rem; right: 1rem; padding-top: 1rem;">
           <div class="ends-align">
             <span id="type" style="font-size: 1.3rem; color: rgb(100, 200, 255);">Regular</span>
-            <button id="exitDescription" style="border: none; background-color: rgba(0, 0, 0, 0); color: rgb(100, 200, 255); font-size: 1.3rem; margin: 0rem; padding: 0rem;">x</button>
+            <button id="exitDescription" class="exitButton">x</button>
           </div><hr>
           <div class="ends-align">
             <span style="color: rgb(100, 200, 255)">Damage</span>
@@ -90,6 +142,10 @@
           <div class="ends-align">
             <span style="color: rgb(100, 200, 255)">Cost</span>
             <span id="cost" style="color: rgb(100, 200, 255)";>100</span>
+          </div><br>
+          <div class="ends-align">
+            <button id="upgrade" class="upgrade">Upgrade</button>
+            <button id="remove" class="remove">Remove</button>
           </div>
         </div>
         <span id="error" class="errorMessage" style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);"></span>
