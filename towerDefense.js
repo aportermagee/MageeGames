@@ -445,6 +445,7 @@ class EnemyRegular {
   update(delta) {
     if (this.health <= 0) {
       game.enemies = game.enemies.filter(item => item !== this);
+      game.credits += 25;
       return;
     }
     
@@ -510,6 +511,7 @@ class EnemySpeed {
   update(delta) {
     if (this.health <= 0) {
       game.enemies = game.enemies.filter(item => item !== this);
+      game.credits += 25;
       return;
     }
     
@@ -577,6 +579,7 @@ class EnemyStrong {
   update(delta) {
     if (this.health <= 0) {
       game.enemies = game.enemies.filter(item => item !== this);
+      game.credits += 25;
       return;
     }
     
@@ -842,8 +845,9 @@ function gameLoop(currentTime) {
 
   draw()
   
-  if (game.enemiesSpawned >= wave + 4 && game.enemies.length === 0) {
+  if (game.enemiesSpawned >= game.wave + 4 && game.enemies.length === 0) {
     game.run = false;
+    game.credits += 100 + wave * 25
     game.wave += 1;
     game.lastEnemy = 'regular';
     game.enemiesSpawned = 0;
@@ -896,7 +900,7 @@ let html = {
 };
 
 let game = {
-  credits: 100,
+  credits: 200,
   wave: 1,
   lives: 15,
   
