@@ -1003,9 +1003,9 @@ html.upgrade.addEventListener('click', function() {
   if (game.credits >= tower.cost) {
     game.credits -= tower.cost;
   
-    tower.damage += tower.upgrade['damage'];
-    tower.rateOfFire += tower.upgrade['rateOfFire'];
-    tower.range += tower.upgrade['range'];
+    tower.damage = Math.round((tower.damage + tower.upgrade['damage']) * 10) / 10;
+    tower.rateOfFire = Math.round((tower.rateOfFire + tower.upgrade['rateOfFire']) * 10) / 10;
+    tower.range = Math.round((tower.range + tower.upgrade['range']) * 10) / 10;
     tower.cost += tower.upgrade['cost'] * tower.level;
     tower.level += 1;
   
