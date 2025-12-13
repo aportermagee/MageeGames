@@ -28,8 +28,10 @@ class Canvas {
     for (let i = 1; i < this.line.length; i++) {
       let x = this.line[i][0] - this.line[i - 1][0];
       let y = this.line[i][1] - this.line[i - 1][1];
-
-      lineDirections.push([x / this.linePositions[i], y / this.linePositions[i]]);
+  
+      let segment = this.linePositions[i] - this.linePositions[i - 1];
+      
+      lineDirections.push([x / segment, y / segment]);
     }
     return lineDirections;
   }
@@ -237,7 +239,7 @@ class EnemyRegular {
     html.ctx.translate(this.x, this.y);
     html.ctx.rotate(angle);
     html.ctx.fillStyle = 'rgb(200, 0, 0)';
-    html.ctx.fillRect(-10, -10, 20, 20);
+    html.ctx.fillRect(-8, -8, 16, 16);
     html.ctx.restore();
 
     html.ctx.strokeStyle = 'rgb(0, 200, 0)';
@@ -250,9 +252,7 @@ class EnemyRegular {
 
   update(delta) {
     if (this.health <= 0) {
-      game.enemies = game.enemies.filter(function(item) {
-        return item !== this;
-      });
+      game.enemies = game.enemies.filter(item => item !== this);
       return;
     }
     
@@ -260,9 +260,7 @@ class EnemyRegular {
 
     if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
-      game.enemies = game.enemies.filter(function(item) {
-        return item !== this;
-      });
+      game.enemies = game.enemies.filter(item => item !== this);
       return;
     }
     
@@ -303,8 +301,8 @@ class EnemySpeed {
     html.ctx.fillStyle = 'rgb(235, 200, 0)';
     html.ctx.beginPath();
     html.ctx.moveTo(0, -10);
-    html.ctx.lineTo(10, 10);
-    html.ctx.lineTo(-10, 10);
+    html.ctx.lineTo(10, 7);
+    html.ctx.lineTo(-10, 7);
     html.ctx.lineTo(0, -10);
     html.ctx.fill();
     html.ctx.restore();
@@ -319,9 +317,7 @@ class EnemySpeed {
 
   update(delta) {
     if (this.health <= 0) {
-      game.enemies = game.enemies.filter(function(item) {
-        return item !== this;
-      });
+      game.enemies = game.enemies.filter(item => item !== this);
       return;
     }
     
@@ -329,9 +325,7 @@ class EnemySpeed {
 
     if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
-      game.enemies = game.enemies.filter(function(item) {
-        return item !== this;
-      });
+      game.enemies = game.enemies.filter(item => item !== this);
       return;
     }
     
@@ -371,12 +365,12 @@ class EnemyStrong {
     html.ctx.rotate(angle);
     html.ctx.fillStyle = 'rgb(100, 0, 200)';
     html.ctx.beginPath();
-    html.ctx.moveTo(0, -10);
+    html.ctx.moveTo(0, -9);
     html.ctx.lineTo(10, -1);
     html.ctx.lineTo(6, 10);
     html.ctx.lineTo(-6, 10);
     html.ctx.lineTo(-10, -1);
-    html.ctx.lineTo(0, -10);
+    html.ctx.lineTo(0, -9);
     html.ctx.fill();
     html.ctx.restore();
 
@@ -390,9 +384,7 @@ class EnemyStrong {
 
   update(delta) {
     if (this.health <= 0) {
-      game.enemies = game.enemies.filter(function(item) {
-        return item !== this;
-      });
+      game.enemies = game.enemies.filter(item => item !== this);
       return;
     }
     
@@ -400,9 +392,7 @@ class EnemyStrong {
 
     if (this.pos > game.canvas.linePositions.at(-1)) {
       game.lives -= 1;
-      game.enemies = game.enemies.filter(function(item) {
-        return item !== this;
-      });
+      game.enemies = game.enemies.filter(item => item !== this);
       return;
     }
 
@@ -622,9 +612,9 @@ function gameLoop(currentTime) {
   if (currentTime - game.lastSpawnTime > 1000) {
     game.lastSpawnTime = performance.now();
     
-    let random = Math.round(Math.random() * 9);
+    let random = Math.round(Math.random() * 5);
 
-    if (random <= 6) {
+    if (random <= 2) {
       switch (game.lastEnemy) {
         case 'regular':
           game.enemies.push(new EnemyRegular());
@@ -636,10 +626,10 @@ function gameLoop(currentTime) {
           game.enemies.push(new EnemyStrong());
           break;
       }
-    } else if (random === 7) {
+    } else if (random === 3) {
       game.enemies.push(new EnemyRegular());
       game.lastEnemy = 'regular';
-    } else if (random === 8) {
+    } else if (random === 4) {
       game.enemies.push(new EnemySpeed());
       game.lastEnemy = 'speed';
     } else {
