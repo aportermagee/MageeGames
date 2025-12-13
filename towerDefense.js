@@ -23,7 +23,7 @@ class Canvas {
   }
   
   draw() {
-    html.ctx.strokeStyle = 'rgb(50, 50, 255)';
+    html.ctx.strokeStyle = 'rgb(50, 125, 255)';
     html.ctx.lineWidth = 3;
     
     html.ctx.beginPath();
@@ -148,6 +148,8 @@ function toggleActive(tower) {
     if (t.classList.value.includes('active')) t.classList.toggle('active');
   }
   
+  if (tower === 'none') { game.activeTower = 'none'; html.description.style.display = 'none'; return; }
+  if (tower !== 'none' && html.description.style.display === 'none') { html.description.style.display = 'inline-block'; }
   html[tower].classList.toggle('active');
   
   game.activeTower = tower;
@@ -245,7 +247,7 @@ function placeTower(event, tower) {
 }
 
 function draw() {
-  html.ctx.fillStyle = 'rgb(0, 0, 20)';
+  html.ctx.fillStyle = 'rgb(0, 5, 25)';
   html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
   
   game.canvas.draw();
@@ -263,35 +265,40 @@ function draw() {
 let html = {
   canvas: document.getElementById('game'),
   ctx: document.getElementById('game').getContext('2d'),
+  
   wave: document.getElementById('wave'),
   credits: document.getElementById('cash'),
   lives: document.getElementById('lives'),
+  
   start: document.getElementById('start'),
+  
   update: document.getElementById('update'),
-  delete: document.getElementById('delete'),
-  home: document.getElementById('home'),   
+  remove: document.getElementById('remove'),
+  
+  home: document.getElementById('home'), 
+  exitDescription: document.getElementById('exitDescription'),
+  
   regular: document.getElementById('regular'),
   sniper: document.getElementById('sniper'),
   rapidFire: document.getElementById('rapidFire'),
   tank: document.getElementById('tank'),
+  
   description: document.getElementById('description'),
   type: document.getElementById('type'),
   damage: document.getElementById('damage'),
   rateOfFire: document.getElementById('rateOfFire'),
   range: document.getElementById('range'),
-  error: document.getElementById('error'),
-};
-
-let constants = { 
+  cost: document.getElementById('cost'),
   
+  error: document.getElementById('error'),
 };
 
 let game = {
   highestWave: 1,
-  canvas: new Canvas(),
   credits: 100,
   wave: 1,
   lives: 15,
+  canvas: new Canvas(),
   activeTower: 'regular',
   towers: [],
   enemies: [],
@@ -344,6 +351,8 @@ html.tank.addEventListener('click', function() { toggleActive('tank'); changeDes
 html.canvas.addEventListener('click', event => placeTower(event, game.activeTower));
 
 html.home.addEventListener('click', function() { window.location.href = 'home'; });
+
+html.exitDescription.addEventListener('click', function() { toggleActive('none'); });
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
