@@ -831,7 +831,7 @@ function gameLoop(currentTime) {
   
   game.lastTime = performance.now();
 
-  if (currentTime - game.lastSpawnTime > 100 + (1000 - wave * 10) && game.enemiesSpawned < game.wave + 4) {
+  if (currentTime - game.lastSpawnTime > 100 + (1000 - game.wave * 10) && game.enemiesSpawned < game.wave + 4) {
     game.lastSpawnTime = performance.now();
     game.enemiesSpawned += 1;
     
