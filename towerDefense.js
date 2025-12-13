@@ -475,6 +475,10 @@ function draw() {
   for (let tower of game.towers) {
     tower.draw();
   }
+
+  for (let enemy of game.enemies) {
+    enemy.draw();
+  }
   
   if (game.selectedTower !== 'none') game.selectedTower.selectedDraw(); 
  
@@ -533,7 +537,7 @@ let game = {
   activeTower: 'regular',
   selectedTower: 'none',
   towers: [],
-  enemies: [],
+  enemies: [new EnemyRegular()],
 };
 
 let descriptions = {
