@@ -751,7 +751,7 @@ function placeTower(event, tower) {
     }
   }
   
-  if (tower === 'none') return;
+  if (tower === 'none') { draw(); return; }
   
   for (let i = 0; i < game.canvas.line.length - 1; i++) {
     const x1 = game.canvas.line[i][0];
