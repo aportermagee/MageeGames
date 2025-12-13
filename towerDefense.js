@@ -998,6 +998,7 @@ html.upgrade.addEventListener('click', function() {
   if (tower.level >= tower.maxLevel) {
     html.error.textContent = 'Tower Is At Its Max Level';
     setTimeout(() => html.error.textContent = '', 2000);
+    return;
   }
   
   if (game.credits >= tower.cost) {
