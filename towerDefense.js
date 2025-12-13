@@ -115,7 +115,11 @@ class Regular {
       let target = 'none';
   
       for (let enemy of game.enemies) {
-        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) { target = enemy; break; }
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) {
+          if (target === 'none' || enemy.pos > target.pos) {
+            target = enemy;
+          }
+        }
       }
 
       if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
@@ -842,7 +846,6 @@ function gameLoop(currentTime) {
   }
   
   update(delta);
-
   draw()
   
   if (game.enemiesSpawned >= game.wave + 4 && game.enemies.length === 0) {
@@ -852,6 +855,7 @@ function gameLoop(currentTime) {
     game.lastEnemy = 'regular';
     game.enemiesSpawned = 0;
     
+    update(delta);
     draw();
   }
   
