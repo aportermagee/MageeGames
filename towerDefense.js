@@ -66,7 +66,7 @@ class Regular {
     html.ctx.fillStyle = 'rgb(255, 255, 255)';
     
     html.ctx.beginPath();
-    html.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    html.ctx.arc(this.x, this.y, 3, 0, 2 * Math.PI);
     html.ctx.fill();
     
     html.ctx.strokeStyle = 'rgb(255, 255, 255)';
@@ -109,7 +109,7 @@ class Sniper {
     html.ctx.fillStyle = 'rgb(255, 255, 255)';
     
     html.ctx.beginPath();
-    html.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    html.ctx.arc(this.x, this.y, 3, 0, 2 * Math.PI);
     html.ctx.fill();
     
     html.ctx.strokeStyle = 'rgb(255, 255, 255)';
@@ -152,7 +152,7 @@ class RapidFire {
     html.ctx.fillStyle = 'rgb(255, 255, 255)';
     
     html.ctx.beginPath();
-    html.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    html.ctx.arc(this.x, this.y, 3, 0, 2 * Math.PI);
     html.ctx.fill();
     
     html.ctx.strokeStyle = 'rgb(255, 255, 255)';
@@ -195,7 +195,7 @@ class Tank {
     html.ctx.fillStyle = 'rgb(255, 255, 255)';
     
     html.ctx.beginPath();
-    html.ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+    html.ctx.arc(this.x, this.y, 3, 0, 2 * Math.PI);
     html.ctx.fill();
     
     html.ctx.strokeStyle = 'rgb(255, 255, 255)';
