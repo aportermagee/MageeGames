@@ -23,7 +23,7 @@ class Canvas {
   }
   
   draw() {
-    html.ctx.strokeStyle = 'rgb(50, 125, 255)';
+    html.ctx.strokeStyle = 'rgb(50, 200, 255)';
     html.ctx.lineWidth = 3;
     
     html.ctx.beginPath();
