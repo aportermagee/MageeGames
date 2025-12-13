@@ -207,6 +207,105 @@ class Tank {
   }
 }
 
+class EnemyRegular {
+  constructor() {
+    this.x = game.canvas.line[0][0];
+    this.y = game.canvas.line[0][1];
+    this.speed = 10 + (game.wave * 0.1);
+    this.health = 10 + (game.wave * 0.5);
+    this.maxHealth = health;
+    this.angle = 0;
+  }
+
+  draw() {
+    let angle = this.angle * Math.PI / 180;
+    
+    html.ctx.save();
+    html.ctx.translate(this.x, this.y);
+    html.ctx.rotate(angle);
+    html.ctx.fillStyle = 'rgb(200, 0, 0)';
+    html.ctx.fillRect(-(this.x - 10), -(this.y - 10), 20, 20);
+    html.ctx.restore();
+
+    html.ctx.strokeStyle = 'rgb(0, 200, 0)';
+    html.ctx.lineWidth = 2;
+    html.ctx.beginPath();
+    html.ctx.moveTo(this.x - 10, this.y - 20);
+    html.ctx.lineTo((this.x - 10) + Math.round(20 * this.health / this.maxHealth), this.y - 20);
+    html.ctx.stroke();
+  }
+}
+
+class EnemySpeed {
+  constructor() {
+    this.x = game.canvas.line[0][0];
+    this.y = game.canvas.line[0][1];
+    this.speed = 15 + (game.wave * 0.1);
+    this.health = 7 + (game.wave * 0.5);
+    this.maxHealth = health;
+    this.angle = 0;
+  }
+
+  draw() {
+    let angle = this.angle * Math.PI / 180;
+    
+    html.ctx.save();
+    html.ctx.translate(this.x, this.y);
+    html.ctx.rotate(angle);
+    html.ctx.fillStyle = 'rgb(235, 200, 0)';
+    html.ctx.beginPath();
+    html.ctx.moveTo(this.x, this.y - 10);
+    html.ctx.lineTo(this.x + 10, this.y + 10);
+    html.ctx.lineTo(this.x - 10, this.y + 10);
+    html.ctx.lineTo(this.x, this.y - 10);
+    html.ctx.fill();
+    html.ctx.restore();
+
+    html.ctx.strokeStyle = 'rgb(0, 200, 0)';
+    html.ctx.lineWidth = 2;
+    html.ctx.beginPath();
+    html.ctx.moveTo(this.x - 10, this.y - 20);
+    html.ctx.lineTo((this.x - 10) + Math.round(20 * this.health / this.maxHealth), this.y - 20);
+    html.ctx.stroke();
+  }
+}
+
+class EnemyStrong {
+  constructor() {
+    this.x = game.canvas.line[0][0];
+    this.y = game.canvas.line[0][1];
+    this.speed = 5 + (game.wave * 0.1);
+    this.health = 20 + (game.wave * 0.5);
+    this.maxHealth = health;
+    this.angle = 0;
+  }
+
+  draw() {
+    let angle = this.angle * Math.PI / 180;
+    
+    html.ctx.save();
+    html.ctx.translate(this.x, this.y);
+    html.ctx.rotate(angle);
+    html.ctx.fillStyle = 'rgb(100, 0, 200)';
+    html.ctx.beginPath();
+    html.ctx.moveTo(this.x, this.y - 10);
+    html.ctx.lineTo(this.x + 10, this.y - 1);
+    html.ctx.lineTo(this.x + 6, this.y + 10);
+    html.ctx.lineTo(this.x - 6, this.y + 10);
+    html.ctx.lineTo(this.x - 10, this.y - 1);
+    html.ctx.lineTo(this.x, this.y - 10);
+    html.ctx.fill();
+    html.ctx.restore();
+
+    html.ctx.strokeStyle = 'rgb(0, 200, 0)';
+    html.ctx.lineWidth = 2;
+    html.ctx.beginPath();
+    html.ctx.moveTo(this.x - 10, this.y - 20);
+    html.ctx.lineTo((this.x - 10) + Math.round(20 * this.health / this.maxHealth), this.y - 20);
+    html.ctx.stroke();
+  }
+}
+
 // --- Functions ---
 function toggleActive(tower) {
   game.selectedTower.selected = false;
