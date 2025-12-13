@@ -7,19 +7,25 @@
     <link rel="stylesheet" href="darkMode.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      hr {
+        border: none; 
+        height: 1px;
+        background-color: rgb(100, 200, 255);
+      }
       .description {
-        background-color: rgb(0, 0, 50);
+        background-color: rgba(0, 0, 100, 0.1);
         border-radius: 0.25rem;
-        border: 0.1rem solid rgb(0, 0, 100);
+        border: 1px solid rgb(0, 0, 75);
         color: rgb(255, 255, 255);
         padding: 0.5rem;
         display: inline-block;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-decoration: none;
+        font-size: 1rem;
         text-align: left;
-        width: 10rem;
-        height: 3.8rem
+        width: 15rem;
+        height: 8rem;
       }
       .tower {
         width: 5.5rem;
@@ -32,56 +38,16 @@
         font-size: 1rem;
         padding: 0.3rem;
         margin: 0rem 0rem;
+        background-color: rgba(0, 0, 100, 0.3);
+        border: 1px solid rgba(0, 0, 100, 1);
+        transition-duration: 0.3s;
       }
-      .green-tower {
-        border: 2px solid rgb(0, 100, 0);
-        background-color: rgb(0, 50, 0);
-        color: rgb(255, 255, 255);
+      .tower:hover {
+        transform: translateY(-10px);
       }
-      .green-tower:hover {
-        background-color: rgb(0, 100, 0); 
-      }
-      .green-tower.active{
-        background-color: rgb(0, 200, 0);
-        border-color: rgb(0, 200, 0);
-      }
-      .blue-tower {
-        border: 2px solid rgb(0, 0, 150);
-        background-color: rgb(0, 0, 75);
-        color: rgb(255, 255, 255);
-      }
-      .blue-tower:hover {
-        background-color: rgb(0, 0, 150); 
-      }
-      .blue-tower.active{
-        background-color: rgb(0, 0, 250);
-        border-color: rgb(0, 0, 250);
-      }
-      .purple-tower {
-        border: 2px solid rgb(50, 0, 100);
-        background-color: rgb(25, 0, 50);
-        color: rgb(255, 255, 255);
-      }
-      .purple-tower:hover {
-        background-color: rgb(50, 0, 100); 
-        color: rgb(255, 255, 255);
-      }
-      .purple-tower.active{
-        background-color: rgb(100, 0, 200);
-        border-color: rgb(100, 0, 200);
-      }
-      .yellow-tower {
-        border: 2px solid rgb(125, 100, 0);
-        background-color: rgb(50, 50, 0);
-        color: rgb(255, 255, 255);
-      }
-      .yellow-tower:hover {
-        background-color: rgb(125, 100, 0); 
-        color: rgb(255, 255, 255);
-      }
-      .yellow-tower.active{
-        background-color: rgb(200, 150, 0);
-        border-color: rgb(200, 150, 0);
+      .tower.active{
+        border: 1px solid rgb(50, 150, 255);
+        background-color: rgba(0, 0, 100, 0.5)
       }
       .ends-align {
         margin-left: auto;
@@ -93,30 +59,45 @@
     </style>
   </head>
   <body>
-    <div class="main-div" style="height: 50rem; width: 56rem; padding-top: 1.5rem;">
-      <div class="right-div">
-        <button id="home" style="border: none; background-color: rgb(0, 0, 15); color: rgb(100, 200, 255); font-size: 2rem; margin-right: 1rem;">x</button><br>
-      </div>
-      <h1 class="h1">Tower Defense</h1><br>
-      <div style="display: flex;">
-        <canvas id="game" width="700" height="500" style="margin-right: 0rem;"></canvas>
-        <div class="description" style="height: 500px; width: 10rem; border-radius: 0rem; text-align: center; border-left: none;">
-          <h2 style="margin-bottom: 0.1rem;">Game Stats</h2><hr>
-          <button id="start" class="button" style="margin-top: 1rem; height: 1.5rem; padding-top: 1px; width: 6.5rem">Start Wave</button><br>
-          <button id="upgrade" class="button" style="margin-top: 0.1rem; height: 1.5rem; padding-top: 1px; width: 6.5rem;">Upgrade</button><br>
-          <button id="delete" class="button" style="margin-top: 0.1rem; height: 1.5rem; padding-top: 1px; width: 6.5rem;">Delete</button><br><br>
-          <span class="p">Highest Wave: <span id="highestWave">1</span></span><br><br>
-          <span style="color: rgb(100, 200, 255); font-size: 1rem;">Wave: <span id="wave">1</span></span><br>
-          <span style="color: rgb(0, 200, 50); font-size: 1rem;">Cash: $<span id="cash">100</span></span><br>
-          <span style="color: rgb(200, 0, 0); font-size: 1rem;">Lives: <span id="lives">15</span></span><br><br>
-          <p class="description" style="width: 85%;"><b><span id="type">Regular</span></b><br>Damage: <span id="damage">1</span><br>Rate of Fire: <span id="rateOfFire">5</span><br>Range: <span id="range">5</span></p>
+    <div class="main-div" style="height: 47rem; width: 1000px; padding: 0rem; padding-top: 1rem;">
+      <div class="ends-align" style="margin: 0rem; border-bottom: 2px solid rgb(0, 0, 75); padding-bottom: 1rem;">
+        <div>
+          <span style="color: rgb(100, 200, 255); font-size: 1.3rem; padding-right: 2rem; padding-left: 2rem;">Wave: <span id="wave">1</span></span>
+          <span style="color: rgb(100, 200, 255); font-size: 1.3rem;padding-right: 2rem;">Credits: $<span id="cash">100</span></span>
+          <span style="color: rgb(100, 200, 255); font-size: 1.3rem;">Lives: <span id="lives">15</span></span> 
         </div>
-      </div><br>
-      <span id="error" class="errorMessage"></span><br><br>
-      <button id="regular" class="tower purple-tower">Regular<br>$50</button>
-      <button id="sniper" class="tower blue-tower">Sniper<br>$100</button>
-      <button id="rapidFire" class="tower yellow-tower">RapidFire<br>$100</button>
-      <button id="tank" class="tower green-tower">Tank<br>$150</button>
+        <button id="home" style="border: none; background-color: rgb(0, 0, 15); color: rgb(100, 200, 255); font-size: 1.3rem; margin: 0rem; padding: 0rem; padding-right: 2rem;">X</button>
+      </div>
+      <div style="position: relative; width: 1000px; height: 600px; margin-bottom: 1rem; border-bottom: 2px solid rgb(0, 0, 75);">
+        <canvas id="game" width="1000" height="600" style="margin: 0rem; border: none;"></canvas>
+        <div class="description" style="position: absolute; top: 1rem; right: 1rem; padding-top: 1rem;">
+          <div class="ends-align">
+            <span id="type" style="font-size: 1.3rem; color: rgb(100, 200, 255);">Regular</span>
+            <button id="exitDescription" style="border: none; background-color: rgba(0, 0, 0, 0); color: rgb(100, 200, 255); font-size: 1.3rem; margin: 0rem; padding: 0rem;">x</button>
+          </div><hr>
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Damage</span>
+            <span id="damage" style="color: rgb(100, 200, 255)">1</span>
+          </div>
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Rate Of Fire</span>
+            <span id="rateOfFire" style="color: rgb(100, 200, 255);">3</span>
+          </div>
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Range</span>
+            <span id="range" style="color: rgb(100, 200, 255)";>50</span>
+          </div>
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Cost</span>
+            <span id="cost" style="color: rgb(100, 200, 255)";>100</span>
+          </div>
+        </div>
+        <span id="error" class="errorMessage" style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);"></span>
+      </div>
+      <button id="regular" class="tower" style="color: rgb(150, 0, 255);">Regular<br>$50</button>
+      <button id="sniper" class="tower" style="color: rgb(0, 0, 255);">Sniper<br>$100</button>
+      <button id="rapidFire" class="tower" style="color: rgb(210, 190, 0);">RapidFire<br>$100</button>
+      <button id="tank" class="tower" style="color: rgb(0, 200, 0);">Tank<br>$150</button>
     </div>
     <script src="towerDefense.js"></script>
   </body>
