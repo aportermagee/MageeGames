@@ -12,6 +12,7 @@ class Canvas {
       [700, 300], [1000, 300],
     ];
     this.linePositions = this.getLinePositions();
+    this.lineDirections = this.getLineDirections();
   }
 
   getLinePositions() {
@@ -20,6 +21,17 @@ class Canvas {
       lengths.push(lengths.at(-1) + Math.sqrt(Math.pow(this.line[i - 1][0] - this.line[i][0], 2) + Math.pow(this.line[i - 1][1] - this.line[i][1], 2)));
     }
     return lengths;
+  }
+
+  getLineDirections() {
+    let lineDirections = [];
+    for (let i = 1; i < this.line.length; i++) {
+      let x = this.line[i][0] - this.line[i - 1][0];
+      let y = this.line[i][1] - this.line[i - 1][1];
+
+      lineDirections.push([x / this.linePositions[i][0], y / this.linePositions[i][1]);
+    }
+    return lineDirections;
   }
   
   draw() {
@@ -211,6 +223,7 @@ class EnemyRegular {
   constructor() {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
+    this.pos = 0;
     this.speed = 10 + (game.wave * 0.1);
     this.health = 10 + (game.wave * 0.5);
     this.maxHealth = this.health;
@@ -233,6 +246,33 @@ class EnemyRegular {
     html.ctx.moveTo(this.x - 10, this.y - 20);
     html.ctx.lineTo((this.x - 10) + Math.round(20 * this.health / this.maxHealth), this.y - 20);
     html.ctx.stroke();
+  }
+
+  update(delta) {
+    this.pos += this.speed * delta;
+
+    if (pos > game.canvas.linePositions.at(-1)) {
+      game.lives -= 1;
+      game.towers = game.towers.filter(function(item) {
+        return item !== this;
+      });
+      return;
+    }
+    
+    let passed = 0;
+
+    for (let i = 0; i < game.canvas.line.length; i++) {
+      if (this.pos >= game.canvas.linePositions[i]) {
+        passed = i;
+      } else {
+        break;
+      }
+    }
+
+    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][0];
+    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][1];
+
+    this.angle += 180 * delta;
   }
 }
 
@@ -267,6 +307,33 @@ class EnemySpeed {
     html.ctx.moveTo(this.x - 10, this.y - 20);
     html.ctx.lineTo((this.x - 10) + Math.round(20 * this.health / this.maxHealth), this.y - 20);
     html.ctx.stroke();
+  }
+
+  update(delta) {
+    this.pos += this.speed * delta;
+
+    if (pos > game.canvas.linePositions.at(-1)) {
+      game.lives -= 1;
+      game.towers = game.towers.filter(function(item) {
+        return item !== this;
+      });
+      return;
+    }
+    
+    let passed = 0;
+
+    for (let i = 0; i < game.canvas.line.length; i++) {
+      if (this.pos >= game.canvas.linePositions[i]) {
+        passed = i;
+      } else {
+        break;
+      }
+    }
+
+    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][0];
+    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][1];
+
+    this.angle += 180 * delta;
   }
 }
 
@@ -303,6 +370,33 @@ class EnemyStrong {
     html.ctx.moveTo(this.x - 10, this.y - 20);
     html.ctx.lineTo((this.x - 10) + Math.round(20 * this.health / this.maxHealth), this.y - 20);
     html.ctx.stroke();
+  }
+
+  update(delta) {
+    this.pos += this.speed * delta;
+
+    if (pos > game.canvas.linePositions.at(-1)) {
+      game.lives -= 1;
+      game.towers = game.towers.filter(function(item) {
+        return item !== this;
+      });
+      return;
+    }
+
+    let passed = 0;
+
+    for (let i = 0; i < game.canvas.line.length; i++) {
+      if (this.pos >= game.canvas.linePositions[i]) {
+        passed = i;
+      } else {
+        break;
+      }
+    }
+
+    this.x = game.canvas.line[passed][0] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][0];
+    this.y = game.canvas.line[passed][1] + (this.pos - game.canvas.linePositions[passed]) * game.canvas.lineDirections[i][1];
+
+    this.angle += 180 * delta;
   }
 }
 
@@ -485,6 +579,16 @@ function draw() {
   html.credits.textContent = game.credits;
   html.wave.textContent = game.wave;
   html.lives.textContent = game.lives;
+}
+
+function update(delta) {
+  for (let tower of game.towers) {
+    tower.update(delta);
+  }
+
+  for (let enemy of game.enemies) {
+    enemy.update(delta);
+  }
 }
 
 // --- Variables ---
