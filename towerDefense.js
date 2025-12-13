@@ -556,7 +556,7 @@ function placeTower(event, tower) {
     html.error.textContent = 'Invalid Tower Placement';
     setTimeout(() => html.error.textContent = '', 2000);
     return;
-  } else if (descriptions[game.activeTower].cost > game.cash) {
+  } else if (descriptions[game.activeTower].cost > game.credits) {
     html.error.textContent = 'Insufficient Funds';
     setTimeout(() => html.error.textContent = '', 2000);
     return;
@@ -604,13 +604,21 @@ function update(delta) {
   }
 }
 
+function start() {
+  game.run = true;
+  game.lastTime = performance.now();
+  game.lastSpawnTime = performance.now();
+  requestAnimationFrame(gameLoop);
+}
+
 function gameLoop(currentTime) {
   let delta = (currentTime - game.lastTime) / 1000;
   
   game.lastTime = performance.now();
 
-  if (currentTime - game.lastSpawnTime > 1000) {
+  if (currentTime - game.lastSpawnTime > 1000 && game.enemiesSpawned < game.wave + 4) {
     game.lastSpawnTime = performance.now();
+    game.enemiesSpawned += 1;
     
     let random = Math.round(Math.random() * 5);
 
@@ -642,7 +650,16 @@ function gameLoop(currentTime) {
 
   draw()
   
-  if (game.run) requestAnimationFrame(gameLoop);
+  if (game.enemiesSpawned >= wave + 4 && game.enemies === []) {
+    game.run = false;
+    game.wave += 1;
+    game.lastEnemy = 'regular';
+    game.enemiesSpawned = 0;
+  }
+  
+  if (game.run) {
+    requestAnimationFrame(gameLoop);
+  }
 }
 
 // --- Variables ---
@@ -702,8 +719,9 @@ let game = {
   lastTime: 0,
   lastSpawnTime: 0,
   lastEnemy: 'regular',
+  enemiesSpawned: 0,
   
-  run: true,
+  run: false,
 };
 
 let descriptions = {
@@ -759,22 +777,27 @@ html.exitDescriptionSelected.addEventListener('click', function() { toggleActive
 html.upgrade.addEventListener('click', function() { 
   let tower = game.selectedTower;
   
-  game.credits -= tower.cost;
+  if (game.credits >= tower.cost) {
+    game.credits -= tower.cost;
   
-  tower.damage += tower.upgrade['damage'];
-  tower.rateOfFire += tower.upgrade['rateOfFire'];
-  tower.range += tower.upgrade['range'];
-  tower.cost += tower.upgrade['cost'];
-  tower.level += 1;
+    tower.damage += tower.upgrade['damage'];
+    tower.rateOfFire += tower.upgrade['rateOfFire'];
+    tower.range += tower.upgrade['range'];
+    tower.cost += tower.upgrade['cost'];
+    tower.level += 1;
   
-  html.level.textContent = tower.level;
-  html.typeSelected.textContent = tower.type;
-  html.damageSelected.textContent = tower.damage;
-  html.rateOfFireSelected.textContent = tower.rateOfFire;
-  html.rangeSelected.textContent = tower.range;
-  html.costSelected.textContent = tower.cost;
-  
-  draw();
+    html.level.textContent = tower.level;
+    html.typeSelected.textContent = tower.type;
+    html.damageSelected.textContent = tower.damage;
+    html.rateOfFireSelected.textContent = tower.rateOfFire;
+    html.rangeSelected.textContent = tower.range;
+    html.costSelected.textContent = tower.cost;
+    
+    draw();
+  } else {
+    html.error.textContent = 'Insufficient Funds';
+    setTimeout(() => html.error.textContent = '', 2000);
+  }
 });
 
 html.remove.addEventListener('click', function() { 
@@ -793,6 +816,12 @@ html.remove.addEventListener('click', function() {
   draw();
 });
 
+html.start.addEventListener('click', function() {
+  if (!game.run) {
+    start();
+  }
+})
+
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
 
@@ -800,7 +829,3 @@ toggleActive('regular');
 
 // --- Game Loops ---
 draw();
-
-game.lastTime = performance.now();
-game.lastSpawnTime = performance.now();
-requestAnimationFrame(gameLoop);
