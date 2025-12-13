@@ -582,13 +582,48 @@ function draw() {
 }
 
 function update(delta) {
-  for (let tower of game.towers) {
-    tower.update(delta);
-  }
+  //for (let tower of game.towers) {
+    //tower.update(delta);
+  //}
 
   for (let enemy of game.enemies) {
     enemy.update(delta);
   }
+}
+
+function gameLoop(currentTime) {
+  let delta = currentTime - game.lastTime;
+
+  if (currentTime - game.lastSpawnTime > 1000) {
+    let random = Math.round(Math.random() * 9);
+
+    if (random <= 6) {
+      switch (game.lastEnemy) {
+        case 'regular':
+          game.enemies.push(new EnemyRegular());
+          break;
+        case 'speed':
+          game.enemies.push(new EnemySpeed());
+          break;
+        case 'strong':
+          game.enemies.push(new EnemyStrong());
+          break;
+      }
+    } else if (random === 7) {
+      game.enemies.push(new EnemyRegular());
+      game.lastEnemy = 'regular';
+    } else if (random === 8) {
+      game.enemies.push(new EnemySpeed());
+      game.lastEnemy = 'speed';
+    } else {
+      game.enemies.push(new EnemyStrong());
+      game.lastEnemy = 'strong';
+    }
+  }
+  
+  update(delta);
+
+  draw()
 }
 
 // --- Variables ---
@@ -633,15 +668,21 @@ let html = {
 };
 
 let game = {
-  highestWave: 1,
   credits: 100,
   wave: 1,
   lives: 15,
+  
   canvas: new Canvas(),
+  
   activeTower: 'regular',
   selectedTower: 'none',
+  
   towers: [],
   enemies: [],
+
+  lastTime: 0,
+  lastSpawnTime: 0,
+  lastEnemy: 'regular',
 };
 
 let descriptions = {
@@ -738,3 +779,7 @@ toggleActive('regular');
 
 // --- Game Loops ---
 draw()
+
+game.lastTime = performance.now();
+game.lastSpawnTime = peformance.now();
+requestAnimationFrame(gameLoop);
