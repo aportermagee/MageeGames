@@ -866,6 +866,7 @@ function gameLoop(currentTime) {
   
   if (game.lives <= 0) { 
     game.gameOver = true;
+    html.start.textContent = 'Restart';
   }
   if (game.enemiesSpawned >= game.wave + 4 && game.enemies.length === 0 && !game.gameOver) {
     game.run = false;
@@ -881,6 +882,27 @@ function gameLoop(currentTime) {
   if (game.run && !game.gameOver) {
     requestAnimationFrame(gameLoop);
   }
+}
+
+function restart() {
+  html.start.textContent = 'Start';
+
+  game = {
+    credits: 200,
+    wave: 1,
+    lives: 15,
+    canvas: new Canvas(),
+    activeTower: 'regular',
+    selectedTower: 'none',
+    towers: [],
+    enemies: [],
+    lastTime: 0,
+    lastSpawnTime: 0,
+    lastEnemy: 'regular',
+    enemiesSpawned: 0,
+    run: false,
+    gameOver: false,
+  };
 }
 
 // --- Variables ---
@@ -1045,6 +1067,9 @@ html.remove.addEventListener('click', function() {
 });
 
 html.start.addEventListener('click', function() {
+  if (game.gameOver) {
+    restart();
+  }
   if (!game.run) {
     start();
   }
