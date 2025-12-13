@@ -1069,6 +1069,8 @@ html.remove.addEventListener('click', function() {
 html.start.addEventListener('click', function() {
   if (game.gameOver) {
     restart();
+    draw();
+    return;
   }
   if (!game.run) {
     start();
