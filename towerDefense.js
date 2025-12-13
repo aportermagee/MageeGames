@@ -345,12 +345,12 @@ class Tank {
     this.type = 'Tank';
     this.damage = 10;
     this.rateOfFire = 1;
-    this.range = 40;
+    this.range = 50;
     this.cost = 150;
     this.upgrade = {
       damage: 3,
       rateOfFire: 0.1,
-      range: 5,
+      range: 10,
       cost: 100,
     };
     this.maxLevel = 5;
