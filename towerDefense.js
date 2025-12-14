@@ -629,6 +629,111 @@ class Missile {
   }
 }
 
+class Railgun {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.level = 1;
+    this.type = 'Railgun';
+    this.damage = 10;
+    this.rateOfFire = 1;
+    this.range = 100;
+    this.cost = 300;
+    this.upgrade = {
+      damage: 5,
+      rateOfFire: 0.1,
+      range: 10,
+      cost: 250,
+    };
+    this.maxLevel = 5;
+    this.selected = false;
+    this.bullets = [];
+    this.lastShot = performance.now();
+  }
+
+  draw() {
+    html.ctx.fillStyle = 'rgb(240, 255, 255)';
+
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    html.ctx.strokeStyle = 'rgb(240, 255, 255)';
+    html.ctx.lineWidth = 2;
+    for (let bullet of this.bullets) {
+      html.ctx.beginPath();
+      html.moveTo(this.x, this.y);
+      html.lineTo(bullet[0], bullet[1]);
+      html.ctx.stroke();
+    }
+  }
+  
+  selectedDraw() {
+    html.ctx.fillStyle = 'rgb(255, 255, 255)';
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 3, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    html.ctx.strokeStyle = 'rgb(255, 255, 255)';
+    html.ctx.lineWidth = 2;
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
+    html.ctx.stroke();
+  }
+  
+  targetDirection(bullet) {
+    let x = bullet[3].x - this.x;
+    let y = bullet[3].y - this.y;
+    let distance = Math.hypot(this.x - bullet[3].x, this.y - bullet[3].y);
+
+    return [x / distance, y / distance];
+  }
+  
+  update(delta) {
+    if (performance.now() - this.lastShot > 1000 / this.rateOfFire) {
+      this.lastShot = performance.now();
+      
+      let target = 'none';
+  
+      for (let enemy of game.enemies) {
+        if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) {
+          if (target === 'none' || enemy.pos > target.pos) {
+            target = enemy;
+          }
+        }
+      }
+
+      if (target !== 'none') { this.bullets.push([this.x, this.y, 0, target]); }
+    }
+
+    for (let bullet of this.bullets) {
+      if (!game.enemies.includes(bullet[3])) {
+        this.bullets = this.bullets.filter(item => item !== bullet);
+        return;
+      }
+      
+      let direction = this.targetDirection(bullet);
+
+      bullet[2] += 500 * delta
+
+      if (bullet[2] > this.range) {
+        this.bullets = this.bullets.filter(item => item !== bullet);
+      }
+      
+      bullet[0] = direction[0] * bullet[2];
+      bullet[1] = direction[1] * bullet[2];
+      
+      for (let enemy of game.enemies) {
+        if (Math.hypot(bullet[0] - enemy.x, bullet[1] - enemy.y) < 8) {
+          enemy.health -= this.damage
+        }
+      }
+    }
+  }
+}
+
 class EnemyRegular {
   constructor() {
     this.x = game.canvas.line[0][0];
@@ -838,6 +943,7 @@ function toggleActive(tower) {
     html.tank,
     html.laser,
     html.missile,
+    html.railgun,
   ];
   
   if (tower === 'none') { html.descriptionStandard.style.display = 'none'; draw(); return; }
@@ -923,6 +1029,7 @@ function placeTower(event, tower) {
         html.tank,
         html.laser,
         html.missile,
+        html.railgun,
       ];
       
       for (let t of towers) {
@@ -983,6 +1090,7 @@ function placeTower(event, tower) {
       case 'tank': game.towers.push(new Tank(x, y)); break;
       case 'laser': game.towers.push(new Laser(x, y)); break;
       case 'missile': game.towers.push(new Missile(x, y)); break;
+      case 'railgun': game.towers.push(new Railgun(x, y)); break;
     }
     game.credits -= descriptions[game.activeTower].cost;
   }
@@ -1160,6 +1268,7 @@ let html = {
   tank: document.getElementById('tank'),
   laser: document.getElementById('laser'),
   missile: document.getElementById('missile'),
+  railgun: document.getElementById('railgun'),
   
   descriptionStandard: document.getElementById('descriptionStandard'),
   typeStandard: document.getElementById('typeStandard'),
@@ -1353,6 +1462,13 @@ let descriptions = {
     range: 100,
     cost: 100,
   },
+  railgun: {
+    type: 'Railgun',
+    damage: 10,
+    rateOfFire: 1,
+    range: 100,
+    cost: 300,
+  },
 };
   
 // --- Inputs ---
@@ -1368,6 +1484,7 @@ html.rapidFire.addEventListener('click', function() { toggleActive('rapidFire');
 html.tank.addEventListener('click', function() { toggleActive('tank'); changeDescription('tank'); });
 html.laser.addEventListener('click', function() { toggleActive('laser'); changeDescription('laser'); });
 html.missile.addEventListener('click', function() { toggleActive('missile'); changeDescription('missile'); });
+html.railgun.addEventListener('click', function() { toggleActive('railgun'); changeDescription('railgun'); });
 
 html.canvas.addEventListener('click', event => placeTower(event, game.activeTower));
 
