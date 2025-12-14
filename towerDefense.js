@@ -638,7 +638,7 @@ class Railgun {
     this.damage = 15;
     this.rateOfFire = 1;
     this.range = 100;
-    this.cost = 300;
+    this.cost = 200;
     this.upgrade = {
       damage: 5,
       rateOfFire: 0.1,
@@ -1467,7 +1467,7 @@ let descriptions = {
     damage: 15,
     rateOfFire: 1,
     range: 100,
-    cost: 300,
+    cost: 200,
   },
 };
   
