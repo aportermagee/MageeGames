@@ -447,6 +447,7 @@ class Laser {
     };
     this.maxLevel = 5;
     this.selected = false;
+    this.target = 'none';
   }
 
   draw() {
