@@ -429,6 +429,78 @@ class Tank {
   }
 }
 
+class Laser {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.level = 1;
+    this.type = 'Laser';
+    this.damage = 10;
+    this.rateOfFire = 0;
+    this.range = 70;
+    this.cost = 250;
+    this.upgrade = {
+      damage: 5,
+      rateOfFire: 0,
+      range: 10,
+      cost: 250,
+    };
+    this.maxLevel = 5;
+    this.selected = false;
+    this.bullets = [];
+    this.lastShot = performance.now();
+  }
+
+  draw() {
+    html.ctx.fillStyle = 'rgb(0, 200, 255)';
+
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+    html.ctx.fill();
+
+    if (this.target) {
+      html.ctx.strokeStyle = 'rgb(0, 230, 255)';
+
+      html.ctx.beginPath();
+      html.ctx.moveTo(this.x, this.y);
+      html.ctx.lineTo(this.target.x, this.target.y);
+      html.ctx.stroke();
+    }
+  }
+  
+  selectedDraw() {
+    html.ctx.fillStyle = 'rgb(255, 255, 255)';
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 3, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    html.ctx.strokeStyle = 'rgb(255, 255, 255)';
+    html.ctx.lineWidth = 2;
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
+    html.ctx.stroke();
+  }
+  
+  update(delta) {
+    let target = 'none';
+  
+    for (let enemy of game.enemies) {
+      if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range) {
+        if (target === 'none' || enemy.pos > target.pos) {
+          target = enemy;
+        }
+      }
+    }
+
+    if (target !== 'none') { 
+      this.target = target;
+      this.target.health -= this.damage * delta;
+    }
+  }
+}
+
 class EnemyRegular {
   constructor() {
     this.x = game.canvas.line[0][0];
@@ -952,6 +1024,7 @@ let html = {
   sniper: document.getElementById('sniper'),
   rapidFire: document.getElementById('rapidFire'),
   tank: document.getElementById('tank'),
+  laser: document.getElementById('laser'),
   
   descriptionStandard: document.getElementById('descriptionStandard'),
   typeStandard: document.getElementById('typeStandard'),
@@ -1129,6 +1202,12 @@ let descriptions = {
     range: 40,
     cost: 150,
   },
+  laser: {
+    type: 'Laser',
+    damage: 10,
+    rateOfFire: '&infin',
+    range: 70,
+    cost: 250,
 };
   
 // --- Inputs ---
@@ -1162,10 +1241,10 @@ html.upgrade.addEventListener('click', function() {
   if (game.credits >= tower.cost) {
     game.credits -= tower.cost;
   
-    tower.damage = Math.round((tower.damage + tower.upgrade['damage']) * 10) / 10;
-    tower.rateOfFire = Math.round((tower.rateOfFire + tower.upgrade['rateOfFire']) * 10) / 10;
-    tower.range = Math.round((tower.range + tower.upgrade['range']) * 10) / 10;
-    tower.cost += tower.upgrade['cost'] * tower.level;
+    if (tower.upgrade['damage'] !== 0) tower.damage = Math.round((tower.damage + tower.upgrade['damage']) * 10) / 10;
+    if (tower.upgrade['rateOfFire'] !== 0) tower.rateOfFire = Math.round((tower.rateOfFire + tower.upgrade['rateOfFire']) * 10) / 10;
+    if (tower.upgrade['range'] !== 0) tower.range = Math.round((tower.range + tower.upgrade['range']) * 10) / 10;
+    if (tower.upgrade['cost'] !== 0) tower.cost += tower.upgrade['cost'] * tower.level;
     tower.level += 1;
   
     html.level.textContent = tower.level;
