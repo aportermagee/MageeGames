@@ -5,12 +5,8 @@ if (!localStorage.getItem('loggedIn') === 'true') {
 
 // --- Classes ---
 class Canvas {
-  constructor() {
-    this.line = [
-      [0, 300], [300, 300], [150, 150],
-      [500, 150], [500, 450], [850, 450],
-      [700, 300], [1000, 300],
-    ];
+  constructor(line) {
+    this.line = line;
     this.linePositions = this.getLinePositions();
     this.lineDirections = this.getLineDirections();
   }
@@ -905,6 +901,35 @@ function restart() {
   };
 }
 
+function halfMap(map) {
+  let halfMap = [];
+  
+  for (let point of map) {
+    halfMap.push([point[0] / 2, point[1] / 2]);
+  }
+  
+  return halfMap;
+}
+
+function drawMap(map) {
+  let line = halfMap(map);
+  
+  html.exampleCtx.fillStyle = 'rgb(0, 5, 25)';
+  html.exampleCtx.fillRect(0, 0, html.example.width, html.example.height);
+  
+  html.exampleCtx.strokeStyle = 'rgb(50, 200, 255)';
+  html.exampleCtx.lineWidth = 3;
+    
+  html.exampleCtx.beginPath();
+  html.exampleCtx.moveTo(line[0][0], line[0][1]);
+  
+  for (let i = 1; i < line.length; i++) {
+    html.exampleCtx.lineTo(line[i][0], line[i][1]);
+  }
+  
+  html.exampleCtx.stroke();
+}
+
 // --- Variables ---
 let html = {
   canvas: document.getElementById('game'),
@@ -944,14 +969,29 @@ let html = {
   exitDescriptionSelected: document.getElementById('exitDescriptionSelected'),
   
   error: document.getElementById('error'),
+  
+  mainPage: document.getElementById('mainPage'),
+  mapsPage: document.getElementById('mapsPage'),
+  
+  standard: document.getElementById('standard'),
+  diamond: document.getElementById('diamond'),
+  
+  example: document.getElementById('example'),
+  exampleCtx: document.getElementById('example').getContext('2d'),
+};
+
+let maps = {
+  standard: [
+    [0, 300], [300, 300], [150, 150],
+    [500, 150], [500, 450], [850, 450],
+    [700, 300], [1000, 300],
+  ],
 };
 
 let game = {
   credits: 200,
   wave: 1,
   lives: 15,
-  
-  canvas: new Canvas(),
   
   activeTower: 'regular',
   selectedTower: 'none',
@@ -1075,7 +1115,14 @@ html.start.addEventListener('click', function() {
   if (!game.run) {
     start();
   }
-})
+});
+
+html.standard.addEventListener('mouseover', () => drawMap(maps.standard));
+html.standard.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.standard);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+});
 
 // --- Init ---
 html.ctx.imageSmoothingEnabled = false;
