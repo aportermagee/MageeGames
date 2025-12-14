@@ -436,7 +436,7 @@ class Laser {
     this.level = 1;
     this.type = 'Laser';
     this.damage = 10;
-    this.rateOfFire = 0;
+    this.rateOfFire = '&infin';
     this.range = 70;
     this.cost = 250;
     this.upgrade = {
@@ -447,8 +447,6 @@ class Laser {
     };
     this.maxLevel = 5;
     this.selected = false;
-    this.bullets = [];
-    this.lastShot = performance.now();
   }
 
   draw() {
@@ -708,6 +706,7 @@ function toggleActive(tower) {
     html.sniper,
     html.rapidFire,
     html.tank,
+    html.laser,
   ];
   
   if (tower === 'none') { html.descriptionStandard.style.display = 'none'; draw(); return; }
@@ -791,6 +790,7 @@ function placeTower(event, tower) {
         html.sniper,
         html.rapidFire,
         html.tank,
+        html.laser,
       ];
       
       for (let t of towers) {
@@ -849,6 +849,7 @@ function placeTower(event, tower) {
       case 'sniper': game.towers.push(new Sniper(x, y)); break;
       case 'rapidFire': game.towers.push(new RapidFire(x, y)); break;
       case 'tank': game.towers.push(new Tank(x, y)); break;
+      case 'laser': game.towers.push(new Laser(x, y)); break;
     }
     game.credits -= descriptions[game.activeTower].cost;
   }
@@ -1221,6 +1222,7 @@ html.regular.addEventListener('click', function() { toggleActive('regular'); cha
 html.sniper.addEventListener('click', function() { toggleActive('sniper'); changeDescription('sniper'); });
 html.rapidFire.addEventListener('click', function() { toggleActive('rapidFire'); changeDescription('rapidFire'); });
 html.tank.addEventListener('click', function() { toggleActive('tank'); changeDescription('tank'); });
+html.laser.addEventListener('click', function() { toggleActive('laser'); changeDescription('laser'); });
 
 html.canvas.addEventListener('click', event => placeTower(event, game.activeTower));
 
