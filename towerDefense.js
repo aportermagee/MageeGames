@@ -715,14 +715,14 @@ class Railgun {
     for (let bullet of this.bullets) {
       let direction = this.targetDirection(bullet);
 
-      bullet[2] += 500 * delta;
+      bullet[2] += 1000 * delta;
 
       if (bullet[2] > this.range) {
         this.bullets = this.bullets.filter(item => item !== bullet);
       }
       
-      bullet[0] += direction[0] * bullet[2];
-      bullet[1] += direction[1] * bullet[2];
+      bullet[0] = this.x + direction[0] * bullet[2];
+      bullet[1] = this.y + direction[1] * bullet[2];
       
       for (let enemy of game.enemies) {
         if (distanceToLineSegment(enemy.x, enemy.y, this.x, this.y, bullet[0], bullet[1]) < 8 && !bullet[4].includes(enemy)) {
@@ -1464,7 +1464,7 @@ let descriptions = {
   },
   railgun: {
     type: 'Railgun',
-    damage: 10,
+    damage: 15,
     rateOfFire: 1,
     range: 100,
     cost: 300,
