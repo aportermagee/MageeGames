@@ -9,7 +9,6 @@ class Canvas {
     this.line = line;
     this.linePositions = this.getLinePositions();
     this.lineDirections = this.getLineDirections();
-    this.updateMap();
   }
 
   getLinePositions() {
@@ -1452,6 +1451,8 @@ html.changeMaps.addEventListener('click', function() {
 });
 
 // --- Init ---
+game.canvas.updateMap();
+
 html.ctx.imageSmoothingEnabled = false;
 
 toggleActive('regular');
