@@ -30,7 +30,7 @@
       .tower {
         width: 5.5rem;
         height: 4rem;
-        display: inline-block;
+        display: relative;
         text-decoration: none;
         border-radius: 0.25rem;
         cursor: pointer;
@@ -64,6 +64,7 @@
         font-size: 1.3rem;
         margin: 0rem;
         padding: 0rem;
+        cursor: pointer;
       }
       .exitButton:hover {
         color: rgb(100, 200, 255);
@@ -82,6 +83,7 @@
         padding: 0.5rem 0.2rem;
         margin: 0rem;
         font-size: 1rem;
+        cursor: pointer;
       }
       .upgrade:hover {
         background-color: rgb(0, 75, 0);
@@ -101,6 +103,7 @@
         padding: 0.5rem 0.2rem;
         margin: 0rem;
         font-size: 1rem;
+        cursor: pointer;
       }
       .remove:hover {
         background-color: rgb(100, 0, 0);
@@ -133,6 +136,15 @@
         border: 1px solid rgb(50, 150, 255);
         background-color: rgba(0, 0, 100, 0.5);
         transition-duration: 0s;
+      }
+      .scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-top: 10px;
+        padding-bottom: 2rem;
+        margin-bottom: -2rem;
+        max-width: 60%;
+        scrollbar: none;
       }
     </style>
   </head>
@@ -179,7 +191,7 @@
       
     </div>
     
-    <div id="mainPage" class="main-div" style="height: 47rem; width: 1000px; padding: 0rem; padding-top: 1rem; display: none">
+    <div id="mainPage" class="main-div" style="height: 48rem; width: 1000px; padding: 0rem; padding-top: 1rem; display: none">
       <div class="ends-align" style="margin: 0rem; border-bottom: 2px solid rgb(0, 0, 75); padding-bottom: 1rem;">
         <div>
           <span style="color: rgb(100, 200, 255); font-size: 1.3rem; padding-right: 2rem; padding-left: 2rem;">Wave: <span id="wave">1</span></span>
@@ -262,16 +274,18 @@
         
       </div>
       
-      <div class="ends-align" style="width: 95%;">
-        <div>
+      <div class="ends-align" style="width: 95%; overflow-y: hidden;">
+        <div class="scroll">
           <button id="regular" class="tower" style="color: rgb(150, 0, 255);">Regular<br>$50</button>
           <button id="sniper" class="tower" style="color: rgb(0, 0, 255);">Sniper<br>$100</button>
           <button id="rapidFire" class="tower" style="color: rgb(210, 190, 0);">RapidFire<br>$100</button>
+          <button id="missile" class="tower" style="color: rgb(200, 0, 0);">Missile<br>$100</button>
           <button id="tank" class="tower" style="color: rgb(0, 200, 0);">Tank<br>$150</button>
           <button id="laser" class="tower" style="color: rgb(0, 200, 255);">Laser<br>$250</button>
+          <button id="railgun" class="tower" style="color: rgb(240, 255, 255);">Railgun<br>$250</button>
         </div>
         
-        <div>
+        <div style="padding-top: 10px;">
           <button id="changeMaps" class="start">Change Maps</button>
           <button id="start" class="start">Start</button>
         </div>
@@ -283,4 +297,4 @@
     <script src="towerDefense.js"></script>
   </body>
 </html>
--
+--
