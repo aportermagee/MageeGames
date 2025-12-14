@@ -514,14 +514,14 @@ class Missile {
     this.type = 'Missile';
     this.damage = 8;
     this.rateOfFire = 1;
-    this.range = 50;
-    this.cost = 100;
+    this.range = 100;
+    this.cost = 200;
     this.blastRadius = 30;
     this.upgrade = {
       damage: 2,
       rateOfFire: 0.3,
       range: 10,
-      cost: 100,
+      cost: 150,
     };
     this.maxLevel = 5;
     this.selected = false;
@@ -549,7 +549,7 @@ class Missile {
     
     for (let explosion of this.explosions) {
       html.ctx.beginPath();
-      html.ctx.arc(explosion[0], explosion[1], explosion[3], 0, 2 * Math.PI);
+      html.ctx.arc(explosion[0], explosion[1], explosion[2], 0, 2 * Math.PI);
       html.ctx.stroke();
     }
   }
@@ -578,6 +578,10 @@ class Missile {
   }
   
   update(delta) {
+    if (!game.run) {
+      this.explosions = [];
+    }
+    
     if (performance.now() - this.lastShot > 1000 / this.rateOfFire) {
       this.lastShot = performance.now();
       
@@ -610,7 +614,7 @@ class Missile {
           if (Math.hypot(bullet[0] - enemy.x, bullet[1] - enemy.y) <= this.blastRadius) enemy.health -= this.damage;
         }
         
-        this.explosions.push([bullet[2].x, bullet[2].y, 0)
+        this.explosions.push([bullet[2].x, bullet[2].y, 10]);
         this.bullets = this.bullets.filter(item => item !== bullet);
       }
     }
@@ -618,7 +622,7 @@ class Missile {
     for (let explosion of this.explosions) {
       explosion[2] += delta * 50;
 
-      if (explosion[2] > 50) {
+      if (explosion[2] > this.blastRadius) {
         this.explosions = this.explosions.filter(item => item !== explosion);
       }
     }
