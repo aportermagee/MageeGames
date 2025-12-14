@@ -41,6 +41,7 @@
         background-color: rgba(0, 0, 100, 0.3);
         border: 1px solid rgba(0, 0, 100, 1);
         transition-duration: 0.3s;
+        vertical-align: top;
       }
       .tower:hover {
         transform: translateY(-10px);
@@ -122,6 +123,8 @@
         background-color: rgba(0, 0, 100, 0.3);
         border: 1px solid rgba(0, 0, 100, 1);
         transition-duration: 0.3s;
+        color: rgb(100, 200, 255);
+        vertical-align: top;
       }
       .start:hover {
         transform: translateY(-5px);
@@ -134,7 +137,49 @@
     </style>
   </head>
   <body>
-    <div class="main-div" style="height: 47rem; width: 1000px; padding: 0rem; padding-top: 1rem;">
+    <div id="mapsPage" class="main-div" style="width: 50rem; height: 42rem;">
+      
+      <div class="ends-align">
+        
+        <div class="description" style="width: 15rem; height: 20rem; text-align: center;">
+          <span style="color: rgb(100, 200, 255); font-size: 2rem;">Easy</span><br><hr><br>
+          <button id="zigZag" class="start">Zig-Zag</button>
+          <button id="crossRoads" class="start">Cross Roads</button><br><br>
+          <button id="slants" class="start">Slants</button>
+          <button id="labrinth" class="start">Labrinth</button><br><br>
+          <button id="cubist" class="start">Cubist</button>
+          <button id="switchBacks" class="start">Switch backs</button>
+        </div>
+        
+        <div class="description" style="width: 15rem; height: 20rem; text-align: center;">
+          <span style="color: rgb(100, 200, 255); font-size: 2rem;">Medium</span><br><hr><br>
+          <button id="standard" class="start">Standard</button>
+          <button id="diamond" class="start">Diamond</button><br><br>
+          <button id="tree" class="start">Tree</button>
+          <button id="docks" class="start">Docks</button><br><br>
+          <button id="waves" class="start">Waves</button>
+          <button id="skyline" class="start">Skyline</button>
+        </div>
+        
+        <div class="description" style="width: 15rem; height: 20rem; text-align: center;">
+          <span style="color: rgb(100, 200, 255); font-size: 2rem;">Hard</span><br><hr><br>
+          <button id="straightShot" class="start">Straight Shot</button>
+          <button id="mountains" class="start">Mountains</button><br><br>
+          <button id="sharkFin" class="start">Shark Fin</button>
+          <button id="stocks" class="start">Stocks</button><br><br>
+          <button id="arrow" class="start">Arrow</button>
+          <button id="slipperySlope" class="start">Slippery Slope</button>
+        </div>
+        
+      </div><br>
+      
+      <div class="description" style="padding: 0.5rem; width: 510px; height: 300px; text-align: center;">
+        <canvas id="example" width="500" height="300" style="margin: 0rem; border: 1px solid rgb(50, 150, 255);"></canvas>
+      </div>
+      
+    </div>
+    
+    <div id="mainPage" class="main-div" style="height: 47rem; width: 1000px; padding: 0rem; padding-top: 1rem; display: none">
       <div class="ends-align" style="margin: 0rem; border-bottom: 2px solid rgb(0, 0, 75); padding-bottom: 1rem;">
         <div>
           <span style="color: rgb(100, 200, 255); font-size: 1.3rem; padding-right: 2rem; padding-left: 2rem;">Wave: <span id="wave">1</span></span>
@@ -225,13 +270,16 @@
           <button id="tank" class="tower" style="color: rgb(0, 200, 0);">Tank<br>$150</button>
         </div>
         
-        <button id="start" class="start" style="color: rgb(100, 200, 255)">Start</button>
+        <div>
+          <button id="changeMaps" class="start">Change Maps</button>
+          <button id="start" class="start">Start</button>
+        </div>
+    
       </div>
       
     </div>
     
     <script src="towerDefense.js"></script>
-    
   </body>
 </html>
 -
