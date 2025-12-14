@@ -662,8 +662,8 @@ class Railgun {
     html.ctx.lineWidth = 2;
     for (let bullet of this.bullets) {
       html.ctx.beginPath();
-      html.moveTo(this.x, this.y);
-      html.lineTo(bullet[0], bullet[1]);
+      html.ctx.moveTo(this.x, this.y);
+      html.ctx.lineTo(bullet[0], bullet[1]);
       html.ctx.stroke();
     }
   }
@@ -716,7 +716,7 @@ class Railgun {
       
       let direction = this.targetDirection(bullet);
 
-      bullet[2] += 500 * delta
+      bullet[2] += 500 * delta;
 
       if (bullet[2] > this.range) {
         this.bullets = this.bullets.filter(item => item !== bullet);
@@ -727,7 +727,7 @@ class Railgun {
       
       for (let enemy of game.enemies) {
         if (Math.hypot(bullet[0] - enemy.x, bullet[1] - enemy.y) < 8) {
-          enemy.health -= this.damage
+          enemy.health -= this.damage;
         }
       }
     }
@@ -1396,7 +1396,7 @@ let maps = {
 };
 
 let game = {
-  credits: 200,
+  credits: 300,
   wave: 1,
   lives: 15,
   
