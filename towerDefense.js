@@ -436,7 +436,7 @@ class Laser {
     this.level = 1;
     this.type = 'Laser';
     this.damage = 10;
-    this.rateOfFire = '&infin';
+    this.rateOfFire = '∞';
     this.range = 70;
     this.cost = 250;
     this.upgrade = {
@@ -456,8 +456,9 @@ class Laser {
     html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
     html.ctx.fill();
 
-    if (this.target) {
-      html.ctx.strokeStyle = 'rgb(0, 230, 255)';
+    if (this.target !== 'none') {
+      html.ctx.strokeStyle = 'rgb(0, 200, 255)';
+      html.ctx.lineWidth = 1;
 
       html.ctx.beginPath();
       html.ctx.moveTo(this.x, this.y);
@@ -491,9 +492,10 @@ class Laser {
         }
       }
     }
+    
+    this.target = target;
 
     if (target !== 'none') { 
-      this.target = target;
       this.target.health -= this.damage * delta;
     }
   }
@@ -1206,9 +1208,10 @@ let descriptions = {
   laser: {
     type: 'Laser',
     damage: 10,
-    rateOfFire: '&infin',
+    rateOfFire: '∞',
     range: 70,
     cost: 250,
+  },
 };
   
 // --- Inputs ---
