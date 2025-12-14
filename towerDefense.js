@@ -887,7 +887,7 @@ function restart() {
     credits: 200,
     wave: 1,
     lives: 15,
-    canvas: new Canvas(),
+    canvas: new Canvas(maps.standard),
     activeTower: 'regular',
     selectedTower: 'none',
     towers: [],
@@ -973,25 +973,112 @@ let html = {
   mainPage: document.getElementById('mainPage'),
   mapsPage: document.getElementById('mapsPage'),
   
+  fish: document.getElementById('fish'),
+  crossRoads: document.getElementById('crossRoads'),
+  slants: document.getElementById('slants'),
+  labrinth: document.getElementById('labrinth'),
+  cubist: document.getElementById('cubist'),
+  switchBacks: document.getElementById('switchBacks'),
+  
   standard: document.getElementById('standard'),
   diamond: document.getElementById('diamond'),
+  tree: document.getElementById('tree'),
+  docks: document.getElementById('docks'),
+  waves: document.getElementById('waves'),
+  skyline: document.getElementById('skyline'),
+  
+  straightShot: document.getElementById('straightShot'),
+  mountains: document.getElementById('mountains'),
+  sharkFin: document.getElementById('sharkFin'),
+  stocks: document.getElementById('stocks'),
+  arrow: document.getElementById('arrow'),
+  slipperySlope: document.getElementById('slipperySlope'),
   
   example: document.getElementById('example'),
   exampleCtx: document.getElementById('example').getContext('2d'),
+  
+  changeMaps: document.getElementById('changeMaps'),
 };
 
 let maps = {
+  fish: [
+    [0, 300], [100, 100], [600, 100], [900, 500], [900, 100], [600, 500],
+    [100, 500], [0, 300]
+  ],
+  crossRoads: [
+    [0, 200], [900, 200], [900, 300], [100, 300], [100, 400], [500, 400],
+    [800, 400], [800, 100], [600, 100], [600, 500], [400, 500], [400, 100],
+    [200, 100], [200, 600]
+  ],
+  slants: [
+    [0, 100], [100, 500], [200, 100], [300, 500], [400, 100],
+    [500, 500], [600, 100], [700, 500], [800, 100], [900, 500], [1000, 100],
+  ],
+  labrinth: [
+    [0, 250], [550, 250], [550, 200], [400, 200], [400, 150], [600, 150],
+    [600, 300], [350, 300], [350, 350], [650, 350], [650, 100], [350, 100]
+  ],
+  cubist: [
+    [0, 200], [200, 200], [200, 400], [400, 400], [400, 200],
+    [600, 200], [600, 400], [800, 400], [800, 200], [1000, 200]
+  ],
+  switchBacks: [
+    [0, 50], [900, 100], [100, 200], [900, 300], [100, 400], [1000, 500]
+  ],
+  
   standard: [
     [0, 300], [300, 300], [150, 150],
     [500, 150], [500, 450], [850, 450],
-    [700, 300], [1000, 300],
+    [700, 300], [1000, 300]
   ],
+  diamond: [
+    [0, 300], [500, 0], [1000, 300], [500, 600], [0, 300]
+  ],
+  tree: [
+    [500, 0], [500, 200], [300, 300], [200, 400], [200, 600],
+    [500, 200], [700, 300], [800, 400], [800, 600]
+  ],
+  docks: [
+    [0, 200], [300, 200], [300, 400], [0, 400],
+    [300, 400], [600, 400], [600, 200], [1000, 200]
+  ],
+  waves: [
+    [0, 300], [200, 200], [400, 300], [600, 200], [800, 300], [1000, 200]
+  ],
+  skyline: [
+    [0, 500], [200, 500], [200, 200], [400, 200], [400, 400],
+    [600, 400], [600, 150], [800, 150], [800, 350], [1000, 350]
+  ],
+  
+  straightShot: [
+    [0, 300], [1000, 300]
+  ],
+  mountains: [
+    [0, 500], [200, 300], [400, 500], [600, 200], [800, 500], [1000, 300]
+  ],
+  sharkFin: [
+    [0, 400], [300, 400], [500, 100], [700, 400], [1000, 400]
+  ],
+  stocks: [
+    [0, 300], [200, 200], [300, 400], [400, 150], [600, 450],
+    [700, 250], [900, 350], [1000, 300]
+  ],
+  arrow: [
+    [0, 300], [400, 300], [400, 150], [600, 300], [400, 450],
+    [400, 300], [1000, 300]
+  ],
+  slipperySlope: [
+    [0, 500], [200, 450], [400, 350], [600, 250], [800, 150], [1000, 100]
+  ]
+  
 };
 
 let game = {
   credits: 200,
   wave: 1,
   lives: 15,
+  
+  canvas: new Canvas(maps.standard),
   
   activeTower: 'regular',
   selectedTower: 'none',
@@ -1117,11 +1204,154 @@ html.start.addEventListener('click', function() {
   }
 });
 
+html.fish.addEventListener('mouseover', () => drawMap(maps.fish));
+html.fish.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.fish);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.crossRoads.addEventListener('mouseover', () => drawMap(maps.crossRoads));
+html.crossRoads.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.crossRoads);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.slants.addEventListener('mouseover', () => drawMap(maps.slants));
+html.slants.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.slants);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.labrinth.addEventListener('mouseover', () => drawMap(maps.labrinth));
+html.labrinth.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.labrinth);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.cubist.addEventListener('mouseover', () => drawMap(maps.cubist));
+html.cubist.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.cubist);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.switchBacks.addEventListener('mouseover', () => drawMap(maps.switchBacks));
+html.switchBacks.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.switchBacks);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
 html.standard.addEventListener('mouseover', () => drawMap(maps.standard));
 html.standard.addEventListener('click', function() {
   game.canvas = new Canvas(maps.standard);
   html.mapsPage.style.display = 'none';
   html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.diamond.addEventListener('mouseover', () => drawMap(maps.diamond));
+html.diamond.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.diamond);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.tree.addEventListener('mouseover', () => drawMap(maps.tree));
+html.tree.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.tree);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.docks.addEventListener('mouseover', () => drawMap(maps.docks));
+html.docks.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.docks);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.waves.addEventListener('mouseover', () => drawMap(maps.waves));
+html.waves.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.waves);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.skyline.addEventListener('mouseover', () => drawMap(maps.skyline));
+html.skyline.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.skyline);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.straightShot.addEventListener('mouseover', () => drawMap(maps.straightShot));
+html.straightShot.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.straightShot);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.mountains.addEventListener('mouseover', () => drawMap(maps.mountains));
+html.mountains.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.mountains);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.sharkFin.addEventListener('mouseover', () => drawMap(maps.sharkFin));
+html.sharkFin.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.sharkFin);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.stocks.addEventListener('mouseover', () => drawMap(maps.stocks));
+html.stocks.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.stocks);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.arrow.addEventListener('mouseover', () => drawMap(maps.arrow));
+html.arrow.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.arrow);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.slipperySlope.addEventListener('mouseover', () => drawMap(maps.slipperySlope));
+html.slipperySlope.addEventListener('click', function() {
+  game.canvas = new Canvas(maps.slipperySlope);
+  html.mapsPage.style.display = 'none';
+  html.mainPage.style.display = 'block';
+  draw();
+});
+
+html.changeMaps.addEventListener('click', function() {
+  html.mainPage.style.display = 'none';
+  html.mapsPage.style.display = 'block';
+  restart();
 });
 
 // --- Init ---
