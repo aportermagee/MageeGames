@@ -966,6 +966,7 @@ function changeDescription(tower) {
   html.damageStandard.textContent = descriptions[tower].damage;
   html.rateOfFireStandard.textContent = descriptions[tower].rateOfFire;
   html.rangeStandard.textContent = descriptions[tower].range;
+  html.costStandard.textContent = descriptions[tower].cost;
 }
 
 function distanceToLineSegment(px, py, x1, y1, x2, y2) {
@@ -1396,7 +1397,7 @@ let maps = {
 };
 
 let game = {
-  credits: 300,
+  credits: 200,
   wave: 1,
   lives: 15,
   
