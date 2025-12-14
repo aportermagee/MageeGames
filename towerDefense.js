@@ -635,7 +635,7 @@ class Railgun {
     this.y = y;
     this.level = 1;
     this.type = 'Railgun';
-    this.damage = 10;
+    this.damage = 15;
     this.rateOfFire = 1;
     this.range = 100;
     this.cost = 300;
@@ -692,6 +692,10 @@ class Railgun {
   }
   
   update(delta) {
+    if (!game.run) {
+      this.bullets = [];
+    }
+    
     if (performance.now() - this.lastShot > 1000 / this.rateOfFire) {
       this.lastShot = performance.now();
       
@@ -705,15 +709,10 @@ class Railgun {
         }
       }
 
-      if (target !== 'none') { this.bullets.push([this.x, this.y, 0, target]); }
+      if (target !== 'none') { this.bullets.push([this.x, this.y, 0, target, []]); }
     }
 
     for (let bullet of this.bullets) {
-      if (!game.enemies.includes(bullet[3])) {
-        this.bullets = this.bullets.filter(item => item !== bullet);
-        return;
-      }
-      
       let direction = this.targetDirection(bullet);
 
       bullet[2] += 500 * delta;
@@ -722,11 +721,12 @@ class Railgun {
         this.bullets = this.bullets.filter(item => item !== bullet);
       }
       
-      bullet[0] = direction[0] * bullet[2];
-      bullet[1] = direction[1] * bullet[2];
+      bullet[0] += direction[0] * bullet[2];
+      bullet[1] += direction[1] * bullet[2];
       
       for (let enemy of game.enemies) {
-        if (Math.hypot(bullet[0] - enemy.x, bullet[1] - enemy.y) < 8) {
+        if (distanceToLineSegment(enemy.x, enemy.y, this.x, this.y, bullet[0], bullet[1]) < 8 && !bullet[4].includes(enemy)) {
+          bullet[4].push(enemy);
           enemy.health -= this.damage;
         }
       }
@@ -1697,9 +1697,10 @@ html.slipperySlope.addEventListener('click', function() {
 });
 
 html.changeMaps.addEventListener('click', function() {
+  restart();
+  draw();
   html.mainPage.style.display = 'none';
   html.mapsPage.style.display = 'block';
-  restart();
 });
 
 // --- Init ---
