@@ -9,6 +9,7 @@ class Canvas {
     this.line = line;
     this.linePositions = this.getLinePositions();
     this.lineDirections = this.getLineDirections();
+    this.updateMap();
   }
 
   getLinePositions() {
@@ -30,6 +31,10 @@ class Canvas {
       lineDirections.push([x / segment, y / segment]);
     }
     return lineDirections;
+  }
+
+  updateMap() {
+    game.map = this.line;
   }
   
   draw() {
@@ -965,7 +970,7 @@ function restart() {
     credits: 200,
     wave: 1,
     lives: 15,
-    canvas: new Canvas(maps.standard),
+    canvas: new Canvas(game.map),
     activeTower: 'regular',
     selectedTower: 'none',
     towers: [],
@@ -1175,6 +1180,8 @@ let game = {
   
   run: false,
   gameOver: false,
+
+  map: 'none';
 };
 
 let descriptions = {
