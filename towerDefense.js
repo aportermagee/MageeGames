@@ -1181,7 +1181,7 @@ let game = {
   run: false,
   gameOver: false,
 
-  map: 'none';
+  map: 'none',
 };
 
 let descriptions = {
