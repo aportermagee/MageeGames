@@ -796,8 +796,8 @@ class EnemySpeed {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
     this.pos = 0;
-    this.speed = 145 + game.wave * 5;
-    this.health = 8 + game.wave * 2;
+    this.speed = 145 + game.wave * 7.5;
+    this.health = 8 + game.wave * 1.5;
     this.maxHealth = this.health;
     this.angle = 0;
   }
@@ -862,8 +862,8 @@ class EnemyStrong {
     this.x = game.canvas.line[0][0];
     this.y = game.canvas.line[0][1];
     this.pos = 0;
-    this.speed = 45 + game.wave * 5;
-    this.health =  28 + game.wave * 2;
+    this.speed = 45 + game.wave * 2.5;
+    this.health =  28 + game.wave * 2.5;
     this.maxHealth = this.health;
     this.angle = 0;
   }
