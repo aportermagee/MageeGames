@@ -633,13 +633,13 @@ class Railgun {
     this.type = 'Railgun';
     this.damage = 15;
     this.rateOfFire = 1;
-    this.range = 100;
-    this.cost = 200;
+    this.range = 150;
+    this.cost = 300;
     this.upgrade = {
       damage: 5,
       rateOfFire: 0.1,
       range: 10,
-      cost: 250,
+      cost: 300,
     };
     this.maxLevel = 5;
     this.selected = false;
@@ -1454,14 +1454,14 @@ let descriptions = {
     damage: 7,
     rateOfFire: 1,
     range: 100,
-    cost: 100,
+    cost: 200,
   },
   railgun: {
     type: 'Railgun',
     damage: 15,
     rateOfFire: 1,
-    range: 100,
-    cost: 200,
+    range: 150,
+    cost: 300,
   },
 };
   
