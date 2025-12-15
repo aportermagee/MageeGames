@@ -1692,7 +1692,6 @@ html.slipperySlope.addEventListener('click', function() {
 
 html.changeMaps.addEventListener('click', function() {
   restart();
-  draw();
   html.mainPage.style.display = 'none';
   html.mapsPage.style.display = 'block';
 });
