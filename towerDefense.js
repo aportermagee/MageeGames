@@ -31,10 +31,6 @@ class Canvas {
     }
     return lineDirections;
   }
-
-  updateMap() {
-    game.map = this.line;
-  }
   
   draw() {
     html.ctx.strokeStyle = 'rgb(50, 200, 255)';
@@ -1204,7 +1200,6 @@ function restart() {
     credits: 200,
     wave: 1,
     lives: 15,
-    canvas: new Canvas(game.map),
     activeTower: 'regular',
     selectedTower: 'none',
     towers: [],
@@ -1416,8 +1411,6 @@ let game = {
   
   run: false,
   gameOver: false,
-
-  map: 'none',
 };
 
 let descriptions = {
@@ -1705,8 +1698,6 @@ html.changeMaps.addEventListener('click', function() {
 });
 
 // --- Init ---
-game.canvas.updateMap();
-
 html.ctx.imageSmoothingEnabled = false;
 
 toggleActive('regular');
