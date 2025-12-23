@@ -149,11 +149,11 @@
     </style>
   </head>
   <body>
-    <div id="mapsPage" style="width: 50rem; height: 42rem; text-align: center;">
+    <div id="mapsPage" style="width: 50rem; height: 42rem; text-align: center; max-width: 100vw; max-height: 100vh; overflow-y: auto; overflow-x: hidden;">
       
       <div class="ends-align">
         
-        <div class="description" style="width: 15rem; height: 20rem; text-align: center;">
+        <div class="description" style="width: 30%; height: 48%; text-align: center;">
           <span style="color: rgb(100, 200, 255); font-size: 2rem;">Easy</span><br><hr><br>
           <button id="fish" class="start">Fish</button>
           <button id="crossRoads" class="start">Cross Roads</button><br><br>
@@ -163,7 +163,7 @@
           <button id="switchBacks" class="start">Switch backs</button>
         </div>
         
-        <div class="description" style="width: 15rem; height: 20rem; text-align: center;">
+        <div class="description" style="width: 30%; height: 48%; text-align: center;">
           <span style="color: rgb(100, 200, 255); font-size: 2rem;">Medium</span><br><hr><br>
           <button id="standard" class="start">Standard</button>
           <button id="diamond" class="start">Diamond</button><br><br>
@@ -173,7 +173,7 @@
           <button id="skyline" class="start">Skyline</button>
         </div>
         
-        <div class="description" style="width: 15rem; height: 20rem; text-align: center;">
+        <div class="description" style="width: 30%; height: 48%; text-align: center;">
           <span style="color: rgb(100, 200, 255); font-size: 2rem;">Hard</span><br><hr><br>
           <button id="straightShot" class="start">Straight Shot</button>
           <button id="mountains" class="start">Mountains</button><br><br>
@@ -185,13 +185,13 @@
         
       </div><br>
       
-      <div class="description" style="padding: 0.5rem; width: 510px; height: 300px; text-align: center;">
+      <div class="description" style="padding: 0.5rem; width: 510px; height: 300px; text-align: center; max-height: 48%; max-width: 100%; overflow-y: auto; overflow-x: hidden;">
         <canvas id="example" width="500" height="300" style="margin: 0rem; border: 1px solid rgb(50, 150, 255);"></canvas>
       </div>
       
     </div>
     
-    <div id="mainPage" class="main-div" style="height: 48rem; width: 1000px; padding: 0rem; padding-top: 1rem; display: none">
+    <div id="mainPage" class="main-div" style="height: 48rem; width: 1000px; padding: 0rem; padding-top: 1rem; display: none; max-width: 100vw; max-height: 100vh; overflow-y: auto; overflow-x: hidden;">
       <div class="ends-align" style="margin: 0rem; border-bottom: 2px solid rgb(0, 0, 75); padding-bottom: 1rem;">
         <div>
           <span style="color: rgb(100, 200, 255); font-size: 1.3rem; padding-right: 2rem; padding-left: 2rem;">Wave: <span id="wave">1</span></span>
