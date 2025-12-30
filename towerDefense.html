@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tower Defense || MageeGames</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="darkMode.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+      }
+      hr {
+        border: none; 
+        height: 1px;
+        background-color: rgb(100, 200, 255);
+      }
+      .description {
+        border: 1px solid rgb(50, 150, 255);
+        background-color: rgba(0, 0, 100, 0.3);
+        border-radius: 0.2rem;
+        color: rgb(255, 255, 255);
+        padding: 0.5rem;
+        display: inline-block;
+        font-size: 1rem;
+        text-align: left;
+        width: 15rem;
+        height: 11.1rem;
+      }
+      .tower {
+        width: 5.5rem;
+        height: 4rem;
+        display: relative;
+        text-decoration: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        text-align: center;
+        font-size: 1rem;
+        padding: 0.3rem;
+        margin: 0rem 0rem;
+        background-color: rgba(0, 0, 100, 0.3);
+        border: 1px solid rgba(0, 0, 100, 1);
+        transition-duration: 0.3s;
+        vertical-align: top;
+      }
+      .tower:hover {
+        transform: translateY(-10px);
+      }
+      .tower.active{
+        border: 1px solid rgb(50, 150, 255);
+        background-color: rgba(0, 0, 100, 0.5);
+      }
+      .ends-align {
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+      .exitButton {
+        border: none;
+        background-color: rgba(0, 0, 0, 0);
+        color: rgb(50, 100, 175);
+        font-size: 1.3rem;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+      }
+      .exitButton:hover {
+        color: rgb(100, 200, 255);
+      }
+      .exitButton:active {
+        color: rgb(200, 255, 255);
+      }
+      .upgrade {
+        border: 1px solid rgb(0, 100, 0);
+        background-color: rgba(0, 100, 0, 0.5);
+        color: rgb(0, 180, 0);
+        text-decoration: none;
+        transition-duration: 0.3s;
+        width: 7rem;
+        height: 2.5rem;
+        padding: 0.5rem 0.2rem;
+        margin: 0rem;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .upgrade:hover {
+        background-color: rgb(0, 75, 0);
+      }
+      .upgrade:active {
+        background-color: rgb(0, 125, 0);
+        transition-duration: 0s;
+      }
+      .remove {
+        border: 1px solid rgb(125, 0, 0);
+        background-color: rgba(125, 0, 0, 0.5);
+        color: rgb(225, 0, 0);
+        text-decoration: none;
+        transition-duration: 0.3s;
+        width: 7rem;
+        height: 2.5rem;
+        padding: 0.5rem 0.2rem;
+        margin: 0rem;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .remove:hover {
+        background-color: rgb(100, 0, 0);
+      }
+      .remove:active {
+        background-color: rgb(150, 0, 0);
+        transition-duration: 0s;
+      }
+      .start {
+        width: 5.5rem;
+        height: 4rem;
+        display: inline-block;
+        text-decoration: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        text-align: center;
+        font-size: 1rem;
+        padding: 0.3rem;
+        margin: 0rem 0rem;
+        background-color: rgba(0, 0, 100, 0.3);
+        border: 1px solid rgba(0, 0, 100, 1);
+        transition-duration: 0.3s;
+        color: rgb(100, 200, 255);
+        vertical-align: top;
+      }
+      .start:hover {
+        transform: translateY(-5px);
+      }
+      .start:active {
+        border: 1px solid rgb(50, 150, 255);
+        background-color: rgba(0, 0, 100, 0.5);
+        transition-duration: 0s;
+      }
+      .scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-top: 10px;
+        padding-bottom: 2rem;
+        margin-bottom: -2rem;
+        max-width: 60%;
+        scrollbar: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mapsPage" style="width: 50rem; height: 42rem; text-align: center; overflow-y: auto; overflow-x: auto;">
+      
+      <div class="ends-align">
+        
+        <div class="description" style="width: 30%; height: 48%; text-align: center;">
+          <span style="color: rgb(100, 200, 255); font-size: 2rem;">Easy</span><br><hr><br>
+          <button id="fish" class="start">Fish</button>
+          <button id="crossRoads" class="start">Cross Roads</button><br><br>
+          <button id="slants" class="start">Slants</button>
+          <button id="labrinth" class="start">Labrinth</button><br><br>
+          <button id="cubist" class="start">Cubist</button>
+          <button id="switchBacks" class="start">Switch backs</button>
+        </div>
+        
+        <div class="description" style="width: 30%; height: 48%; text-align: center;">
+          <span style="color: rgb(100, 200, 255); font-size: 2rem;">Medium</span><br><hr><br>
+          <button id="standard" class="start">Standard</button>
+          <button id="diamond" class="start">Diamond</button><br><br>
+          <button id="tree" class="start">Tree</button>
+          <button id="docks" class="start">Docks</button><br><br>
+          <button id="arrow" class="start">Arrow</button>
+          <button id="skyline" class="start">Skyline</button>
+        </div>
+        
+        <div class="description" style="width: 30%; height: 48%; text-align: center;">
+          <span style="color: rgb(100, 200, 255); font-size: 2rem;">Hard</span><br><hr><br>
+          <button id="straightShot" class="start">Straight Shot</button>
+          <button id="mountains" class="start">Mountains</button><br><br>
+          <button id="sharkFin" class="start">Shark Fin</button>
+          <button id="stocks" class="start">Stocks</button><br><br>
+          <button id="waves" class="start">Waves</button>
+          <button id="slipperySlope" class="start">Slippery Slope</button>
+        </div>
+        
+      </div><br>
+      
+      <div class="description" style="padding: 0.5rem; width: 510px; height: 300px; text-align: center;">
+        <canvas id="example" width="500" height="300" style="margin: 0rem; border: 1px solid rgb(50, 150, 255);"></canvas>
+      </div>
+      
+    </div>
+    
+    <div id="mainPage" class="main-div" style="height: 48rem; width: 1000px; padding: 0rem; padding-top: 1rem; display: none; overflow-y: auto; overflow-x: auto;">
+      <div class="ends-align" style="margin: 0rem; border-bottom: 2px solid rgb(0, 0, 75); padding-bottom: 1rem;">
+        <div>
+          <span style="color: rgb(100, 200, 255); font-size: 1.3rem; padding-right: 2rem; padding-left: 2rem;">Wave: <span id="wave">1</span></span>
+          <span style="color: rgb(100, 200, 255); font-size: 1.3rem;padding-right: 2rem;">Credits: <span id="credits">200</span></span>
+          <span style="color: rgb(100, 200, 255); font-size: 1.3rem;">Lives: <span id="lives">15</span></span> 
+        </div>
+        
+        <button id="home" class="exitButton" style="padding-right: 2rem;">X</button>
+        
+      </div>
+      
+      <div style="position: relative; width: 1000px; height: 600px; margin-bottom: 1rem; border-bottom: 2px solid rgb(0, 0, 75);">
+        
+        <canvas id="game" width="1000" height="600" style="margin: 0rem; border: none;"></canvas>
+        
+        <div id="descriptionSelected" class="description" style="display: none; position: absolute; top: 1rem; right: 1rem; padding-top: 1rem;">
+          
+          <div class="ends-align">
+            <span style="font-size: 1.3rem; color: rgb(100, 200, 255);"><span id="typeSelected">Regular</span> (level <span id="level" style="">1</span>)</span>
+            <button id="exitDescriptionSelected" class="exitButton">x</button>
+          </div><hr>
+          
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Damage</span>
+            <span id="damageSelected" style="color: rgb(100, 200, 255)">1</span>
+          </div>
+          
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Rate Of Fire</span>
+            <span id="rateOfFireSelected" style="color: rgb(100, 200, 255);">3</span>
+          </div>
+          
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Range</span>
+            <span id="rangeSelected" style="color: rgb(100, 200, 255)";>50</span>
+          </div>
+          
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Cost</span>
+            <span id="costSelected" style="color: rgb(100, 200, 255)";>100</span>
+          </div><br>
+          
+          <div class="ends-align">
+            <button id="upgrade" class="upgrade">Upgrade</button>
+            <button id="remove" class="remove">Remove</button>
+          </div>
+          
+        </div>
+        
+        <div id="descriptionStandard" class="description" style="position: absolute; top: 1rem; right: 1rem; padding-top: 1rem; height: 8rem;">
+          
+          <div class="ends-align">
+            <span id="typeStandard" style="font-size: 1.3rem; color: rgb(100, 200, 255);">Regular</span>
+            <button id="exitDescriptionStandard" class="exitButton">x</button>
+          </div><hr>
+          
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Damage</span>
+            <span id="damageStandard" style="color: rgb(100, 200, 255)">1</span>
+          </div>
+          
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Rate Of Fire</span>
+            <span id="rateOfFireStandard" style="color: rgb(100, 200, 255);">3</span>
+          </div>
+          
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Range</span>
+            <span id="rangeStandard" style="color: rgb(100, 200, 255)";>50</span>
+          </div>
+          
+          <div class="ends-align">
+            <span style="color: rgb(100, 200, 255)">Cost</span>
+            <span id="costStandard" style="color: rgb(100, 200, 255)";>100</span>
+          </div>
+          
+        </div>
+        
+        <span id="error" class="errorMessage" style="position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);"></span>
+        
+      </div>
+      
+      <div class="ends-align" style="width: 95%; overflow-y: hidden;">
+        <div class="scroll">
+          <button id="regular" class="tower" style="color: rgb(150, 0, 255);">Regular<br>$50</button>
+          <button id="sniper" class="tower" style="color: rgb(0, 0, 255);">Sniper<br>$100</button>
+          <button id="rapidFire" class="tower" style="color: rgb(210, 190, 0);">RapidFire<br>$100</button>
+          <button id="tank" class="tower" style="color: rgb(0, 200, 0);">Tank<br>$150</button>
+          <button id="missile" class="tower" style="color: rgb(200, 0, 0);">Missile<br>$200</button>
+          <button id="laser" class="tower" style="color: rgb(0, 200, 255);">Laser<br>$250</button>
+          <button id="railgun" class="tower" style="color: rgb(240, 255, 255);">Railgun<br>$300</button>
+        </div>
+        
+        <div style="padding-top: 10px;">
+          <button id="changeMaps" class="start">Change Maps</button>
+          <button id="start" class="start">Start</button>
+        </div>
+    
+      </div>
+      
+    </div>
+    
+    <script src="towerDefense.js"></script>
+  </body>
+</html>
+--

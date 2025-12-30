@@ -26,6 +26,7 @@ const snakeGameBtn = document.getElementById('snakeGameBtn');
 const tetrisBtn = document.getElementById('tetrisBtn');
 const spaceInvadersBtn = document.getElementById('spaceInvadersBtn');
 const pacManBtn = document.getElementById('pacManBtn');
+const towerDefenseBtn = document.getElementById('towerDefense');
 
 logoutBtn.addEventListener('click', function() {
   logout();
@@ -43,6 +44,9 @@ spaceInvadersBtn.addEventListener('click', function() {
   window.location.href = 'spaceInvaders';
 });
 
+towerDefenseBtn.addEventListener('click', function() {
+  window.location.href = 'towerDefense';
+});
 pacManBtn.addEventListener('click', function() {
   window.location.href = 'pacMan';
 });
