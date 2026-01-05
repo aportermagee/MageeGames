@@ -752,7 +752,7 @@ class EnemyRegular {
     html.ctx.restore();
 
     html.ctx.strokeStyle = 'rgb(0, 200, 0)';
-    html.ctx.lineWidth = 3;
+    html.ctx.lineWidth = 2;
     html.ctx.beginPath();
     html.ctx.moveTo(this.x - 10, this.y - 20);
     html.ctx.lineTo((this.x - 10) + Math.round(20 * this.health / this.maxHealth), this.y - 20);
