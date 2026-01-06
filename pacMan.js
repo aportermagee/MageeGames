@@ -875,32 +875,34 @@ function update(delta, currentTime) {
   }
   
   pacMan.update(delta);
-  if (collision(red, pacMan)) { 
-    if (!red.notScared && scared) { 
-      red.notScared = true; red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; 
-    } else {
-      lives -= 1; isDying = true;
+  if (!isDying) {
+    if (collision(red, pacMan)) { 
+      if (!red.notScared && scared) { 
+        red.notScared = true; red.x = red.originalX; red.y = red.originalY; red.free = false; red.startTime = performance.now() / 1000 + 3; score += ghostBonus; ghostBonus *= 2; 
+      } else {
+        lives -= 1; isDying = true;
+      }
     }
-  }
-  if (collision(blue, pacMan)) { 
-    if (!blue.notScared && scared) { 
-      blue.notScared = true; blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; 
-    } else {
-      lives -= 1; isDying = true;
+    if (collision(blue, pacMan)) { 
+      if (!blue.notScared && scared) { 
+        blue.notScared = true; blue.x = blue.originalX; blue.y = blue.originalY; blue.free = false; blue.startTime = performance.now() / 1000; score += ghostBonus; ghostBonus *= 2; 
+      } else {
+        lives -= 1; isDying = true;
+      }
     }
-  }
-  if (collision(orange, pacMan)) { 
-    if (!orange.notScared && scared) { 
-      orange.notScared = true; orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; 
-    } else {
-      lives -= 1; isDying = true;
+    if (collision(orange, pacMan)) { 
+      if (!orange.notScared && scared) { 
+        orange.notScared = true; orange.x = orange.originalX; orange.y = orange.originalY; orange.free = false; orange.startTime = performance.now() / 1000 - 6; score += ghostBonus; ghostBonus *= 2; 
+      } else {
+        lives -= 1; isDying = true;
+      }
     }
-  }
-  if (collision(pink, pacMan)) { 
-    if (!pink.notScared && scared) { 
-      pink.notScared = true; pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; 
-    } else {
-      lives -= 1; isDying = true;
+    if (collision(pink, pacMan)) { 
+      if (!pink.notScared && scared) { 
+        pink.notScared = true; pink.x = pink.originalX; pink.y = pink.originalY; pink.free = false; pink.startTime = performance.now() / 1000 - 3; score += ghostBonus; ghostBonus *= 2; 
+      } else {
+        lives -= 1; isDying = true;
+      }
     }
   }
   
