@@ -1210,6 +1210,8 @@ function restart() {
     enemiesSpawned: 0,
     run: false,
     gameOver: false,
+
+    canvas: game.canvas,
   };
 }
 
