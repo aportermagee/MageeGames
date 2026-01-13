@@ -56,9 +56,9 @@ class Regular {
     this.range = 70;
     this.cost = 50;
     this.upgrade = {
-      damage: 0.5,
+      damage: 1,
       rateOfFire: 0.5,
-      range: 5,
+      range: 10,
       cost: 50,
     };
     this.maxLevel = 5;
@@ -730,6 +730,132 @@ class Railgun {
   }
 }
 
+class Mortar {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.level = 1;
+    this.type = 'Mortar';
+    this.damage = 10;
+    this.rateOfFire = 1;
+    this.range = 100;
+    this.cost = 200;
+    this.blastRadius = 50;
+    this.upgrade = {
+      damage: 5,
+      rateOfFire: 0.5,
+      range: 10,
+      cost: 200,
+    };
+    this.maxLevel = 5;
+    this.selected = false;
+    this.bullets = [];
+    this.explosions = [];
+    this.lastShot = performance.now();
+  }
+
+  draw() {
+    html.ctx.fillStyle = 'rgb(200, 100, 0)';
+
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    for (let bullet of this.bullets) {
+      html.ctx.fillStyle = 'rgb(200, 100, 0)';
+      html.ctx.beginPath();
+      html.ctx.arc(bullet[0], bullet[1], 3, 0, 2 * Math.PI);
+      html.ctx.fill();
+    }
+
+    html.ctx.strokeStyle = 'rgb(200, 100, 0)';
+    html.ctx.lineWidth = 2;
+    
+    for (let explosion of this.explosions) {
+      html.ctx.beginPath();
+      html.ctx.arc(explosion[0], explosion[1], explosion[2], 0, 2 * Math.PI);
+      html.ctx.stroke();
+    }
+  }
+  
+  selectedDraw() {
+    html.ctx.fillStyle = 'rgb(255, 255, 255)';
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, 3, 0, 2 * Math.PI);
+    html.ctx.fill();
+    
+    html.ctx.strokeStyle = 'rgb(255, 255, 255)';
+    html.ctx.lineWidth = 2;
+    
+    html.ctx.beginPath();
+    html.ctx.arc(this.x, this.y, this.range, 0, 2 * Math.PI);
+    html.ctx.stroke();
+  }
+  
+  targetDirection(bullet) {
+    let x = bullet[2].x - bullet[0];
+    let y = bullet[2].y - bullet[1];
+    let distance = Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y);
+
+    return [x / distance, y / distance];
+  }
+  
+  update(delta) {
+    if (!game.run) {
+      this.explosions = [];
+    }
+    
+    if (performance.now() - this.lastShot > 1000 / this.rateOfFire) {
+      this.lastShot = performance.now();
+      
+      let target = 'none';
+  
+      for (let enemy of game.enemies) {
+        for (let tower of game.towers) {
+          if (Math.hypot(this.x - enemy.x, this.y - enemy.y) < this.range || Math.hypot(tower.x - enemy.x, tower.y - enemy.y) < tower.range) {
+            if (target === 'none' || enemy.pos > target.pos) {
+              target = enemy;
+            }
+            break;
+          }
+        }
+      }
+
+      if (target !== 'none') { this.bullets.push([this.x, this.y, target]); }
+    }
+
+    for (let bullet of this.bullets) {
+      if (!game.enemies.includes(bullet[2])) {
+        this.bullets = this.bullets.filter(item => item !== bullet);
+        return;
+      }
+      
+      let direction = this.targetDirection(bullet);
+
+      bullet[0] += direction[0] * 1000 * delta;
+      bullet[1] += direction[1] * 1000 * delta;
+      
+      if (Math.hypot(bullet[0] - bullet[2].x, bullet[1] - bullet[2].y) <= 8) {
+        for (let enemy of game.enemies) {
+          if (Math.hypot(bullet[0] - enemy.x, bullet[1] - enemy.y) <= this.blastRadius) enemy.health -= this.damage;
+        }
+        
+        this.explosions.push([bullet[2].x, bullet[2].y, 10]);
+        this.bullets = this.bullets.filter(item => item !== bullet);
+      }
+    }
+
+    for (let explosion of this.explosions) {
+      explosion[2] += delta * 75;
+
+      if (explosion[2] > this.blastRadius) {
+        this.explosions = this.explosions.filter(item => item !== explosion);
+      }
+    }
+  }
+}
+
 class EnemyRegular {
   constructor() {
     this.x = game.canvas.line[0][0];
@@ -940,6 +1066,7 @@ function toggleActive(tower) {
     html.laser,
     html.missile,
     html.railgun,
+    html.mortar,
   ];
   
   if (tower === 'none') { html.descriptionStandard.style.display = 'none'; draw(); return; }
@@ -1027,6 +1154,7 @@ function placeTower(event, tower) {
         html.laser,
         html.missile,
         html.railgun,
+        html.mortar,
       ];
       
       for (let t of towers) {
@@ -1088,6 +1216,7 @@ function placeTower(event, tower) {
       case 'laser': game.towers.push(new Laser(x, y)); break;
       case 'missile': game.towers.push(new Missile(x, y)); break;
       case 'railgun': game.towers.push(new Railgun(x, y)); break;
+      case 'mortar': game.towers.push(new Mortar(x, y)); break;
     }
     game.credits -= descriptions[game.activeTower].cost;
   }
@@ -1267,6 +1396,7 @@ let html = {
   laser: document.getElementById('laser'),
   missile: document.getElementById('missile'),
   railgun: document.getElementById('railgun'),
+  mortar: document.getElementById('mortar'),
   
   descriptionStandard: document.getElementById('descriptionStandard'),
   typeStandard: document.getElementById('typeStandard'),
@@ -1465,6 +1595,13 @@ let descriptions = {
     range: 150,
     cost: 300,
   },
+  mortar: {
+    type: 'Mortar',
+    damage: 10,
+    rateOfFire: 1,
+    range: 100,
+    cost: 200,
+  },
 };
   
 // --- Inputs ---
@@ -1481,6 +1618,7 @@ html.tank.addEventListener('click', function() { toggleActive('tank'); changeDes
 html.laser.addEventListener('click', function() { toggleActive('laser'); changeDescription('laser'); });
 html.missile.addEventListener('click', function() { toggleActive('missile'); changeDescription('missile'); });
 html.railgun.addEventListener('click', function() { toggleActive('railgun'); changeDescription('railgun'); });
+html.mortar.addEventListener('click', function() { toggleActive('mortar'); changeDescription('mortar'); });
 
 html.canvas.addEventListener('click', event => placeTower(event, game.activeTower));
 
