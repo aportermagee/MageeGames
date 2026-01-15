@@ -739,7 +739,7 @@ class Mortar {
     this.damage = 10;
     this.rateOfFire = 1;
     this.range = 100;
-    this.cost = 200;
+    this.cost = 250;
     this.blastRadius = 50;
     this.upgrade = {
       damage: 5,
@@ -1600,7 +1600,7 @@ let descriptions = {
     damage: 10,
     rateOfFire: 1,
     range: 100,
-    cost: 200,
+    cost: 250,
   },
 };
   
