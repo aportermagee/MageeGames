@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       body {
+        font-family: 'Roboto', sans-serif;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -14,23 +15,61 @@
         overflow-y: hidden;
         background-color: rgb(0, 0, 0);
       }
+      canvas {
+        background-color: rgb(0, 0, 0);
+        border: 1px solid rgb(0, 0, 125);
+      }
       .main-div {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         margin: 0;
         padding: 0;
         background-color: rgb(0, 0, 15);
         border: 2px solid rgb(0, 0, 75);
-        max-height: 400px;
+        max-height: 600px;
         height: 90%;
         max-width: 500px;
         width: 90%;
+        border-radius: 10px;
+      }
+      .h1 {
+        margin: 5px;
+        padding: 0;
+        color: rgb(0, 80, 170);
+      }
+      .span-div {
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        width: 85%;
+      }
+      .exit-button {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        color: rgb(0, 60, 120);
+        border: none;
+        background: none;
+        font-size: 1.5rem;
+      }
+      .exit-button:hover {
+        color: rgb(0, 80, 170);
+      }
+      .exit-button:active {
+        color: rgb(0, 90, 200);
       }
     </style>
   </head>
   <body>
     <div class="main-div">
-      
+      <div class="span-div">
+        <button id="resetButton" class="exit-button">Reset</button>
+        <h1 class="h1">Minesweepers</h1><br>
+        <button id="exitButton" class="exit-button">x</button>
+      </div><br>
+      <canvas width="400" height="400"></canvas><br><br>
     </div>
   </body>
 </html>
