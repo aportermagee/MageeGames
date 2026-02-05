@@ -13,7 +13,38 @@ function setBoard() {
     }
   }
 
-  for
+  for (let i = 0; i < 40; i++) {
+    game.board.push([]);
+
+    for (let j = 0; j < 40; j++) {
+      game.board[i].push(0);
+    }
+  }
+
+  for (let i = 0; i < numMines; i++) {
+    game.board[game.mines[i]] = -1;
+
+    if (game.mine[i][1] > 0) {
+      if (game.board[game.mine[i][0] - 1][game.mine[i][1]] != -1) {
+        game.board[game.mine[i][0] - 1][game.mine[i][1]] += 1;
+      }
+    }
+    if (game.mine[i][1] < 39) {
+      if (game.board[game.mine[i][0] + 1][game.mine[i][1]] != -1) {
+        game.board[game.mine[i][0] + 1][game.mine[i][1]] += 1;
+      }
+    }
+    if (game.mine[i][0] > 0) {
+      if (game.board[game.mine[i][0]][game.mine[i][1] - 1] != -1) {
+        game.board[game.mine[i][0]][game.mine[i][1] - 1] += 1;
+      }
+    }
+    if (game.mine[i][0] < 39) {
+      if (game.board[game.mine[i][0]][game.mine[i][1] + 1] != -1) {
+        game.board[game.mine[i][0]][game.mine[i][1] + 1] += 1;
+      }
+    }
+  }
 }
 
 function click(event) {
