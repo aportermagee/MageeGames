@@ -2,6 +2,8 @@
 function setBoard() {
   game.mines = [];
   game.board = [];
+  game.revealed = [];
+  
   const pos = [
     [1, -1], [0, -1], [-1, -1],
     [1, 0], [-1, 0],
@@ -9,9 +11,9 @@ function setBoard() {
   ];
 
   for (let i = 0; i < game.numMines; i++) {
-    const mine = [Math.round(Math.random() * 20), Math.round(Math.random() * 20)];
+    const mine = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)];
     
-    if (game.mines.includes(mine)) {
+    if (game.mines.some(m => m[0] === mine[0] && m[1] === mine[1])) {
       i--;
     } else {
       game.mines.push(mine);
@@ -45,7 +47,7 @@ function draw() {
 
   for (let i = 0; i < game.board.length; i++) {
     for (let j = 0; j < game.board[i].length; j++) {
-      if (!game.revealed.includes([j, i])) {
+      if (! (game.revealed[0] === j && game.revealed[1] === i)) {
         html.ctx.fillStyle = 'rgb(50, 50, 50)';
         html.ctx.fillRect(j * game.box + 1, i * game.box + 1, game.box - 2, game.box - 2);
       } else {
