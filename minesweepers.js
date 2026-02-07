@@ -3,6 +3,7 @@ function setBoard() {
   game.mines = [];
   game.board = [];
   game.revealed = [];
+  game.flagged = [];
   
   const pos = [
     [1, -1], [0, -1], [-1, -1],
@@ -29,7 +30,7 @@ function setBoard() {
   }
 
   for (let i = 0; i < game.numMines; i++) {
-    game.board[game.mines[i]] = -1;
+    game.board[game.mines[i][1]][game.mines[i][0]] = -1;
 
     for (let j = 0; j < pos.length; j++) {
       if (game.mines[i][0] + pos[j][0] < 20 && game.mines[i][0] + pos[j][0] >= 0 && game.mines[i][1] + pos[j][1] < 20 && game.mines[i][1] + pos[j][1] >= 0) {
@@ -42,23 +43,65 @@ function setBoard() {
 }
 
 function draw() {
-  html.ctx.fillStyle = 'rgb(0, 0, 0)';
+  html.ctx.fillStyle = 'rgb(0, 10, 30)';
   html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
 
   for (let i = 0; i < game.board.length; i++) {
     for (let j = 0; j < game.board[i].length; j++) {
       if (!game.revealed.some(p => p[0] === j && p[1] === i)) {
-        html.ctx.fillStyle = 'rgb(50, 50, 50)';
-        html.ctx.fillRect(j * game.box + 1, i * game.box + 1, game.box - 2, game.box - 2);
+        html.ctx.fillStyle = 'rgb(0, 20, 60)';
+        html.ctx.fillRect(j * game.box, i * game.box, game.box, game.box);
+        
+        html.ctx.strokeStyle = 'rgb(0, 40, 120)';
+        html.ctx.strokeRect(j * game.box, i * game.box, game.box, game.box);
+        
+        if (game.flagged.some(p => p[0] === j && p[1] === i)) {
+          html.ctx.fillStyle = 'rgb(175, 0, 0)';
+          html.ctx.beginPath();
+          html.ctx.moveTo((j + 0.25) * game.box, (i + 0.15) * game.box);
+          html.ctx.lineTo((j + 0.25) * game.box, (i + 0.6) * game.box);
+          html.ctx.lineTo((j + 0.8) * game.box, (i + 0.4) * game.box);
+          html.ctx.lineTo((j + 0.25) * game.box, (i + 0.15) * game.box);
+          html.ctx.fill();
+          
+          html.ctx.fillStyle = 'rgb(200, 200, 200)';
+          html.ctx.fillRect((j + 0.25) * game.box, (i + 0.175) * game.box, 1, game.box * 0.55);
+        }
       } else {
         if (game.board[i][j] === -1) {
-          html.ctx.fillStyle = 'rgb(0, 0, 150)';
+          html.ctx.fillStyle = 'rgb(175, 0, 0)';
           html.ctx.fillRect(j * game.box, i * game.box, game.box, game.box);
         } else {
-          html.ctx.font = '16px Roboto';
-          html.ctx.fillStyle = 'rgb(200, 200, 200)';
-          html.ctx.textAlign = 'center';
-          html.ctx.fillText('' + game.board[i][j], j * game.box + game.box / 2, i * game.box + game.box / 2);
+          if (game.board[i][j] !== 0) {
+            html.ctx.font = 'bold 15px Tahoma';
+            html.ctx.fillStyle = 'rgb(200, 200, 200)';
+            html.ctx.textAlign = 'center'; 
+            html.ctx.fillText('' + game.board[i][j], j * game.box + game.box / 2, (i + 0.75) * game.box);
+          }
+          
+          html.ctx.lineWidth = 1;
+          html.ctx.strokeStyle = 'rgb(0, 30, 90)';
+          html.ctx.strokeRect(j * game.box, i * game.box, game.box, game.box);
+        }
+      }
+    }
+  }
+}
+
+function emptySpace(x, y) {
+  const pos = [
+    [1, -1], [0, -1], [-1, -1],
+    [1, 0], [-1, 0],
+    [1, 1], [0, 1], [-1, 1],
+  ];
+  
+  for (let i = 0; i < pos.length; i++) {
+    if (x + pos[i][0] < 20 && x + pos[i][0] >= 0 && y + pos[i][1] < 20 && y + pos[i][1] >= 0) {
+      if (!game.revealed.some(p => p[0] === x + pos[i][0] && y + pos[i][1])) {
+        game.revealed.push(x + pos[i][0], y + pos[i][1]);
+      
+        if (game.board[y + pos[i][1]][x + pos[i][0]] === 0) {
+          emptySpace(x + pos[i][0], y + pos[i][1]);
         }
       }
     }
@@ -68,8 +111,21 @@ function draw() {
 function click(event) {
   const rect = html.canvas.getBoundingClientRect();
   
-  const x = Math.abs(event.clientX - rect.left) / game.box;
-  const y = Math.abs(event.clientY - rect.top) / game.box;
+  const x = Math.floor(Math.abs(event.clientX - rect.left) / game.box);
+  const y = Math.floor(Math.abs(event.clientY - rect.top) / game.box);
+  
+  if (!game.revealed.some(p => p[0] === x && p[1] === y)) {
+    game.revealed.push([x, y]);
+  }
+  
+  if (game.board[y][x] === -1) {
+    game.over = true;
+    game.revealed.push(game.mines);
+  }
+  
+  if (game.board[y][x] === 0) {
+    emptySpace(x, y);
+  }
 }
 
 // --- Variables ---
@@ -82,15 +138,28 @@ const html = {
 
 const game = {
   box: 20,
-  numMines: 10,
+  numMines: 40,
   mines: [],
   board: [],
-  revealed: [[1, 1]],
+  revealed: [],
+  flagged: [],
+  over: false,
 };
 
+// --- Input ---
 document.addEventListener('click', event => {
-  click(event);
+  if (!game.over) {
+    click(event);
+  }
 });
+
+// --- Initialization ---
+const dpr = window.devicePixelRatio || 1;
+html.canvas.width = 400 * dpr;   // Your desired width
+html.canvas.height = 400 * dpr;  // Your desired height
+html.canvas.style.width = '400px';
+html.canvas.style.height = '400px';
+html.ctx.scale(dpr, dpr);
 
 setBoard();
 draw();
