@@ -4,6 +4,7 @@ function setBoard() {
   game.board = [];
   game.revealed = [];
   game.flagged = [];
+  game.over = false;
   
   const pos = [
     [1, -1], [0, -1], [-1, -1],
@@ -97,8 +98,8 @@ function emptySpace(x, y) {
   
   for (let i = 0; i < pos.length; i++) {
     if (x + pos[i][0] < 20 && x + pos[i][0] >= 0 && y + pos[i][1] < 20 && y + pos[i][1] >= 0) {
-      if (!game.revealed.some(p => p[0] === x + pos[i][0] && y + pos[i][1])) {
-        game.revealed.push(x + pos[i][0], y + pos[i][1]);
+      if (!game.revealed.some(p => p[0] === x + pos[i][0] && p[1] === y + pos[i][1])) {
+        game.revealed.push([x + pos[i][0], y + pos[i][1]]);
       
         if (game.board[y + pos[i][1]][x + pos[i][0]] === 0) {
           emptySpace(x + pos[i][0], y + pos[i][1]);
@@ -108,11 +109,13 @@ function emptySpace(x, y) {
   }
 }
 
-function click(event) {
+function handleClick(event) {
   const rect = html.canvas.getBoundingClientRect();
   
   const x = Math.floor(Math.abs(event.clientX - rect.left) / game.box);
   const y = Math.floor(Math.abs(event.clientY - rect.top) / game.box);
+  
+  if (x < 0 || x >= 20 || y < 0 || y >= 20) return;
   
   if (!game.revealed.some(p => p[0] === x && p[1] === y)) {
     game.revealed.push([x, y]);
@@ -120,12 +123,14 @@ function click(event) {
   
   if (game.board[y][x] === -1) {
     game.over = true;
-    game.revealed.push(game.mines);
+    game.revealed.push(...game.mines);
   }
   
   if (game.board[y][x] === 0) {
     emptySpace(x, y);
   }
+  
+  draw();
 }
 
 // --- Variables ---
@@ -146,13 +151,6 @@ const game = {
   over: false,
 };
 
-// --- Input ---
-document.addEventListener('click', event => {
-  if (!game.over) {
-    click(event);
-  }
-});
-
 // --- Initialization ---
 const dpr = window.devicePixelRatio || 1;
 html.canvas.width = 400 * dpr;
@@ -163,3 +161,10 @@ html.ctx.scale(dpr, dpr);
 
 setBoard();
 draw();
+
+
+document.addEventListener('click', event => {
+  if (!game.over) {
+    handleClick(event);
+  }
+});
