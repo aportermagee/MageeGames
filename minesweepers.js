@@ -47,7 +47,7 @@ function draw() {
 
   for (let i = 0; i < game.board.length; i++) {
     for (let j = 0; j < game.board[i].length; j++) {
-      if (! (game.revealed[0] === j && game.revealed[1] === i)) {
+      if (!game.revealed.some(p => p[0] === j && p[1] === i)) {
         html.ctx.fillStyle = 'rgb(50, 50, 50)';
         html.ctx.fillRect(j * game.box + 1, i * game.box + 1, game.box - 2, game.box - 2);
       } else {
