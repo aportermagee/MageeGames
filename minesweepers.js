@@ -155,8 +155,8 @@ document.addEventListener('click', event => {
 
 // --- Initialization ---
 const dpr = window.devicePixelRatio || 1;
-html.canvas.width = 400 * dpr;   // Your desired width
-html.canvas.height = 400 * dpr;  // Your desired height
+html.canvas.width = 400 * dpr;
+html.canvas.height = 400 * dpr;
 html.canvas.style.width = '400px';
 html.canvas.style.height = '400px';
 html.ctx.scale(dpr, dpr);
