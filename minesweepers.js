@@ -129,6 +129,16 @@ function handleClick(event) {
   if (game.board[y][x] === 0) {
     emptySpace(x, y);
   }
+
+  if (game.revealed + game.numMines === 400) {
+    game.over = true;
+
+    for (let i = 0; i < game.mines.length; i++) {
+      draw();
+      game.revealed.push(mine[i]);
+      await sleep(200);
+    }
+  }
   
   draw();
 }
