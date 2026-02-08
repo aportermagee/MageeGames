@@ -133,6 +133,21 @@ function handleClick(event) {
   draw();
 }
 
+function handleRightClick(event) {
+  const rect = html.canvas.getBoundingClientRect();
+  
+  const x = Math.floor(Math.abs(event.clientX - rect.left) / game.box);
+  const y = Math.floor(Math.abs(event.clientY - rect.top) / game.box);
+  
+  if (x < 0 || x >= 20 || y < 0 || y >= 20) return;
+  
+  if (!game.revealed.some(p => p[0] === x && p[1] === y) && !game.flagged.some(p => p[0] === x && p[1] === y)) {
+    game.flagged.push([x, y]);
+  }
+  
+  draw();
+}
+
 // --- Variables ---
 const html = {
   canvas: document.getElementById('canvas'),
@@ -163,8 +178,22 @@ setBoard();
 draw();
 
 
-document.addEventListener('click', event => {
+html.canvas.addEventListener('click', event => {
   if (!game.over) {
     handleClick(event);
   }
+});
+
+html.canvas.addEventListener('contextmenu', event => {
+  event.preventDefault();
+  handleRightClick(event);
+});
+
+html.reset.addEventListener('click', () => {
+  setBoard();
+  draw();
+});
+
+html.exit.addEventListener('click', () => {
+  window.location.href = 'home';
 });
