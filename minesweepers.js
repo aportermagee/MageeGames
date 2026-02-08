@@ -43,6 +43,7 @@ function setBoard() {
   }
 }
 
+
 function draw() {
   html.ctx.fillStyle = 'rgb(0, 10, 30)';
   html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
@@ -109,7 +110,11 @@ function emptySpace(x, y) {
   }
 }
 
-function handleClick(event) {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function handleClick(event) {
   const rect = html.canvas.getBoundingClientRect();
   
   const x = Math.floor(Math.abs(event.clientX - rect.left) / game.box);
@@ -130,12 +135,12 @@ function handleClick(event) {
     emptySpace(x, y);
   }
 
-  if (game.revealed + game.numMines === 400) {
+  if (game.revealed.length + game.numMines >= 400) {
     game.over = true;
 
     for (let i = 0; i < game.mines.length; i++) {
       draw();
-      game.revealed.push(mine[i]);
+      game.revealed.push(game.mines[i]);
       await sleep(200);
     }
   }
