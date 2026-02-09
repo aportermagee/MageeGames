@@ -736,16 +736,16 @@ class Mortar {
     this.y = y;
     this.level = 1;
     this.type = 'Mortar';
-    this.damage = 10;
+    this.damage = 5;
     this.rateOfFire = 1;
     this.range = 100;
     this.cost = 250;
     this.blastRadius = 50;
     this.upgrade = {
       damage: 5,
-      rateOfFire: 0.5,
+      rateOfFire: 0.2,
       range: 10,
-      cost: 200,
+      cost: 150,
     };
     this.maxLevel = 5;
     this.selected = false;
@@ -1597,7 +1597,7 @@ let descriptions = {
   },
   mortar: {
     type: 'Mortar',
-    damage: 10,
+    damage: 5,
     rateOfFire: 1,
     range: 100,
     cost: 250,
