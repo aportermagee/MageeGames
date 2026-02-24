@@ -8,8 +8,8 @@ class Player {
   }
   
   draw() {
-    html.ctx.strokeStyle = 'rgb(200, 200, 200)';
-    html.ctx.lineWidth = 1;
+    html.ctx.strokeStyle = 'rgb(100, 150, 200)';
+    html.ctx.lineWidth = 2;
     html.ctx.beginPath();
     html.ctx.moveTo(game.center.x, game.center.y - 15);
     html.ctx.lineTo(game.center.x + 8, game.center.y + 10);
@@ -17,6 +17,15 @@ class Player {
     html.ctx.lineTo(game.center.x - 8, game.center.y + 10);
     html.ctx.lineTo(game.center.x, game.center.y - 15);
     html.ctx.stroke();
+    
+    html.ctx.fillStyle = 'rgb(0, 75, 150)';
+    html.ctx.beginPath();
+    html.ctx.moveTo(game.center.x, game.center.y - 15);
+    html.ctx.lineTo(game.center.x + 8, game.center.y + 10);
+    html.ctx.lineTo(game.center.x, game.center.y + 5);
+    html.ctx.lineTo(game.center.x - 8, game.center.y + 10);
+    html.ctx.lineTo(game.center.x, game.center.y - 15);
+    html.ctx.fill();
   }
 }
 
@@ -53,5 +62,13 @@ let game = {
   },
   player: new Player(),
 }
+
+// --- Initialization ---
+const dpr = window.devicePixelRatio || 1;
+html.canvas.width = 800 * dpr;
+html.canvas.height = 600 * dpr;
+html.canvas.style.width = '800px';
+html.canvas.style.height = '600px';
+html.ctx.scale(dpr, dpr);
 
 game.player.draw();
