@@ -1600,7 +1600,7 @@ let descriptions = {
     damage: 5,
     rateOfFire: 1,
     range: 100,
-    cost: 250,
+    cost: 200,
   },
 };
   
