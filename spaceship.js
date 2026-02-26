@@ -30,7 +30,7 @@ class Player {
 }
 
 class Enemy {
-  constructor (posx, posy, angle) {
+  constructor(posx, posy, angle) {
     this.pos = {
       x: posx,
       y: posy,
@@ -40,6 +40,28 @@ class Enemy {
     this.shots = [];
     this.speed = 4;
     this.coolDown = 0.5;
+  }
+}
+
+class SpeedLine {
+  constructor(posx, posy, speed) {
+    this.pos = {
+      x: posx,
+      y: posy,
+    };
+    this.speed = speed;
+    this.time = performance.now();
+  }
+  
+  update() {
+    if (performance.now() - this.time) {
+      game.speedLines = game.speedLines.filter(line => line !== this);
+    }
+  }
+  
+  draw() {
+    html.ctx.fillStyle = 'rgb(150, 150, 150)';
+    html.ctx.fillRect(this.pos);
   }
 }
 
@@ -61,6 +83,7 @@ let game = {
     y: Math.round(html.canvas.height / 2),
   },
   player: new Player(),
+  speedLines: [],
 }
 
 // --- Initialization ---
