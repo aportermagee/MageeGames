@@ -70,6 +70,10 @@ function turn(ship, direction, delta) {
   ship.angle += ship.turn * direction * delta;
 }
 
+function update(delta) {
+  
+}
+
 // --- Variables ---
 let html = {
   canvas: document.getElementById('canvas'),
@@ -84,6 +88,12 @@ let game = {
   },
   player: new Player(),
   speedLines: [],
+}
+
+// --- Game Loop ---
+gameLoop(currentTime) {
+  update();
+  draw();
 }
 
 // --- Initialization ---
