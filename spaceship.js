@@ -7,6 +7,10 @@ class Player {
     this.coolDown = 0.25;
   }
   
+  update(delta) {
+    
+  }
+  
   draw() {
     html.ctx.strokeStyle = 'rgb(100, 150, 200)';
     html.ctx.lineWidth = 2;
@@ -41,27 +45,38 @@ class Enemy {
     this.speed = 4;
     this.coolDown = 0.5;
   }
+  
+  update(delta) {
+    
+  }
+  
+  draw() {
+    
+  }
 }
 
 class SpeedLine {
-  constructor(posx, posy, speed) {
+  constructor() {
     this.pos = {
-      x: posx,
-      y: posy,
+      x: Math.round(Math.random() * html.canvas.width / 2),
+      y: Math.round(Math.random() * html.canvas.height / 4),
     };
-    this.speed = speed;
+    this.speed = Math.round(Math.random() * 20) + 80;
     this.time = performance.now();
+    this.length = Math.round(Math.random() * 50) + 20;
   }
   
-  update() {
-    if (performance.now() - this.time) {
+  update(delta) {
+    if (performance.now() - this.time >= 1000) {
       game.speedLines = game.speedLines.filter(line => line !== this);
     }
+    
+    this.pos.y += delta * 5 * this.speed / 1000;
   }
   
   draw() {
     html.ctx.fillStyle = 'rgb(150, 150, 150)';
-    html.ctx.fillRect(this.pos);
+    html.ctx.fillRect(this.pos.x, this.pos.y, 1, this.length);
   }
 }
 
@@ -71,7 +86,30 @@ function turn(ship, direction, delta) {
 }
 
 function update(delta) {
+  game.player.update(delta);
   
+  for (let i = 0; i < game.enemies.length; i++) {
+    game.enemies[i].update(delta);
+  }
+  
+  for (let i = 0; i < game.speedLines.length; i++) {
+    game.speedLines[i].update(delta);
+  }
+}
+
+function draw() {
+  html.ctx.fillStyle = 'rgb(0, 0, 0)';
+  html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
+  
+  for (let i = 0; i < game.speedLines.length; i++) {
+    game.speedLines[i].draw();
+  }
+  
+  game.player.draw();
+  
+  for (let i = 0; i < game.enemies.length; i++) {
+    game.enemies[i].draw();
+  }
 }
 
 // --- Variables ---
@@ -88,12 +126,24 @@ let game = {
   },
   player: new Player(),
   speedLines: [],
+  lastTime: performance.now(),
+  lastSpeedLine: performance.now(),
 }
 
 // --- Game Loop ---
-gameLoop(currentTime) {
-  update();
+function gameLoop(currentTime) {
+  let delta = currentTime - game.lastTime;
+  game.lastTime = currentTime;
+  
+  if (currentTime - game.lastSpeedLine >= 50) {
+    game.speedLines.push(new SpeedLine());
+    game.lastSpeedLine = currentTime;
+  }
+  
+  update(delta);
   draw();
+  
+  requestAnimationFrame(gameLoop);
 }
 
 // --- Initialization ---
@@ -104,4 +154,4 @@ html.canvas.style.width = '800px';
 html.canvas.style.height = '600px';
 html.ctx.scale(dpr, dpr);
 
-game.player.draw();
+requestAnimationFrame(gameLoop);
