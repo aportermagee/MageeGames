@@ -34,12 +34,12 @@ class Player {
 }
 
 class Enemy {
-  constructor(posx, posy, angle) {
+  constructor() {
     this.pos = {
-      x: posx,
-      y: posy,
+      x: ,
+      y: ,
     };
-    this.angle = angle;
+    this.angle = Math.round(Math.random() * Math.PI * 2);
     this.turn = 1.9;
     this.shots = [];
     this.speed = 4;
@@ -59,7 +59,7 @@ class SpeedLine {
   constructor() {
     this.pos = {
       x: Math.round(Math.random() * html.canvas.width / 2),
-      y: Math.round(Math.random() * html.canvas.height / 4),
+      y: Math.round(Math.random() * html.canvas.height / 4) - 70,
     };
     this.speed = Math.round(Math.random() * 20) + 80;
     this.time = performance.now();
