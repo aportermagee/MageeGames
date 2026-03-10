@@ -1,8 +1,12 @@
 class Player {
   constructor() {
+    this.pos = {
+      x: Math.round(html.canvas.width / 2),
+      y: Math.round(html.canvas.height / 2),
+    };
     this.shots = [];
     this.angle = Math.PI / 2;
-    this.speed = 4;
+    this.speed = 100;
     this.turn = 2;
     this.coolDown = 0.25;
   }
@@ -36,22 +40,54 @@ class Player {
 class Enemy {
   constructor() {
     this.pos = {
-      x: ,
-      y: ,
+      x: Math.round(Math.random() * html.canvas.width * 2) - html.canvas.width / 2,
+      y: Math.round(Math.random() * html.canvas.height * 2) - html.canvas.height / 2,
     };
     this.angle = Math.round(Math.random() * Math.PI * 2);
     this.turn = 1.9;
     this.shots = [];
-    this.speed = 4;
+    this.speed = 100;
     this.coolDown = 0.5;
   }
   
   update(delta) {
+    let dt = delta / 1000;
     
+    this.pos.x += Math.cos(this.angle) * this.speed * dt;
+    this.pos.y += Math.sin(this.angle) * this.speed * dt;
+
+    let dx = game.player.pos.x - this.pos.x;
+    let dy = game.player.pos.y - this.pos.y;
+    let targetAngle = Math.atan2(dy, dx);
+    
+    let angleDiff = targetAngle - this.angle;
+    let direction = (angleDiff > 0) ? 1 : -1;
+    turn(this, direction, dt);
   }
   
   draw() {
+    html.ctx.save();
+    html.ctx.translate(this.pos.x, this.pos.y);
+    html.ctx.rotate(this.angle);
+    html.ctx.strokeStyle = 'rgb(200, 100, 0)';
+    html.ctx.lineWidth = 2;
+    html.ctx.beginPath();
+    html.ctx.moveTo(0, -15);
+    html.ctx.lineTo(8, 10);
+    html.ctx.lineTo(0, 5);
+    html.ctx.lineTo(-8, 10);
+    html.ctx.lineTo(0, -15);
+    html.ctx.stroke();
     
+    html.ctx.fillStyle = 'rgb(150, 75, 0)';
+    html.ctx.beginPath();
+    html.ctx.moveTo(0, -15);
+    html.ctx.lineTo(8, 10);
+    html.ctx.lineTo(0, 5);
+    html.ctx.lineTo(-8, 10);
+    html.ctx.lineTo(0, -15);
+    html.ctx.fill();
+    html.ctx.restore();
   }
 }
 
@@ -61,7 +97,7 @@ class SpeedLine {
       x: Math.round(Math.random() * html.canvas.width / 2),
       y: Math.round(Math.random() * html.canvas.height / 4) - 70,
     };
-    this.speed = Math.round(Math.random() * 20) + 80;
+    this.speed = Math.round(Math.random() * 30) + 80;
     this.time = performance.now();
     this.length = Math.round(Math.random() * 50) + 20;
   }
@@ -135,9 +171,11 @@ function gameLoop(currentTime) {
   let delta = currentTime - game.lastTime;
   game.lastTime = currentTime;
   
-  if (currentTime - game.lastSpeedLine >= 50) {
+  if (currentTime - game.lastSpeedLine >= 100) {
     game.speedLines.push(new SpeedLine());
     game.lastSpeedLine = currentTime;
+    
+    game.enemies.push(new Enemy());
   }
   
   update(delta);
