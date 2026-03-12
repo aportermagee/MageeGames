@@ -1,3 +1,4 @@
+
 class Player {
   constructor() {
     this.pos = {
@@ -6,13 +7,29 @@ class Player {
     };
     this.shots = [];
     this.angle = Math.PI / 2;
-    this.speed = 100;
-    this.turn = 2;
+    this.speed = 200;
+    this.turnSpeed = 2;
+    this.turn = 0;
     this.coolDown = 0.25;
   }
   
   update(delta) {
-    
+    if (this.turn !== 0) {
+      for (let enemy of game.enemies) {
+        let ta = this.turnSpeed * this.turn * delta;
+        
+        let dx = this.pos.x - enemy.pos.x;
+        let dy = this.pos.y - enemy.pos.y;
+        
+        let ca = Math.atan2(dy, dx);
+        let na = ca - ta;
+        
+        enemy.pos.x += Math.cos(na) - Math.cos(ca);
+        enemy.pos.y += Math.sin(na) - Math.sin(ca);
+        
+        enemy.angle -= ta;
+      }
+    }
   }
   
   draw() {
@@ -44,9 +61,9 @@ class Enemy {
       y: Math.round(Math.random() * html.canvas.height * 2) - html.canvas.height / 2,
     };
     this.angle = Math.round(Math.random() * Math.PI * 2);
-    this.turn = 1.9;
+    this.turnSpeed = 2;
     this.shots = [];
-    this.speed = 100;
+    this.speed = Math.round(Math.random() * 50) + 175;
     this.coolDown = 0.5;
   }
   
@@ -54,7 +71,7 @@ class Enemy {
     let dt = delta / 1000;
     
     this.pos.x += Math.cos(this.angle) * this.speed * dt;
-    this.pos.y += Math.sin(this.angle) * this.speed * dt;
+    this.pos.y += (Math.sin(this.angle) * this.speed + game.player.speed) * dt;
 
     let dx = game.player.pos.x - this.pos.x;
     let dy = game.player.pos.y - this.pos.y;
@@ -68,7 +85,7 @@ class Enemy {
   draw() {
     html.ctx.save();
     html.ctx.translate(this.pos.x, this.pos.y);
-    html.ctx.rotate(this.angle);
+    html.ctx.rotate(this.angle + Math.PI / 2);
     html.ctx.strokeStyle = 'rgb(200, 100, 0)';
     html.ctx.lineWidth = 2;
     html.ctx.beginPath();
@@ -118,7 +135,8 @@ class SpeedLine {
 
 // --- Functions ---
 function turn(ship, direction, delta) {
-  ship.angle += ship.turn * direction * delta;
+  ship.angle += ship.turnSpeed * direction * delta;
+  ship.angle = ship.angle % (Math.PI * 2);
 }
 
 function update(delta) {
@@ -183,6 +201,17 @@ function gameLoop(currentTime) {
   
   requestAnimationFrame(gameLoop);
 }
+
+// --- Input ---
+document.addEventListener('keydown', event => {
+  if (['ArrowRight', 'ArrowLeft'].includes(event.key)) event.preventDefault();
+  if (event.key === 'ArrowRight') game.player.turn = -1;
+  if (event.key === 'ArrowLeft') game.player.turn = 1;
+});
+
+document.addEventListener('keyup', event => {
+  if (['ArrowRight', 'ArrowLeft'].includes(event.key)) game.player.turn = 0;
+});
 
 // --- Initialization ---
 const dpr = window.devicePixelRatio || 1;
