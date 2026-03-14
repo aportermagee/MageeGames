@@ -1,4 +1,3 @@
-
 class Player {
   constructor() {
     this.pos = {
@@ -13,21 +12,22 @@ class Player {
     this.coolDown = 0.25;
   }
   
-  update(delta) {
+  update(dt) {
     if (this.turn !== 0) {
       for (let enemy of game.enemies) {
-        let ta = this.turnSpeed * this.turn * delta;
+        let ta = this.turnSpeed * this.turn * dt;
         
         let dx = this.pos.x - enemy.pos.x;
         let dy = this.pos.y - enemy.pos.y;
+        let dr = Math.hypot(dy, dx);
         
         let ca = Math.atan2(dy, dx);
-        let na = ca - ta;
+        let na = (ca + ta) % (Math.PI * 2);
         
-        enemy.pos.x += Math.cos(na) - Math.cos(ca);
-        enemy.pos.y += Math.sin(na) - Math.sin(ca);
+        enemy.pos.x = dr * Math.cos(na) + this.pos.x;
+        enemy.pos.y = dr * Math.sin(na) + this.pos.y;
         
-        enemy.angle -= ta;
+        turn(enemy, this.turn * -1, dt);
       }
     }
   }
@@ -67,9 +67,7 @@ class Enemy {
     this.coolDown = 0.5;
   }
   
-  update(delta) {
-    let dt = delta / 1000;
-    
+  update(dt) {
     this.pos.x += Math.cos(this.angle) * this.speed * dt;
     this.pos.y += (Math.sin(this.angle) * this.speed + game.player.speed) * dt;
 
@@ -119,12 +117,12 @@ class SpeedLine {
     this.length = Math.round(Math.random() * 50) + 20;
   }
   
-  update(delta) {
+  update(dt) {
     if (performance.now() - this.time >= 1000) {
       game.speedLines = game.speedLines.filter(line => line !== this);
     }
     
-    this.pos.y += delta * 5 * this.speed / 1000;
+    this.pos.y += dt * 5 * this.speed;
   }
   
   draw() {
@@ -134,8 +132,8 @@ class SpeedLine {
 }
 
 // --- Functions ---
-function turn(ship, direction, delta) {
-  ship.angle += ship.turnSpeed * direction * delta;
+function turn(ship, direction, dt) {
+  ship.angle += ship.turnSpeed * direction * dt;
   ship.angle = ship.angle % (Math.PI * 2);
 }
 
@@ -186,10 +184,10 @@ let game = {
 
 // --- Game Loop ---
 function gameLoop(currentTime) {
-  let delta = currentTime - game.lastTime;
+  let delta = (currentTime - game.lastTime) / 1000;
   game.lastTime = currentTime;
   
-  if (currentTime - game.lastSpeedLine >= 100) {
+  if (currentTime - game.lastSpeedLine >= 1000) {
     game.speedLines.push(new SpeedLine());
     game.lastSpeedLine = currentTime;
     
