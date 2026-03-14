@@ -6,7 +6,7 @@ class Player {
     };
     this.shots = [];
     this.angle = Math.PI / 2;
-    this.speed = 200;
+    this.speed = 250;
     this.turnSpeed = 2;
     this.turn = 0;
     this.coolDown = 0.25;
@@ -16,18 +16,18 @@ class Player {
     if (this.turn !== 0) {
       for (let enemy of game.enemies) {
         let ta = this.turnSpeed * this.turn * dt;
+    
+        let dx = enemy.pos.x - this.pos.x;
+        let dy = enemy.pos.y - this.pos.y;
+
+        let cos = Math.cos(ta);
+        let sin = Math.sin(ta);
+
+        enemy.pos.x = this.pos.x + dx * cos - dy * sin;
+        enemy.pos.y = this.pos.y + dx * sin + dy * cos;
         
-        let dx = this.pos.x - enemy.pos.x;
-        let dy = this.pos.y - enemy.pos.y;
-        let dr = Math.hypot(dy, dx);
-        
-        let ca = Math.atan2(dy, dx);
-        let na = (ca + ta) % (Math.PI * 2);
-        
-        enemy.pos.x = dr * Math.cos(na) + this.pos.x;
-        enemy.pos.y = dr * Math.sin(na) + this.pos.y;
-        
-        turn(enemy, this.turn * -1, dt);
+        enemy.angle += ta;
+        enemy.angle = enemy.angle % (Math.PI * 2);
       }
     }
   }
@@ -63,7 +63,7 @@ class Enemy {
     this.angle = Math.round(Math.random() * Math.PI * 2);
     this.turnSpeed = 2;
     this.shots = [];
-    this.speed = Math.round(Math.random() * 50) + 175;
+    this.speed = Math.round(Math.random() * 50) + 225;
     this.coolDown = 0.5;
   }
   
@@ -76,6 +76,8 @@ class Enemy {
     let targetAngle = Math.atan2(dy, dx);
     
     let angleDiff = targetAngle - this.angle;
+    angleDiff = ((angleDiff - Math.PI) % (Math.PI * 2)) + Math.PI;
+    
     let direction = (angleDiff > 0) ? 1 : -1;
     turn(this, direction, dt);
   }
@@ -187,7 +189,7 @@ function gameLoop(currentTime) {
   let delta = (currentTime - game.lastTime) / 1000;
   game.lastTime = currentTime;
   
-  if (currentTime - game.lastSpeedLine >= 1000) {
+  if (currentTime - game.lastSpeedLine >= 100) {
     game.speedLines.push(new SpeedLine());
     game.lastSpeedLine = currentTime;
     
