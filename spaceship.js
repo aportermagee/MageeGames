@@ -6,7 +6,7 @@ class Player {
     };
     this.shots = [];
     this.angle = Math.PI / 2;
-    this.speed = 250;
+    this.speed = 300;
     this.turnSpeed = 2;
     this.turn = 0;
     this.coolDown = 0.25;
@@ -29,6 +29,12 @@ class Player {
         enemy.angle += ta;
         enemy.angle = enemy.angle % (Math.PI * 2);
       }
+      
+      for (let line of game.speedLines) {
+        line.pos.x += this.turn * dt * 200;
+      }
+      
+      turn(this, this.turn, dt);
     }
   }
   
@@ -51,6 +57,36 @@ class Player {
     html.ctx.lineTo(game.center.x - 8, game.center.y + 10);
     html.ctx.lineTo(game.center.x, game.center.y - 15);
     html.ctx.fill();
+    
+    html.ctx.fillStyle = 'rgb(0, 10, 30)';
+    html.ctx.beginPath();
+    html.ctx.arc(110, 105, 75, 0, Math.PI * 2);
+    html.ctx.fill();
+    
+    html.ctx.fillStyle = 'rgb(0, 0, 0)';
+    html.ctx.beginPath();
+    html.ctx.arc(110, 105, 25, 0, Math.PI * 2);
+    html.ctx.fill();
+    
+    html.ctx.font = 'bold 20px Tahoma';
+    html.ctx.textAlign = 'center';
+    html.ctx.fillStyle = 'rgb(200, 50, 50)';
+    html.ctx.fillText('N', 110 + Math.cos(this.angle + Math.PI) * 50, 110 + Math.sin(this.angle + Math.PI) * 50);
+    html.ctx.fillStyle = 'rgb(200, 200, 200)';
+    html.ctx.fillText('W', 110 + Math.cos(this.angle + Math.PI / 2) * 50, 110 + Math.sin(this.angle + Math.PI / 2) * 50);
+    html.ctx.fillText('S', 110 + Math.cos(this.angle) * 50, 110 + Math.sin(this.angle) * 50);
+    html.ctx.fillText('E', 110 + Math.cos(this.angle + Math.PI * 3 / 2) * 50, 110 + Math.sin(this.angle + Math.PI * 3 / 2) * 50);
+    
+    html.ctx.lineWidth = 2;
+    html.ctx.strokeStyle = 'rgb(200, 200, 200)';
+    html.ctx.beginPath();
+    html.ctx.arc(110, 105, 25, 0, Math.PI * 2);
+    html.ctx.stroke();
+    
+    html.ctx.strokeStyle = 'rgb(200, 200, 200)';
+    html.ctx.beginPath();
+    html.ctx.arc(110, 105, 75, 0, Math.PI * 2);
+    html.ctx.stroke();
   }
 }
 
@@ -61,9 +97,9 @@ class Enemy {
       y: Math.round(Math.random() * html.canvas.height * 2) - html.canvas.height / 2,
     };
     this.angle = Math.round(Math.random() * Math.PI * 2);
-    this.turnSpeed = 2;
+    this.turnSpeed = Math.random() + 1;
     this.shots = [];
-    this.speed = Math.round(Math.random() * 50) + 225;
+    this.speed = Math.round(Math.random() * 50) + 275;
     this.coolDown = 0.5;
   }
   
@@ -71,6 +107,11 @@ class Enemy {
     this.pos.x += Math.cos(this.angle) * this.speed * dt;
     this.pos.y += (Math.sin(this.angle) * this.speed + game.player.speed) * dt;
 
+    if (this.pos.x < -100) this.pos.x = 850;
+    if (this.pos.x > 900) this.pos.x = -50;
+    if (this.pos.y < -100) this.pos.y = 650;
+    if (this.pos.y > 700) this.pos.y = -50;
+    
     let dx = game.player.pos.x - this.pos.x;
     let dy = game.player.pos.y - this.pos.y;
     let targetAngle = Math.atan2(dy, dx);
@@ -182,6 +223,7 @@ let game = {
   speedLines: [],
   lastTime: performance.now(),
   lastSpeedLine: performance.now(),
+  lastEnemy: performance.now(),
 }
 
 // --- Game Loop ---
@@ -189,11 +231,14 @@ function gameLoop(currentTime) {
   let delta = (currentTime - game.lastTime) / 1000;
   game.lastTime = currentTime;
   
-  if (currentTime - game.lastSpeedLine >= 100) {
+  if (currentTime - game.lastSpeedLine >= 250) {
     game.speedLines.push(new SpeedLine());
     game.lastSpeedLine = currentTime;
-    
+  } 
+  
+  if (currentTime - game.lastEnemy >= 20000) {
     game.enemies.push(new Enemy());
+    game.lastEnemy = currentTime;
   }
   
   update(delta);
@@ -221,4 +266,5 @@ html.canvas.style.width = '800px';
 html.canvas.style.height = '600px';
 html.ctx.scale(dpr, dpr);
 
+game.enemies.push(new Enemy());
 requestAnimationFrame(gameLoop);
