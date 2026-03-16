@@ -30,10 +30,6 @@ class Player {
         enemy.angle = enemy.angle % (Math.PI * 2);
       }
       
-      for (let line of game.speedLines) {
-        line.pos.x += this.turn * dt * 200;
-      }
-      
       turn(this, this.turn, dt);
     }
   }
@@ -60,32 +56,32 @@ class Player {
     
     html.ctx.fillStyle = 'rgb(0, 10, 30)';
     html.ctx.beginPath();
-    html.ctx.arc(110, 105, 75, 0, Math.PI * 2);
+    html.ctx.arc(110, 105, 60, 0, Math.PI * 2);
     html.ctx.fill();
     
     html.ctx.fillStyle = 'rgb(0, 0, 0)';
     html.ctx.beginPath();
-    html.ctx.arc(110, 105, 25, 0, Math.PI * 2);
+    html.ctx.arc(110, 105, 20, 0, Math.PI * 2);
     html.ctx.fill();
     
     html.ctx.font = 'bold 20px Tahoma';
     html.ctx.textAlign = 'center';
     html.ctx.fillStyle = 'rgb(200, 50, 50)';
-    html.ctx.fillText('N', 110 + Math.cos(this.angle + Math.PI) * 50, 110 + Math.sin(this.angle + Math.PI) * 50);
+    html.ctx.fillText('N', 110 + Math.cos(this.angle + Math.PI) * 40, 110 + Math.sin(this.angle + Math.PI) * 40);
     html.ctx.fillStyle = 'rgb(200, 200, 200)';
-    html.ctx.fillText('W', 110 + Math.cos(this.angle + Math.PI / 2) * 50, 110 + Math.sin(this.angle + Math.PI / 2) * 50);
-    html.ctx.fillText('S', 110 + Math.cos(this.angle) * 50, 110 + Math.sin(this.angle) * 50);
-    html.ctx.fillText('E', 110 + Math.cos(this.angle + Math.PI * 3 / 2) * 50, 110 + Math.sin(this.angle + Math.PI * 3 / 2) * 50);
+    html.ctx.fillText('W', 110 + Math.cos(this.angle + Math.PI / 2) * 40, 110 + Math.sin(this.angle + Math.PI / 2) * 40);
+    html.ctx.fillText('S', 110 + Math.cos(this.angle) * 40, 110 + Math.sin(this.angle) * 40);
+    html.ctx.fillText('E', 110 + Math.cos(this.angle + Math.PI * 3 / 2) * 40, 110 + Math.sin(this.angle + Math.PI * 3 / 2) * 40);
     
     html.ctx.lineWidth = 2;
     html.ctx.strokeStyle = 'rgb(200, 200, 200)';
     html.ctx.beginPath();
-    html.ctx.arc(110, 105, 25, 0, Math.PI * 2);
+    html.ctx.arc(110, 105, 20, 0, Math.PI * 2);
     html.ctx.stroke();
     
     html.ctx.strokeStyle = 'rgb(200, 200, 200)';
     html.ctx.beginPath();
-    html.ctx.arc(110, 105, 75, 0, Math.PI * 2);
+    html.ctx.arc(110, 105, 60, 0, Math.PI * 2);
     html.ctx.stroke();
   }
 }
@@ -152,12 +148,13 @@ class Enemy {
 class SpeedLine {
   constructor() {
     this.pos = {
-      x: Math.round(Math.random() * html.canvas.width / 2),
-      y: Math.round(Math.random() * html.canvas.height / 4) - 70,
+      x: Math.round(Math.random() * html.canvas.width * 0.7) - html.canvas.width * 0.15,
+      y: Math.round(Math.random() * html.canvas.height / 6) - 70,
     };
-    this.speed = Math.round(Math.random() * 30) + 80;
+    this.speed = Math.round(Math.random() * 30) + 500;
     this.time = performance.now();
     this.length = Math.round(Math.random() * 50) + 20;
+    this.angle = Math.PI / 2;
   }
   
   update(dt) {
@@ -165,12 +162,23 @@ class SpeedLine {
       game.speedLines = game.speedLines.filter(line => line !== this);
     }
     
-    this.pos.y += dt * 5 * this.speed;
+    if (game.player.turn) {
+      this.angle += game.player.turn * dt * 0.75;
+    } else {
+      this.angle = (Math.PI / 2 + this.angle * 9) / 10;
+    }
+    
+    this.pos.y += dt * this.speed * Math.sin(this.angle);
+    this.pos.x += dt * this.speed * Math.cos(this.angle);
   }
   
   draw() {
+    html.ctx.save();
+    html.ctx.translate(this.pos.x, this.pos.y);
+    html.ctx.rotate(this.angle + Math.PI / 2);
     html.ctx.fillStyle = 'rgb(150, 150, 150)';
-    html.ctx.fillRect(this.pos.x, this.pos.y, 1, this.length);
+    html.ctx.fillRect(0, 0, 1, this.length);
+    html.ctx.restore();
   }
 }
 
@@ -231,7 +239,7 @@ function gameLoop(currentTime) {
   let delta = (currentTime - game.lastTime) / 1000;
   game.lastTime = currentTime;
   
-  if (currentTime - game.lastSpeedLine >= 250) {
+  if (currentTime - game.lastSpeedLine >= 75) {
     game.speedLines.push(new SpeedLine());
     game.lastSpeedLine = currentTime;
   } 
@@ -251,7 +259,7 @@ function gameLoop(currentTime) {
 document.addEventListener('keydown', event => {
   if (['ArrowRight', 'ArrowLeft'].includes(event.key)) event.preventDefault();
   if (event.key === 'ArrowRight') game.player.turn = -1;
-  if (event.key === 'ArrowLeft') game.player.turn = 1;
+  if (event.key === 'ArrowLeft') game.player.turn = 1; 
 });
 
 document.addEventListener('keyup', event => {
