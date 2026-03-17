@@ -6,7 +6,7 @@ class Player {
     };
     this.shots = [];
     this.angle = Math.PI / 2;
-    this.speed = 400;
+    this.speed = 300;
     this.turnSpeed = 2;
     this.turn = 0;
     this.coolDown = 0.25;
@@ -93,9 +93,9 @@ class Enemy {
       y: Math.round(Math.random() * html.canvas.height * 2) - html.canvas.height / 2,
     };
     this.angle = Math.round(Math.random() * Math.PI * 2);
-    this.turnSpeed = Math.random() + 1.5;
+    this.turnSpeed = Math.random() + 1;
     this.shots = [];
-    this.speed = Math.round(Math.random() * 50) + 375;
+    this.speed = 275;
     this.coolDown = 0.5;
   }
   
