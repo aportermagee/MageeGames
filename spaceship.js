@@ -145,6 +145,46 @@ class Enemy {
   }
 }
 
+class Shot {
+  constructor(pos, angle) {
+    this.pos = { x: pos.x, y: pos.y };
+    this.angle = angle;
+    this.speed = 1000;
+  }
+  
+  die() {
+    game.shots = game.shots.filter(shot => shot != this);
+  }
+  
+  update(dt) {
+    this.pos.x += Math.cos(this.angle) * this.speed * dt;
+    this.pos.y += (Math.sin(this.angle) * this.speed + game.player.speed) * dt;
+
+    if (this.pos.x < 0 || this.pos.x > 800 || this.pos.y < 0 || this.pos.y > 600) {
+      this.die(); 
+    }
+    
+    let dx = game.player.pos.x - this.pos.x;
+    let dy = game.player.pos.y - this.pos.y;
+    let targetAngle = Math.atan2(dy, dx);
+    
+    let angleDiff = targetAngle - this.angle;
+    angleDiff = ((angleDiff - Math.PI) % (Math.PI * 2)) + Math.PI;
+    
+    let direction = (angleDiff > 0) ? 1 : -1;
+    turn(this, direction, dt);
+  }
+  
+  draw() {
+    html.ctx.save();
+    html.ctx.translate(this.pos.x, this.pos.y);
+    html.ctx.rotate(this.angle + Math.PI / 2);
+    html.ctx.fillStyle = 'rgb(200, 0, 0)';
+    html.ctx.fillRect(0, 0, 2, 10);
+    html.ctx.restore();
+  }
+}
+
 class SpeedLine {
   constructor() {
     this.pos = {
@@ -198,11 +238,19 @@ function update(delta) {
   for (let i = 0; i < game.speedLines.length; i++) {
     game.speedLines[i].update(delta);
   }
+  
+  for (let i = 0; i < game.shots.length; i++) {
+    game.shots[i].update(delta);
+  }
 }
 
 function draw() {
   html.ctx.fillStyle = 'rgb(0, 0, 0)';
   html.ctx.fillRect(0, 0, html.canvas.width, html.canvas.height);
+  
+  for (let i = 0; i < game.shots.length; i++) {
+    game.shots[i].draw();
+  }
   
   for (let i = 0; i < game.speedLines.length; i++) {
     game.speedLines[i].draw();
@@ -223,6 +271,7 @@ let html = {
 
 let game = {
   enemies: [],
+  shots: [],
   center: {
     x: Math.round(html.canvas.width / 2),
     y: Math.round(html.canvas.height / 2),
@@ -258,6 +307,10 @@ function gameLoop(currentTime) {
 // --- Input ---
 document.addEventListener('keydown', event => {
   if (['ArrowRight', 'ArrowLeft'].includes(event.key)) event.preventDefault();
+  if (event.code === 'Space') { 
+    event.preventDefault();
+    game.shots.push(new Shot(game.player.pos, game.player.angle));
+  }
   if (event.key === 'ArrowRight') game.player.turn = -1;
   if (event.key === 'ArrowLeft') game.player.turn = 1; 
 });
