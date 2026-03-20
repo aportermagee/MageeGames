@@ -10,6 +10,7 @@ class Player {
     this.turnSpeed = 2;
     this.turn = 0;
     this.coolDown = 0.25;
+    this.heath -= 10;
   }
   
   update(dt) {
@@ -28,6 +29,22 @@ class Player {
         
         enemy.angle += ta;
         enemy.angle = enemy.angle % (Math.PI * 2);
+      }
+      
+      for (let shot of game.shots) {
+        let ta = this.turnSpeed * this.turn * dt;
+    
+        let dx = shot.pos.x - this.pos.x;
+        let dy = shot.pos.y - this.pos.y;
+
+        let cos = Math.cos(ta);
+        let sin = Math.sin(ta);
+
+        shot.pos.x = this.pos.x + dx * cos - dy * sin;
+        shot.pos.y = this.pos.y + dx * sin + dy * cos;
+        
+        shot.angle += ta;
+        shot.angle = shot.angle % (Math.PI * 2);
       }
       
       turn(this, this.turn, dt);
@@ -99,6 +116,10 @@ class Enemy {
     this.coolDown = 0.5;
   }
   
+  die() {
+    game.enemies = game.enemies.filter(enemy => enemy != this);
+  }
+  
   update(dt) {
     this.pos.x += Math.cos(this.angle) * this.speed * dt;
     this.pos.y += (Math.sin(this.angle) * this.speed + game.player.speed) * dt;
@@ -146,10 +167,12 @@ class Enemy {
 }
 
 class Shot {
-  constructor(pos, angle) {
+  constructor(pos, shooter) {
     this.pos = { x: pos.x, y: pos.y };
-    this.angle = angle;
+    this.angle = Math.PI / 2;
     this.speed = 1000;
+    this.turnSpeed = 2;
+    this.shooter = shooter;
   }
   
   die() {
@@ -158,21 +181,24 @@ class Shot {
   
   update(dt) {
     this.pos.x += Math.cos(this.angle) * this.speed * dt;
-    this.pos.y += (Math.sin(this.angle) * this.speed + game.player.speed) * dt;
-
+    this.pos.y -= (Math.sin(this.angle) * this.speed + game.player.speed) * dt;
+    
     if (this.pos.x < 0 || this.pos.x > 800 || this.pos.y < 0 || this.pos.y > 600) {
       this.die(); 
     }
     
-    let dx = game.player.pos.x - this.pos.x;
-    let dy = game.player.pos.y - this.pos.y;
-    let targetAngle = Math.atan2(dy, dx);
+    if (Math.hypot(this.pos.x - game.player.pos.x, this.pos.y - game.player.pos.y) < 15 && this.shooter !== game.player) {
+      this.die();
+      game.player.health -= 1;
+    }
     
-    let angleDiff = targetAngle - this.angle;
-    angleDiff = ((angleDiff - Math.PI) % (Math.PI * 2)) + Math.PI;
-    
-    let direction = (angleDiff > 0) ? 1 : -1;
-    turn(this, direction, dt);
+    for (let enemy of game.enemies) {
+      if (Math.hypot(this.pos.x - enemy.pos.x, this.pos.y - enemy.pos.y) < 15 && this.shooter !== enemy) {
+        this.die();
+        enemy.die();
+        game.enemies.push(new Enemy());
+      }
+    }
   }
   
   draw() {
@@ -309,7 +335,7 @@ document.addEventListener('keydown', event => {
   if (['ArrowRight', 'ArrowLeft'].includes(event.key)) event.preventDefault();
   if (event.code === 'Space') { 
     event.preventDefault();
-    game.shots.push(new Shot(game.player.pos, game.player.angle));
+    game.shots.push(new Shot(game.player.pos, game.player));
   }
   if (event.key === 'ArrowRight') game.player.turn = -1;
   if (event.key === 'ArrowLeft') game.player.turn = 1; 
