@@ -110,9 +110,9 @@ class Enemy {
       y: Math.round(Math.random() * html.canvas.height * 2) - html.canvas.height / 2,
     };
     this.angle = Math.round(Math.random() * Math.PI * 2);
-    this.turnSpeed = Math.random() + 1;
+    this.turnSpeed = 2;
     this.shots = [];
-    this.speed = 275;
+    this.speed = 300;
     this.coolDown = 0.5;
   }
   
@@ -131,6 +131,7 @@ class Enemy {
     
     let dx = game.player.pos.x - this.pos.x;
     let dy = game.player.pos.y - this.pos.y;
+    
     let targetAngle = Math.atan2(dy, dx);
     
     let angleDiff = targetAngle - this.angle;
