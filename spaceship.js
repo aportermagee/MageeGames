@@ -6,8 +6,8 @@ class Player {
     };
     this.shots = [];
     this.angle = Math.PI / 2;
-    this.speed = 300;
-    this.turnSpeed = 2;
+    this.speed = 500;
+    this.turnSpeed = 2.5;
     this.turn = 0;
     this.coolDown = 0.25;
     this.heath -= 10;
@@ -110,9 +110,9 @@ class Enemy {
       y: Math.round(Math.random() * html.canvas.height * 2) - html.canvas.height / 2,
     };
     this.angle = Math.round(Math.random() * Math.PI * 2);
-    this.turnSpeed = 2;
+    this.turnSpeed = 1;
     this.shots = [];
-    this.speed = 300;
+    this.speed = 250;
     this.coolDown = 0.5;
   }
   
@@ -230,7 +230,7 @@ class SpeedLine {
     }
     
     if (game.player.turn) {
-      this.angle += game.player.turn * dt * 0.75;
+      this.angle += game.player.turn * dt;
     } else {
       this.angle = (Math.PI / 2 + this.angle * 9) / 10;
     }
