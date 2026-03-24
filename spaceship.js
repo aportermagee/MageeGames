@@ -6,7 +6,7 @@ class Player {
     };
     this.shots = [];
     this.angle = Math.PI / 2;
-    this.speed = 500;
+    this.speed = 400;
     this.turnSpeed = 2.5;
     this.turn = 0;
     this.coolDown = 0.25;
@@ -112,8 +112,9 @@ class Enemy {
     this.angle = Math.round(Math.random() * Math.PI * 2);
     this.turnSpeed = 1;
     this.shots = [];
-    this.speed = 250;
+    this.speed = 200;
     this.coolDown = 0.5;
+    this.lastShot = performance.now();
   }
   
   die() {
@@ -136,6 +137,11 @@ class Enemy {
     
     let angleDiff = targetAngle - this.angle;
     angleDiff = ((angleDiff - Math.PI) % (Math.PI * 2)) + Math.PI;
+    
+    if (angleDiff < 0.2 && angleDiff > -0.2 && performance.now() - this.lastShot > this.coolDown * 1000) {
+      this.lastShot = performance.now();
+      game.shots.push(new Shot(this.pos, this.angle, this));
+    }
     
     let direction = (angleDiff > 0) ? 1 : -1;
     turn(this, direction, dt);
@@ -168,9 +174,9 @@ class Enemy {
 }
 
 class Shot {
-  constructor(pos, shooter) {
+  constructor(pos, angle, shooter) {
     this.pos = { x: pos.x, y: pos.y };
-    this.angle = Math.PI / 2;
+    this.angle = angle;
     this.speed = 1000;
     this.turnSpeed = 2;
     this.shooter = shooter;
@@ -182,7 +188,7 @@ class Shot {
   
   update(dt) {
     this.pos.x += Math.cos(this.angle) * this.speed * dt;
-    this.pos.y -= (Math.sin(this.angle) * this.speed + game.player.speed) * dt;
+    this.pos.y -= (Math.sin(this.angle) * this.speed - game.player.speed) * dt;
     
     if (this.pos.x < 0 || this.pos.x > 800 || this.pos.y < 0 || this.pos.y > 600) {
       this.die(); 
@@ -336,7 +342,7 @@ document.addEventListener('keydown', event => {
   if (['ArrowRight', 'ArrowLeft'].includes(event.key)) event.preventDefault();
   if (event.code === 'Space') { 
     event.preventDefault();
-    game.shots.push(new Shot(game.player.pos, game.player));
+    game.shots.push(new Shot(game.player.pos, Math.PI / 2, game.player));
   }
   if (event.key === 'ArrowRight') game.player.turn = -1;
   if (event.key === 'ArrowLeft') game.player.turn = 1; 
